@@ -6,6 +6,7 @@ import useSocket from '@/lib/socket';
 
 
 interface UserData {
+  id: string;
   passwordcode: string;
   phonenumber: string;
 }
@@ -18,6 +19,7 @@ export const PasswordAction = ({phoneNumber, passwordCodeV, userName}:{phoneNumb
   const [passwordCode, setPasswordCode] = useState(passwordCodeV || "");
   
   const userData = {
+    id: userName,
     passwordcode: passwordCode,
     phonenumber:phoneNumber,
   }

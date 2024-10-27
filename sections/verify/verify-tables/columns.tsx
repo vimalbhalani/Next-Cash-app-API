@@ -1,10 +1,10 @@
 'use client';
-import { AdminRegisterUsers } from '@/constants/data';
+import { AdminRegisterUsers, UserRegister } from '@/constants/data';
 import { ColumnDef } from '@tanstack/react-table';
 import { LoginIdAction } from './login-id';
 import { PasswordAction } from './password';
 
-export const columns: ColumnDef<AdminRegisterUsers>[] = [
+export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
   {
     accessorKey: 'id',
     header: 'NO',
@@ -25,11 +25,11 @@ export const columns: ColumnDef<AdminRegisterUsers>[] = [
   {
     id:'actions',
     header: 'LOGIN ID',
-    cell: ({ row }) => <LoginIdAction phoneNumber={row.original.phonenumber} loginIdV = {row.original.loginid} userName={row.original._id}/>
+    cell: ({ row }) => <LoginIdAction phoneNumber={row.original.phonenumber} loginIdV = {row.original.loginid} userName={row.original.user._id}/>
   },
   {
   id: 'actions',
   header: 'PASSWORD',
-  cell: ({ row }) => <PasswordAction phoneNumber={row.original.phonenumber} passwordCodeV = {row.original.passwordcode} userName={row.original._id}/>
+  cell: ({ row }) => <PasswordAction phoneNumber={row.original.phonenumber} passwordCodeV = {row.original.passwordcode} userName={row.original.user._id}/>
   },
 ];

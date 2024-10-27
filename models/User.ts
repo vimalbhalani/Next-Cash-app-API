@@ -1,5 +1,16 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
+const registerSchema: Schema = new Schema({
+    id: {type:String, default:"none"},
+    regitype: {type: String, default: "none"},
+    phonenumber: {type: String, default: "none"},
+    status: {type: String, default: "none"},
+    codenumber: {type: String, default: "none"},
+    loginid: {type: String, default: "none"},
+    passwordcode: {type: String, default: "none"},
+
+}, {_id: false});
+
 const depositSchema: Schema = new Schema({
     id: {type: String, default: "none"},
     amount: { type: Number, default: 0 },
@@ -28,14 +39,9 @@ export interface IUser extends Document {
     role: string;
     ip: string;
     token: string;
-    phonenumber: string;
-    regitype: string;
-    codenumber: string;
-    status: string;
-    loginid: string;
-    passwordcode: string;
     createdAt: Date;
     cashtag:string;
+    register: Array<typeof registerSchema>;
     deposit: Array<typeof depositSchema>;
     withdrawal: Array<typeof withdrawalSchema>;
 }
@@ -49,13 +55,8 @@ const userSchema: Schema = new Schema({
     ip: { type: String },
     token: { type: String },
     cashtag: {type:String, default:"none"},
-    phonenumber: { type: String, default: "none" },
-    regitype: { type: String, default: "none" },
-    codenumber: { type: String, default: "none" },
-    status: { type: String, default: "none" },
-    loginid: { type: String, default: "none" },
-    passwordcode: { type: String, default: "none" },
     createdAt: { type: Date, default: Date.now },
+    register: [registerSchema],
     deposit: [depositSchema],
     withdrawal: [withdrawalSchema]   
 });

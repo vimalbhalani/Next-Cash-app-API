@@ -3,10 +3,10 @@ import dbConnect from "@/lib/dbConnect"; // Import your DB connection function
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-  const { phonenumber, codenumber, status } = await request.json();
+  const { phonenumber, codenumber, status, id } = await request.json();
   
   // Ensure our incoming data is valid
-  if (!phonenumber || !codenumber) {
+  if (!phonenumber || !codenumber || !status || !id) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
   }
   
@@ -14,18 +14,31 @@ export const POST = async (request: NextRequest) => {
   await dbConnect();
   
   try {
-    // Use findOneAndUpdate to find user by token and update regitype and phonenumber
-    const user = await User.findOneAndUpdate(
-      { phonenumber }, // search condition
-      { codenumber, status }, // update operation
+    // Find the existing user document by id
+    const existingUser = await User.findById(id);
+
+    if (!existingUser) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
+
+    // Update the user's codenumber and status in the "register" array
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: id, 'register.phonenumber': phonenumber }, // search condition includes phonenumber in register array
+      { 
+        $set: {
+          'register.$.codenumber': codenumber, // Update the codenumber of the found index
+          'register.$.status': status // Update the status of the found index
+        }
+      }, // update operation
       { new: true } // options: return the updated document
     );
 
-    if (user) {
-      return NextResponse.json({ ok: 'User updated', user }, { status: 200 });
-    } else {    
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    if (!updatedUser) {
+      return NextResponse.json({ error: 'Phone number not found in register' }, { status: 404 });
     }
+
+    return NextResponse.json({ ok: 'User updated', user: updatedUser }, { status: 200 });
+    
   } catch (err: any) {
     // Handle errors during DB operations
     return NextResponse.json({ error: err.message }, { status: 500 });

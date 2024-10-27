@@ -6,7 +6,8 @@ export const GET = async (request: NextRequest) => {
   await dbConnect();
 
   try {
-    const users = await User.find({status : "preparing"}); // Use 'users' since you are fetching multiple
+    // Adjust the query to filter users based on the phonenumber existing in the register array
+    const users = await User.find({ register: { $elemMatch: { phonenumber: { $ne: "none" } } } });
 
     // Convert mongoose documents to plain JS objects
     const usersInfo = users.map(user => user.toObject());

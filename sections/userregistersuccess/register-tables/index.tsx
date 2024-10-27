@@ -22,7 +22,7 @@ export default function RegisterSuccessTable() {
 
         setLoading(true);
 
-        const response = await fetch('/api/customer/getuserInfo', {
+        const response = await fetch('/api/customer/getregisuccess', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -35,7 +35,9 @@ export default function RegisterSuccessTable() {
         }
 
         const result = await response.json();
-        setData(result.data); // Adjust based on your API response
+        console.log(result);
+        
+        setData(result.data[0].register); // Adjust based on your API response
         setTotalData(result.totalCount); // Adjust based on your API response
       } catch (error) {
         console.error('Error fetching data:', error);

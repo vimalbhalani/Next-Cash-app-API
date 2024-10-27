@@ -5,6 +5,7 @@ import { useToast, toast } from '@/components/ui/use-toast';
 import useSocket from '@/lib/socket';
 
 interface UserData {
+  id: string;
   loginid: string;
   phonenumber: string;
 }
@@ -17,9 +18,9 @@ export const LoginIdAction = ({ phoneNumber, loginIdV, userName }: { phoneNumber
   const [loginId, setLoginId] = useState(loginIdV || "");
 
   const userData = {
-    loginid: loginId,
-    status: "process",
+    id: userName,
     phonenumber: phoneNumber,
+    loginid: loginId,
   }
 
   // Example signUp function

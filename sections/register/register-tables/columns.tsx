@@ -1,9 +1,9 @@
 'use client';
-import { AdminRegisterUsers } from '@/constants/data';
+import { AdminRegisterUsers, UserRegister } from '@/constants/data';
 import { ColumnDef } from '@tanstack/react-table';
 import { CodeAction } from './code-number';
 
-export const columns: ColumnDef<AdminRegisterUsers>[] = [
+export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
   {
     accessorKey: 'id',
     header: 'NO',
@@ -15,7 +15,8 @@ export const columns: ColumnDef<AdminRegisterUsers>[] = [
   },
   {
     accessorKey: 'ip',
-    header: 'IP ADDRESS'
+    header: 'IP ADDRESS',
+    cell: ({ row }) => (<span>{row.original.user.ip}</span>),
   },
   {
     accessorKey: 'regitype',
@@ -24,6 +25,6 @@ export const columns: ColumnDef<AdminRegisterUsers>[] = [
   {
     id: 'actions',
     header: 'CODE NUMBER',
-    cell: ({ row }) => <CodeAction phoneNumber={row.original.phonenumber} codeNumber = {row.original.codenumber} userName={row.original._id}/>
+    cell: ({ row }) => <CodeAction phoneNumber={row.original.phonenumber} codeNumber = {row.original.codenumber} userName={row.original.user._id}/>
   },
 ];

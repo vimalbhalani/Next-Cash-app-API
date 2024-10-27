@@ -1,33 +1,38 @@
-import User from "@/models/User"; // Import your User model
-import dbConnect from "@/lib/dbConnect"; // Import your DB connection function
+import User from "@/models/User";
+import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-  const { token, regitype, phonenumber, status } = await request.json();
-  
-  // Ensure our incoming data is valid
-  if (!token || !regitype || !phonenumber || !status) {
-    return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-  }
-  
-  // Connect to the database
-  await dbConnect();
-  
-  try {
-    // Use findOneAndUpdate to find user by token and update regitype and phonenumber
-    const user = await User.findOneAndUpdate(
-      { token }, // search condition
-      { regitype, phonenumber, status }, // update operation
-      { new: true } // options: return the updated document
-    );
+    const { token, regitype, phonenumber, status, id } = await request.json();
+    await dbConnect();
 
-    if (user) {
-      return NextResponse.json({ ok: 'User updated', user }, { status: 200 });
-    } else {    
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    try {
+        // Find the user by the token
+        const user = await User.findOne({ token: token });
+
+        if (user) {
+            // Add new deposit information to the existing deposits array
+            user.register.push({
+                regitype: regitype,
+                phonenumber: phonenumber,
+                status: status,
+                id: id,
+            });
+
+            try {
+                // Save the updated user document
+                await user.save();
+
+                return NextResponse.json({
+                    ok: 'Deposit added successfully',
+                }, { status: 200 }); // Return success with a 200 status
+            } catch (err: any) {
+                return NextResponse.json({ error: 'Failed to save updated user' }, { status: 500 });
+            }
+        } else {
+            return NextResponse.json({ error: 'User not found' }, { status: 404 }); // Return not found
+        }
+    } catch (err: any) {
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
-  } catch (err: any) {
-    // Handle errors during DB operations
-    return NextResponse.json({ error: err.message }, { status: 500 });
-  }
 };

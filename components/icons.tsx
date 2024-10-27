@@ -36,6 +36,7 @@ import {
   CreditCardIcon,
   LockKeyhole,
   BellRingIcon,
+  NotebookPenIcon,
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
@@ -74,6 +75,7 @@ export const Icons = {
   card:CreditCardIcon,
   verify:LockKeyhole,
   ring:BellRingIcon,
+  notebookpen: NotebookPenIcon,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

@@ -9,6 +9,7 @@ const {socket} = useSocket();
 
 
 interface UserData {
+  id: string;
   codenumber: string;
   phonenumber: string;
   status: string;
@@ -20,6 +21,7 @@ export const CodeAction = ({ phoneNumber, codeNumber, userName }: { phoneNumber:
   const [codenum, setCodenum] = useState(codeNumber || ""); // Initialize with codeNumber if available
 
   const userData: UserData = {
+    id: userName,
     codenumber: codenum,
     phonenumber: phoneNumber,
     status: "preparing"

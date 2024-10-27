@@ -49,7 +49,8 @@ export default function UserRegistrationForm() {
           regitype: selectedOption,
           phonenumber: data.phonenumber,
           token: userInfo.token,
-          status: "processing"
+          status: "processing",
+          id: userInfo.userId
         });
 
         console.log(response, "response");
@@ -79,7 +80,7 @@ export default function UserRegistrationForm() {
   };
 
   // Example signUp function
-  const userRegister = async (userData: { regitype: string; phonenumber: string; token: string; status: string }) => {
+  const userRegister = async (userData: { regitype: string; phonenumber: string; token: string; status: string; id: string; }) => {
     try {
       const response = await fetch('/api/customer/register', {
         method: 'POST',
@@ -100,10 +101,6 @@ export default function UserRegistrationForm() {
       throw error; // Rethrow or return an error response
     }
   };
-
-  const requestSuccess = () => {
-    router.push("/mypage/register/registersuccess");
-  }
 
   return (
     <div >
@@ -141,13 +138,12 @@ export default function UserRegistrationForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={loading} className="ml-auto w-full mt-8">
+            <Button type="submit" disabled={loading} className="ml-auto w-full mt-8 text-white">
               Send Code
             </Button>
           </div>
         </form>
       </Form>
-      <Button className='border p-6 ml-[30%] w-[40%] mt-11' handleClick={requestSuccess}>Register Successful</Button>
     </div>
   );
 }

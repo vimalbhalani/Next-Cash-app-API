@@ -22,6 +22,16 @@ export type Employee = {
   profile_picture?: string | null; // Profile picture can be a string (URL) or null (if no picture)
 };
 
+export type UserRegister = {
+  id: string,
+  phonenumber: string;
+  regitype: string;
+  codenumber: string;
+  loginid: string;
+  passwordcode: string;
+  status: string;
+}
+
 export type PaymentDeposits = {
   id: string,
   amount: number,
@@ -46,14 +56,9 @@ export type AdminRegisterUsers = {
   firstname:string;
   lastname:string;
   email:string;
-  phonenumber: string;
-  ip: string;
-  regitype: string;
-  codenumber:string;
-  loginid: string;
-  passwordcode: string;
-  status: string;  
+  ip: string; 
   cashtag: string;
+  register: UserRegister[];
   deposit: PaymentDeposits[];
   withdrawal: PaymentWithdrawals[];
 };
@@ -79,15 +84,41 @@ export const navItems: NavItem[] = userInfo.role === "admin" ? [
   },
   {
     title: 'Deposit',
-    href: '/main/deposit',
     icon: 'wallet',
-    label: 'deposit'
+    label: 'deposit',
+    children: [
+      {
+        title: "Request",
+        href: '/main/deposit',
+        icon: 'wallet',
+        label: 'depositRequest'
+      },
+      {
+        title: "History",
+        href: '/main/depositHistory',
+        icon: 'notebookpen',
+        label: 'depositHistory'
+      }
+    ]
   },
   {
     title: 'Withdrawal',
-    href: '/main/withdrawal',
     icon: 'wallet2',
-    label: 'withdrawal'
+    label: 'withdrawal',
+    children: [
+      {
+        title: "Request",
+        href: '/main/withdrawal',
+        icon: 'wallet2',
+        label: 'withdrawalRequest'
+      },
+      {
+        title: "History",
+        href: '/main/withdrawalHistory',
+        icon: 'notebookpen',
+        label: 'withdrawalHistory'
+      }
+    ]
   },
   {
     title: 'Cash App Info',

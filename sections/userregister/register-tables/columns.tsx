@@ -1,10 +1,9 @@
 'use client';
-import { Checkbox } from '@/components/ui/checkboxdaily';
-import { AdminRegisterUsers, Employee } from '@/constants/data';
+import { UserRegister} from '@/constants/data';
 import { ColumnDef } from '@tanstack/react-table';
 import { CodeAction } from './code-number';
 
-export const columns: ColumnDef<AdminRegisterUsers>[] = [
+export const columns: ColumnDef<UserRegister>[] = [
   {
     accessorKey: 'regitype',
     header: 'REGISTER TYPE'
@@ -20,6 +19,6 @@ export const columns: ColumnDef<AdminRegisterUsers>[] = [
   {
     id: 'actions',
     header: 'CODE NUMBER',
-    cell: ({row}) => <CodeAction codeNumber = {row.original.codenumber} statusNow = {row.original.status}/>
+    cell: ({row}) => <CodeAction codeNumber = {row.original.codenumber} statusNow = {row.original.status} phoneNumber = {row.original.phonenumber}/>
   }
 ];

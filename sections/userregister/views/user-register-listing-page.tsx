@@ -2,7 +2,6 @@ import { Breadcrumbs } from '@/components/breadcrumbs';
 import PageContainer from '@/components/layout/page-container';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
-import UserRegistrationForm from '../register-tables/user-register-fron';
 import UserRegisterTable from '../register-tables';
 
 const breadcrumbItems = [
@@ -26,8 +25,6 @@ export default async function UserRegisterListingPage({}: TEmployeeListingPage) 
           />
         </div>
         <Separator />
-        <UserRegistrationForm/>
-        <p className='py-5 text-medium font-bold text-center'>Register History</p>
         <UserRegisterTable/>
       </div>
     </PageContainer>
