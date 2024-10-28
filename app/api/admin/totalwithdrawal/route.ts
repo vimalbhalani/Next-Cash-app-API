@@ -6,13 +6,26 @@ export const GET = async (request: NextRequest) => {
   await dbConnect();
 
   try {
-    // Aggregate to calculate the total amount from the deposit array
     const users = await User.aggregate([
       {
         $project: {
-          firstname:1,
-          lastname:1,
-          totalAmount: { $sum: "$withdrawal.amount" } // Sum the amount in the deposit array
+          firstname: 1,
+          lastname: 1,
+          totalAmount: {
+            $sum: {
+              $map: {
+                input: {
+                  $filter: {
+                    input: "$withdrawal",
+                    as: "withdrawalItem",
+                    cond: { $eq: ["$$withdrawalItem.paymentstatus", "complete"] } // Filter by paymentstatus
+                  }
+                },
+                as: "filteredWithdrawal",
+                in: "$$filteredWithdrawal.amount" // Sum the amounts of filtered withdrawal items
+              }
+            }
+          }
         }
       },
       {

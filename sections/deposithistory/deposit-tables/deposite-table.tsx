@@ -47,7 +47,7 @@ interface DataTableProps<TData, TValue> {
   };
 }
 
-export default function AdminMainWithdrawalTableView<TData, TValue>({
+export default function AdminDepositHistoryTableView<TData, TValue>({
   columns,
   data,
   pageCount,
@@ -64,7 +64,7 @@ export default function AdminMainWithdrawalTableView<TData, TValue>({
   const per_page = searchParams?.get('limit') ?? '10';
   const perPageAsNumber = Number(per_page);
   const fallbackPerPage = isNaN(perPageAsNumber) ? 10 : perPageAsNumber;
-
+  
   /* this can be used to get the selectedrows 
   console.log("value", table.getFilteredSelectedRowModel()); */
 
@@ -124,8 +124,7 @@ export default function AdminMainWithdrawalTableView<TData, TValue>({
 
   return (
     <>
-    <h1 className='text-lg text-center font-bold'>Total Withdrawal</h1>
-      <ScrollArea className="h-[calc(80vh-220px)] rounded-md border">
+      <ScrollArea className="h-[calc(90vh-220px)] rounded-md border">
         <Table className="relative">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

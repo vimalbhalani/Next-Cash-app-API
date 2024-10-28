@@ -47,7 +47,7 @@ interface DataTableProps<TData, TValue> {
   };
 }
 
-export default function AdminMainWithdrawalTableView<TData, TValue>({
+export default function AdminWithdrawalHistoryTableView<TData, TValue>({
   columns,
   data,
   pageCount,
@@ -124,8 +124,7 @@ export default function AdminMainWithdrawalTableView<TData, TValue>({
 
   return (
     <>
-    <h1 className='text-lg text-center font-bold'>Total Withdrawal</h1>
-      <ScrollArea className="h-[calc(80vh-220px)] rounded-md border">
+      <ScrollArea className="h-[calc(90vh-220px)] rounded-md border">
         <Table className="relative">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

@@ -9,27 +9,26 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Employee } from '@/constants/data';
-import { MoreHorizontal, Send, Trash } from 'lucide-react';
-import { useState, useTransition} from 'react';
+import { CheckCircle, MoreHorizontal, Send, Trash, X } from 'lucide-react';
+import { useTransition} from 'react';
 import { useToast, toast } from '@/components/ui/use-toast';
 
 interface CellActionProps {
   data: Employee;
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, Amount}:{phoneNumber: string, Amount: number}) => {
+export const CellAction: React.FC<CellActionProps> = ({ withdrawalDate, userId}:any) => {
 
   const {dismiss} = useToast();
   const [loading, startTransition] = useTransition();
-  const [open, setOpen] = useState(false);
 
   const withdrawal = async () => {
     startTransition(async () => {
         try {
             const response = await userWithdrawalCheck({
                 paymentstatus:"complete",
-                phonenumber: phoneNumber,
-                amount: Amount,
+                date: withdrawalDate,
+                id: userId,
             });
 
             console.log(response);
@@ -53,7 +52,7 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, Amount}:{ph
     });
 };
 
-const userWithdrawalCheck = async (userData: { paymentstatus: string, phonenumber: string; amount: string }) => {
+const userWithdrawalCheck = async (userData: { paymentstatus: string, date: any; id: string }) => {
     try {
         const response = await fetch('/api/admin/withdrawal', {
             method: 'POST',
@@ -75,16 +74,16 @@ const userWithdrawalCheck = async (userData: { paymentstatus: string, phonenumbe
     }
 };
 
-  const onConfirm = async () => {};
+  const unwithdrawal = () => {
 
+  }
+
+  if (loading) {
+    return <div>Loading...</div>; // Replace with a spinner or loading message if needed
+  }
+  
   return (
     <>
-      <AlertModal
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        onConfirm={onConfirm}
-        loading={loading}
-      />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -97,10 +96,12 @@ const userWithdrawalCheck = async (userData: { paymentstatus: string, phonenumbe
           <DropdownMenuItem
             onClick={withdrawal}
           >
-            <Send className="mr-2 h-4 w-4" /> Send
+            <CheckCircle className="mr-2 h-4 w-4" /> Accept
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setOpen(true)}>
-            <Trash className="mr-2 h-4 w-4" /> Delete
+          <DropdownMenuItem
+            onClick={unwithdrawal}
+          >
+            <X className="mr-2 h-4 w-4" /> Decline
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

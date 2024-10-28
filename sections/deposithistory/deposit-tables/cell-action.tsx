@@ -9,78 +9,82 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Employee } from '@/constants/data';
-import { CheckCircle, MoreHorizontal, Send, Trash, X } from 'lucide-react';
-import { useTransition } from 'react';
+import { MoreHorizontal, Trash2 } from 'lucide-react';
+import { useState, useTransition } from 'react';
 import { useToast, toast } from '@/components/ui/use-toast';
 
 interface CellActionProps {
   data: Employee;
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ depositDate, userId }: any) => {
-
+export const CellAction: React.FC<CellActionProps> = ({ userId, depositDate }: any) => {
+  
   const { dismiss } = useToast();
   const [loading, startTransition] = useTransition();
+  const [open, setOpen] = useState(false);
 
-  const deposit = async () => {
+  const onConfirm= async () => {
     startTransition(async () => {
       try {
-        const response = await userDepositCheck({
+        const response = await deleteDepositCheck({
           id: userId,
-          paymentstatus: "complete",
           date: depositDate,
         });
-
+        
         if (response.error) {
           return;
         }
+        
+        setOpen(false);
 
         toast({
-          title: 'Deposit Verify Successful!',
+          title: 'Delete successful!',
           description: 'You have verified customer deposit',
           action: <button onClick={dismiss}>Deposit</button>,
         });
-
+        
       } catch (error) {
         toast({
-          title: 'Deposit Failed!',
+          title: 'Delete Failed!',
           description: 'Your action has been failed. Please try again!',
         });
       }
     });
   };
-
-  const userDepositCheck = async (userData: { paymentstatus: string, id: string; date: any }) => {
+  
+  const deleteDepositCheck = async (userData: { id: string; date: any }) => {
     try {
-      const response = await fetch('/api/admin/deposit', {
-        method: 'POST',
+      const response = await fetch("/api/admin/depositdelete", {
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(userData),
       });
-
+            
       if (!response.ok) {
         const errorData = await response.json();
-        return { error: errorData.message || 'Deposit failed' };
+        return { error: errorData.message || 'Delete failed' };
       }
-
+      
       return await response.json();
     } catch (error) {
       throw error;
     }
   };
 
-  const undeposit = () => {
-
-  }
-  
   if (loading) {
     return <div>Loading...</div>; // Replace with a spinner or loading message if needed
-  
   }
+
   return (
     <>
+      <AlertModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onConfirm={onConfirm}
+        loading={loading}
+      />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -91,14 +95,9 @@ export const CellAction: React.FC<CellActionProps> = ({ depositDate, userId }: a
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Action</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={deposit}
+            onClick={()=>setOpen(true)}
           >
-            <CheckCircle className="mr-2 h-4 w-4" /> Accept
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={undeposit}
-          >
-            <X className="mr-2 h-4 w-4" /> Decline
+            <Trash2 className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

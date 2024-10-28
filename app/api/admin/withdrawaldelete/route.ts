@@ -2,7 +2,7 @@ import User from "@/models/User";
 import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 
-export const POST = async (request: NextRequest) => {
+export const DELETE = async (request: NextRequest) => {
     // Attempt to parse the JSON body
     let requestData;
     try {
@@ -11,11 +11,11 @@ export const POST = async (request: NextRequest) => {
         return NextResponse.json({ error: 'Failed to parse JSON' }, { status: 400 });
     }
 
-    const { id, paymentstatus, date } = requestData;
+    const { id, date } = requestData;
 
     // Ensure required fields are present
-    if (!id || !paymentstatus || !date) {
-        return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    if (!id || !date) {
+        return NextResponse.json({ error: 'Missing required fields: id or date' }, { status: 400 });
     }
     
     await dbConnect();
@@ -28,29 +28,30 @@ export const POST = async (request: NextRequest) => {
             return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
 
-        // Log the withdrawals for debugging
+        // Try to find the withdrawal using the provided date
         const withdrawalIndex = user.withdrawal.findIndex(dep => {
-            const depDate = new Date(dep.date).getTime();
-            const requestDate = new Date(date).getTime();
+            const depDate = new Date(dep.date).getTime(); // Convert the withdrawal date to timestamp
+            const requestDate = new Date(date).getTime(); // Convert the requested date to timestamp
             return depDate === requestDate;
         });
 
+        // Check if the withdrawal was found
         if (withdrawalIndex === -1) {
             return NextResponse.json({ error: 'No withdrawal found with the given date' }, { status: 404 });
         }
 
-        // Update the payment status of the found withdrawal entry
-        user.withdrawal[withdrawalIndex].paymentstatus = paymentstatus;
+        // Delete the found withdrawal entry
+        user.withdrawal.splice(withdrawalIndex, 1);
 
         // Save the user document
         const updatedUser = await user.save();
 
         return NextResponse.json({
-            ok: 'withdrawal updated successfully',
-            user: updatedUser  // Include the updated user if needed
+            ok: 'withdrawal deleted successfully',
+            user: updatedUser // Include the updated user if needed
         }, { status: 200 });
 
-    } catch (err: any) {
+    } catch (err) {
         return NextResponse.json({ error: 'Internal server error', details: err.message }, { status: 500 });
     }
 };

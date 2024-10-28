@@ -125,7 +125,7 @@ export default function AdminMainTableView<TData, TValue>({
   return (
     <>
       <h1 className='text-lg text-center font-bold'>Total Deposit</h1>
-      <ScrollArea className="h-[calc(60vh-220px)] rounded-md border">
+      <ScrollArea className="h-[calc(80vh-220px)] rounded-md border">
         <Table className="relative">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

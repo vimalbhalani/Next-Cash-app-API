@@ -60,15 +60,7 @@ export default function UserRegisterTable() {
   }
 
   // Check if there's a login and password code in the register data
-  const hasLoginAndPassword = data.some(item =>
-    item.register && Array.isArray(item.register) && item.register.some(registerItem =>
-      registerItem.loginid !== "none" && registerItem.passwordcode !== "none"
-    )
-  );
-
-  console.log(hasLoginAndPassword);
-  
-  
+  const hasLoginAndPassword = data.some(item => item.loginid !== "none" && item.passwordcode !== "none");
 
   return (
     <div className="space-y-4 ">

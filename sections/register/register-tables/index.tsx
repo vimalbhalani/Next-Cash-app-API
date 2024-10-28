@@ -29,7 +29,6 @@ export default function RegisterTable() {
             return { ...register, user }; 
           })
         );
-        console.log(combinedData);
         // Set data and total counts, adjust based on your API response
         setData(combinedData);
         setTotalData(registerResult.totalCount); // Adjust if necessary

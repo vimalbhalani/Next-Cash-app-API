@@ -95,7 +95,7 @@ export const navItems: NavItem[] = userInfo.role === "admin" ? [
       },
       {
         title: "History",
-        href: '/main/depositHistory',
+        href: '/main/deposithistory',
         icon: 'notebookpen',
         label: 'depositHistory'
       }
@@ -114,7 +114,7 @@ export const navItems: NavItem[] = userInfo.role === "admin" ? [
       },
       {
         title: "History",
-        href: '/main/withdrawalHistory',
+        href: '/main/withdrawalhistory',
         icon: 'notebookpen',
         label: 'withdrawalHistory'
       }

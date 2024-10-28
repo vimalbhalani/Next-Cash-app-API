@@ -9,19 +9,74 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Employee } from '@/constants/data';
-import { MoreHorizontal, Send, Trash } from 'lucide-react';
-import { useState } from 'react';
+import { MoreHorizontal, Trash2 } from 'lucide-react';
+import { useState, useTransition} from 'react';
+import { useToast, toast } from '@/components/ui/use-toast';
 
 interface CellActionProps {
   data: Employee;
   codeRegister ?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ data, codeRegister }) => {
-  const [loading, setLoading] = useState(false);
+export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: any) => {
+
+  const {dismiss} = useToast();
+  const [loading, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
 
-  const onConfirm = async () => { };
+  const onConfirm= async () => {
+    startTransition(async () => {
+      try {
+        const response = await deleteRegister({
+          id: userId,
+          phonenumber: phoneNumber,
+        });
+        
+        if (response.error) {
+          return;
+        }
+        
+        setOpen(false);
+
+        toast({
+          title: 'Delete successful!',
+          description: 'You have verified customer deposit',
+          action: <button onClick={dismiss}>Deposit</button>,
+        });
+        
+      } catch (error) {
+        toast({
+          title: 'Delete Failed!',
+          description: 'Your action has been failed. Please try again!',
+        });
+      }
+    });
+  };
+  
+  const deleteRegister = async (userData: { id: string; phonenumber: string }) => {
+    try {
+      const response = await fetch("/api/admin/registerdelete", {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+            
+      if (!response.ok) {
+        const errorData = await response.json();
+        return { error: errorData.message || 'Delete failed' };
+      }
+      
+      return await response.json();
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>; // Replace with a spinner or loading message if needed
+  }
 
   return (
     <>
@@ -41,7 +96,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data, codeRegister }) =>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Action</DropdownMenuLabel>
           <DropdownMenuItem onClick={() => setOpen(true)}>
-            <Trash className="mr-2 h-4 w-4" /> Delete
+            <Trash2 className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

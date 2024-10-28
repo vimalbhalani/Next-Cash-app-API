@@ -2,7 +2,7 @@ import User from "@/models/User";
 import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 
-export const POST = async (request: NextRequest) => {
+export const DELETE = async (request: NextRequest) => {
     // Attempt to parse the JSON body
     let requestData;
     try {
@@ -11,11 +11,11 @@ export const POST = async (request: NextRequest) => {
         return NextResponse.json({ error: 'Failed to parse JSON' }, { status: 400 });
     }
 
-    const { id, paymentstatus, date } = requestData;
+    const { id, date } = requestData;
 
     // Ensure required fields are present
-    if (!id || !paymentstatus || !date) {
-        return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    if (!id || !date) {
+        return NextResponse.json({ error: 'Missing required fields: id or date' }, { status: 400 });
     }
     
     await dbConnect();
@@ -28,26 +28,27 @@ export const POST = async (request: NextRequest) => {
             return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
 
-        // Log the deposits for debugging
+        // Try to find the deposit using the provided date
         const depositIndex = user.deposit.findIndex(dep => {
-            const depDate = new Date(dep.date).getTime();
-            const requestDate = new Date(date).getTime();
+            const depDate = new Date(dep.date).getTime(); // Convert the deposit date to timestamp
+            const requestDate = new Date(date).getTime(); // Convert the requested date to timestamp
             return depDate === requestDate;
         });
 
+        // Check if the deposit was found
         if (depositIndex === -1) {
             return NextResponse.json({ error: 'No deposit found with the given date' }, { status: 404 });
         }
 
-        // Update the payment status of the found deposit entry
-        user.deposit[depositIndex].paymentstatus = paymentstatus;
+        // Delete the found deposit entry
+        user.deposit.splice(depositIndex, 1);
 
         // Save the user document
         const updatedUser = await user.save();
 
         return NextResponse.json({
-            ok: 'Deposit updated successfully',
-            user: updatedUser  // Include the updated user if needed
+            ok: 'Deposit deleted successfully',
+            user: updatedUser // Include the updated user if needed
         }, { status: 200 });
 
     } catch (err: any) {

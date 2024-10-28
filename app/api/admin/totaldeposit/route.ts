@@ -6,18 +6,32 @@ export const GET = async (request: NextRequest) => {
   await dbConnect();
 
   try {
-    // Aggregate to calculate the total amount from the deposit array
+    // Aggregate to calculate the total amount from the deposit array where paymentstatus is complete
     const users = await User.aggregate([
       {
         $project: {
-          firstname:1,
-          lastname:1,
-          totalAmount: { $sum: "$deposit.amount" } // Sum the amount in the deposit array
-        }
+          firstname: 1,
+          lastname: 1,
+          totalAmount: {
+            $sum: {
+              $map: {
+                input: {
+                  $filter: {
+                    input: "$deposit",
+                    as: "item",
+                    cond: { $eq: ["$$item.paymentstatus", "complete"] } // Filter for paymentstatus === "complete"
+                  },
+                },
+                as: "filteredDeposit",
+                in: "$$filteredDeposit.amount" // Map to get the amount from the filtered deposits
+              },
+            },
+          },
+        },
       },
       {
-        $sort: { totalAmount: -1 } // Sort by the total amount in descending order
-      }
+        $sort: { totalAmount: -1 }, // Sort by the total amount in descending order
+      },
     ]);
 
     return NextResponse.json({ ok: 'Fetch successful', data: users }, { status: 200 });
