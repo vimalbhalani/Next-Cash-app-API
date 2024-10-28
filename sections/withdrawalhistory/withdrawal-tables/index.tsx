@@ -13,25 +13,27 @@ export default function AdminWithdrawalHistoryTable() {
     async function fetchData() {
       try {
         setLoading(true);
-
+  
         // Fetch Payment Deposits
-        const withdrawalsResponse = await fetch('/api/admin/getwithdrawal'); // Your API for deposits
+        const withdrawalsResponse = await fetch('/api/admin/getuser'); // Your API for deposits
         const withdrawalsResult = await withdrawalsResponse.json();
         // console.log(withdrawalResult);
         
-        
         // Fetch Admin Register Users
-        const usersResponse = await fetch('/api/admin/getwithdrawal'); // Your API for users
+        const usersResponse = await fetch('/api/admin/getuser'); // Your API for users
         const usersResult = await usersResponse.json();
         // console.log(usersResult);
         
-
-        // Combine datasets: Assuming both datasets contain a common property to merge.
+        // Combine datasets and filter withdrawals by paymentStatus
         const combinedData = withdrawalsResult.data.flatMap((withdrawalEntry:any) => 
-          withdrawalEntry.withdrawal.map((withdrawal: PaymentWithdrawals) => {
-            const user = usersResult.data.find((user: AdminRegisterUsers) => user._id === withdrawal.id);          
-            return { ...withdrawal, user }; 
-          })
+          withdrawalEntry.withdrawal
+            .filter((withdrawal: PaymentWithdrawals) => 
+              ['complete', 'decline'].includes(withdrawal.paymentstatus) // Filter by payment status
+            )
+            .map((withdrawal: PaymentWithdrawals) => {
+              const user = usersResult.data.find((user: AdminRegisterUsers) => user._id === withdrawal.id);
+              return { ...withdrawal, user }; 
+            })
         );
         // console.log(combinedData);
         
@@ -44,9 +46,10 @@ export default function AdminWithdrawalHistoryTable() {
         setLoading(false);
       }
     }
-
+  
     fetchData();
   }, []);
+  
 
   if (loading) {
     return <div>Loading...</div>; // Replace with a spinner or loading message if needed

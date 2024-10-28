@@ -13,40 +13,39 @@ export default function AdminWithdrawalTable() {
     async function fetchData() {
       try {
         setLoading(true);
-
-        // Fetch Payment Deposits
-        const withdrawalsResponse = await fetch('/api/admin/getwithdrawal'); // Your API for deposits
+  
+        // Fetch Payment Withdrawals
+        const withdrawalsResponse = await fetch('/api/admin/getuser'); // Your API for withdrawals
         const withdrawalsResult = await withdrawalsResponse.json();
-        // console.log(withdrawalResult);
         
-        
-        // Fetch Admin Register Users
-        const usersResponse = await fetch('/api/admin/getwithdrawal'); // Your API for users
+        // Fetch Admin Registered Users
+        const usersResponse = await fetch('/api/admin/getuser'); // Corrected API for users
         const usersResult = await usersResponse.json();
-        // console.log(usersResult);
         
-
-        // Combine datasets: Assuming both datasets contain a common property to merge.
-        const combinedData = withdrawalsResult.data.flatMap((withdrawalEntry:any) => 
-          withdrawalEntry.withdrawal.map((withdrawal: PaymentWithdrawals) => {
-            const user = usersResult.data.find((user: AdminRegisterUsers) => user._id === withdrawal.id);          
-            return { ...withdrawal, user }; 
-          })
+        // Filter withdrawals to only include those with paymentStatus "processing"
+        const filteredWithdrawals = withdrawalsResult.data.flatMap((withdrawalEntry: any) => 
+          withdrawalEntry.withdrawal.filter((withdrawal: PaymentWithdrawals) => withdrawal.paymentstatus === "processing")
         );
-        // console.log(combinedData);
+  
+        // Combine datasets: Map the filtered withdrawals with user data
+        const combinedData = filteredWithdrawals.map((withdrawal: PaymentWithdrawals) => {
+          const user = usersResult.data.find((user: AdminRegisterUsers) => user._id === withdrawal.id);
+          return { ...withdrawal, user };
+        });
         
         // Set data and total counts, adjust based on your API response
         setData(combinedData);
-        setTotalData(withdrawalsResult.totalCount); // Adjust if necessary
+        setTotalData(filteredWithdrawals.length); // Count of filtered withdrawals
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }
     }
-
+  
     fetchData();
   }, []);
+  
 
   if (loading) {
     return <div>Loading...</div>; // Replace with a spinner or loading message if needed

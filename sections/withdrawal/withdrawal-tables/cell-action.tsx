@@ -40,7 +40,7 @@ export const CellAction: React.FC<CellActionProps> = ({ withdrawalDate, userId}:
             toast({
                 title: 'Withdrawal Verify Successful!',
                 description: 'You have verified customer deposit',
-                action: <button onClick={dismiss}>Deposit</button>,
+                action: <button onClick={dismiss}>Withdrawal</button>,
               });
 
         } catch (error) {
@@ -74,9 +74,57 @@ const userWithdrawalCheck = async (userData: { paymentstatus: string, date: any;
     }
 };
 
-  const unwithdrawal = () => {
+const unwithdrawal = async () => {
+  startTransition(async () => {
+      try {
+          const response = await userUnwithdrawalCheck({
+              paymentstatus:"decline",
+              date: withdrawalDate,
+              id: userId,
+          });
 
+          console.log(response);
+          if (response.error) {
+              console.error('Decline error:', response.error);
+              return;
+          }
+
+          toast({
+              title: 'Decline Successful!',
+              description: 'You have declined successful!',
+              action: <button onClick={dismiss}>Decline</button>,
+            });
+
+      } catch (error) {
+          toast({
+              title: 'Decline Failed!',
+              description: 'Your action has been failed. Please try again!',
+            });
+      }
+  });
+};
+
+const userUnwithdrawalCheck = async (userData: { paymentstatus: string, date: any; id: string }) => {
+  try {
+      const response = await fetch('/api/admin/withdrawal', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+          const errorData = await response.json();
+          return { error: errorData.message || 'Decline failed' };
+      }
+
+      return await response.json();
+  } catch (error) {
+      console.error('Error during fetch:', error);
+      throw error;
   }
+};
 
   if (loading) {
     return <div>Loading...</div>; // Replace with a spinner or loading message if needed

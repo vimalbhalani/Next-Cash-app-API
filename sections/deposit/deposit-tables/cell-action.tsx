@@ -36,8 +36,8 @@ export const CellAction: React.FC<CellActionProps> = ({ depositDate, userId }: a
         }
 
         toast({
-          title: 'Deposit Verify Successful!',
-          description: 'You have verified customer deposit',
+          title: 'Deposit Successful!',
+          description: 'You have deposited successful!',
           action: <button onClick={dismiss}>Deposit</button>,
         });
 
@@ -71,9 +71,54 @@ export const CellAction: React.FC<CellActionProps> = ({ depositDate, userId }: a
     }
   };
 
-  const undeposit = () => {
+  const undeposit = async () => {
+    startTransition(async () => {
+      try {
+        const response = await userUndepositCheck({
+          id: userId,
+          paymentstatus: "decline",
+          date: depositDate,
+        });
 
-  }
+        if (response.error) {
+          return;
+        }
+
+        toast({
+          title: 'Decline Successful!',
+          description: 'You have declined successful!',
+          action: <button onClick={dismiss}>Decline</button>,
+        });
+
+      } catch (error) {
+        toast({
+          title: 'Deposit Failed!',
+          description: 'Your action has been failed. Please try again!',
+        });
+      }
+    });
+  };
+
+  const userUndepositCheck = async (userData: { paymentstatus: string, id: string; date: any }) => {
+    try {
+      const response = await fetch('/api/admin/deposit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return { error: errorData.message || 'Deposit failed' };
+      }
+
+      return await response.json();
+    } catch (error) {
+      throw error;
+    }
+  };
   
   if (loading) {
     return <div>Loading...</div>; // Replace with a spinner or loading message if needed

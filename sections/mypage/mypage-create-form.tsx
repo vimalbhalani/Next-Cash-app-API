@@ -122,7 +122,7 @@ export default function MyPageViewPageView() {
                 name="ID"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>ID</FormLabel>
+                    <FormLabel>LOGIN ID</FormLabel>
                     <FormControl>
                       <Input type="text" disabled={loading} {...field} />
                     </FormControl>
