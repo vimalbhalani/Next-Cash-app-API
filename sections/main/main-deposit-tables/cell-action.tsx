@@ -8,13 +8,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { Employee } from '@/constants/data';
 import { MoreHorizontal, Send, Trash } from 'lucide-react';
 import { useState, useTransition} from 'react';
 import { useToast, toast } from '@/components/ui/use-toast';
+import { AdminRegisterUsers } from '@/constants/data';
 
 interface CellActionProps {
-  data: Employee;
+  data: AdminRegisterUsers;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, Amount}:any) => {

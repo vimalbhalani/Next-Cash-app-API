@@ -17,13 +17,9 @@ export default function AdminDepositHistoryTable() {
         // Fetch Payment Deposits
         const depositsResponse = await fetch('/api/admin/getuser'); // Your API for deposits
         const depositsResult = await depositsResponse.json();
-        console.log(depositsResult);
-        
         // Fetch Admin Register Users
         const usersResponse = await fetch('/api/admin/getuser'); // Your API for users
         const usersResult = await usersResponse.json();
-        console.log(usersResult);
-        
         const combinedData = depositsResult.data.flatMap((depositEntry: any) => 
           depositEntry.deposit
             .filter((deposit: PaymentDeposits) => 
@@ -35,8 +31,6 @@ export default function AdminDepositHistoryTable() {
             })
         );
   
-        console.log(combinedData);
-        
         // Set data and total counts, adjust based on your API response
         setData(combinedData);
         setTotalData(depositsResult.totalCount); // Adjust if necessary

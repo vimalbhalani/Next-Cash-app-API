@@ -1,5 +1,4 @@
 'use client';
-import { AlertModal } from '@/components/modal/alert-modal';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -8,13 +7,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { Employee } from '@/constants/data';
 import { CheckCircle, MoreHorizontal, Send, Trash, X } from 'lucide-react';
 import { useTransition } from 'react';
 import { useToast, toast } from '@/components/ui/use-toast';
+import { AdminRegisterUsers } from '@/constants/data';
 
 interface CellActionProps {
-  data: Employee;
+  data: AdminRegisterUsers;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ depositDate, userId }: any) => {
@@ -36,16 +35,16 @@ export const CellAction: React.FC<CellActionProps> = ({ depositDate, userId }: a
         }
 
         toast({
-          title: 'Deposit Successful!',
-          description: 'You have deposited successful!',
-          action: <button onClick={dismiss}>Deposit</button>,
+          title: 'Accept Successful!',
+          description: 'You have accepted successful!',
+          action: <button onClick={dismiss}>Accept</button>,
         });
 
         location.reload();
 
       } catch (error) {
         toast({
-          title: 'Deposit Failed!',
+          title: 'Accept Failed!',
           description: 'Your action has been failed. Please try again!',
         });
       }

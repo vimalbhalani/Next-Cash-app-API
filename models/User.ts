@@ -17,6 +17,8 @@ const depositSchema: Schema = new Schema({
     paymentoption: { type: String, default: "none" },
     paymenttype: {type: String, default: "none"},
     paymentstatus: { type: String, default: "processing" },
+    dailyChecked: {type: Boolean, default: false},
+    bonusChecked: {type: Boolean, default: false},
     date: { type: Date, default: Date.now },
 }, { _id: false });
 

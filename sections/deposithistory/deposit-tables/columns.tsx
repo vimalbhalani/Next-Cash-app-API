@@ -1,9 +1,9 @@
 'use client';
-import { Checkbox } from '@/components/ui/checkboxdaily';
 import { AdminRegisterUsers, PaymentDeposits } from '@/constants/data';
 import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from './cell-action';
-import { CheckboxBonus } from '@/components/ui/checkboxbonus';
+import { CheckboxDaily } from './checkboxdaily';
+import { CheckboxBonus } from './checkboxbonus';
 
 export const columns: ColumnDef<AdminRegisterUsers & PaymentDeposits>[] = [
   {
@@ -35,30 +35,14 @@ export const columns: ColumnDef<AdminRegisterUsers & PaymentDeposits>[] = [
     header: 'Amount'
   },
   {
-    id:'selectDaily',
+    id: 'daily',
     header: 'Daily',
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row for Daily"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false
+    cell: ({ row }) =><CheckboxDaily checkedStatus = {row.original.dailyChecked}/>
   },
   {
-    id: 'selectBounus',
+    id: 'bonus',
     header: 'BONUS',
-    cell: ({ row }) => (
-      <CheckboxBonus
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row for Bonus"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false
+    cell: ({ row }) => <CheckboxBonus checkedStatus = {row.original.bonusChecked}/>
   },
   {
     accessorKey: 'date',

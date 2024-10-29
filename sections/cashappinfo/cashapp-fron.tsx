@@ -54,10 +54,20 @@ export default function CashAppInfoPageView() {
                     return;
                 }
                 
+                toast({
+                    title: "Chahapptag update successful!",
+                    description: "Welcome! Your bidcoin address have copied successfully.",
+                    action: <button onClick={dismiss}>Cashapptag</button>,
+                })
                 
+                location.reload();
             } catch (error) {
                 // Handle errors that do not come from the response
                 console.log("Update cashtag failed", error);
+                toast({
+                    title: "Chahapptag update failed!",
+                    description: "Chahapptag update failed. Please try again!",
+                })
                 
             }
         });
