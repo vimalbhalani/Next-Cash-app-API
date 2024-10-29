@@ -150,7 +150,6 @@ export default function UserAuthForm() {
               </FormItem>
             )}
           />
-
           <Button disabled={loading} className="ml-auto w-full" type="submit">
             LOG IN
           </Button>

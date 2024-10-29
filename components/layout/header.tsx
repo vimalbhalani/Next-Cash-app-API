@@ -10,11 +10,11 @@ export default function Header() {
   return (
     <header className="sticky inset-x-0 top-0 w-full">
       <nav className="flex items-center justify-between px-4 py-2 md:justify-end">
-        <div className='grid grid-cols-2 gap-3'>
+        <div className='grid grid-cols-2'>
         <div className={cn('block lg:!hidden')}>
           <MobileSidebar />
         </div>
-        <Image src='/logo.png' width={25} height={25} alt='log-out' className='lg:!hidden'/>
+        <Image src='/logo.png' width={25} height={25} alt='log-out' className='lg:!hidden mr-4'/>
         </div>
         <div className="flex items-center gap-2">
           <UserAlarm/>
