@@ -45,7 +45,9 @@ export const LoginIdAction = ({ phoneNumber, loginIdV, userName }: { phoneNumber
         action: <button onClick={dismiss}>LoginID Sending</button>,
       });
 
-      socket.emit("adminLoginId", {receiveuserId: userName, message:"Client sent login id to you!"} )
+      socket.emit("adminLoginId", {receiveuserId: userName, message:"Client sent login id to you!"} );
+
+      location.reload();
 
       return await response.json(); // Assume successful response returns user data or a success message
     } catch (error) {

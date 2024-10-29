@@ -14,7 +14,7 @@ export default function Header() {
         <div className={cn('block lg:!hidden')}>
           <MobileSidebar />
         </div>
-        <Image src='/logo.png' width={25} height={25} alt='log-out'/>
+        <Image src='/logo.png' width={25} height={25} alt='log-out' className='lg:!hidden'/>
         </div>
         <div className="flex items-center gap-2">
           <UserAlarm/>

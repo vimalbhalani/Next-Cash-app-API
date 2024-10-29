@@ -7,7 +7,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -15,23 +15,21 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast, toast } from '@/components/ui/use-toast';
 import useSocket from '@/lib/socket';
-import { useRouter } from 'next/navigation';
 
 const { socket } = useSocket();
 
-// Extend schema to include password confirmation
 const formSchema = z.object({
   phonenumber: z.string(),
 });
 
-const userInfoStr = localStorage.getItem('userinfo')
+const userInfoStr = localStorage.getItem('userinfo');
 const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
 type UserFormValue = z.infer<typeof formSchema>;
 
-export default function UserRegistrationForm() {
+const COOLDOWN_KEY = 'cooldown_data';
 
-  const router = useRouter();
+export default function UserRegistrationForm() {
   const { dismiss } = useToast();
   const [loading, startTransition] = useTransition();
   const form = useForm<UserFormValue>({
@@ -39,48 +37,92 @@ export default function UserRegistrationForm() {
   });
 
   const [selectedOption, setSelectedOption] = useState('A');
+  const [cooldown, setCooldown] = useState(false);
+  const [remainingTime, setRemainingTime] = useState(30);
+  
+  useEffect(() => {
+    const cooldownData = localStorage.getItem(COOLDOWN_KEY);
+    if (cooldownData) {
+      const { cooldown: savedCooldown, remainingTime: savedRemainingTime } = JSON.parse(cooldownData);
+      setCooldown(savedCooldown);
+      setRemainingTime(savedRemainingTime);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (cooldown) {
+      const intervalId = setInterval(() => {
+        setRemainingTime(prev => {
+          if (prev <= 1) {
+            clearInterval(intervalId);
+            setCooldown(false);
+            localStorage.removeItem(COOLDOWN_KEY); // Clean up when cooldown ends
+            return 30;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      // Save cooldown state to localStorage
+      localStorage.setItem(COOLDOWN_KEY, JSON.stringify({ cooldown, remainingTime }));
+
+      return () => {
+        clearInterval(intervalId);
+      }; 
+    } else {
+      // Remove cooldown data from localStorage when not in cooldown
+      localStorage.removeItem(COOLDOWN_KEY);
+    }
+  }, [cooldown, remainingTime]);
 
   const onSubmit = async (data: UserFormValue) => {
+    if (cooldown) return;
 
     startTransition(async () => {
       try {
-        // Replace signIn with your signUp function or API call
         const response = await userRegister({
           regitype: selectedOption,
           phonenumber: data.phonenumber,
           token: userInfo.token,
           status: "processing",
-          id: userInfo.userId
+          id: userInfo.userId,
         });
 
         console.log(response, "response");
 
         if (response.error) {
-          // Handle error (e.g. show error message)
           console.error('UserRegister error:', response.error);
           return;
         }
 
         toast({
           title: 'Register Successful',
-          description: 'Welcome! Your register has been request.',
+          description: 'Welcome! Your register has been requested.',
           action: <button onClick={dismiss}>Register</button>,
         });
 
-        socket.emit("userRegister", { userId: userInfo.userId, message: `${userInfo.name} requested codenumber!` })
+        socket.emit("userRegister", { userId: userInfo.userId, message: `${userInfo.name} requested codenumber!` });
+        
+        setCooldown(true);
+        localStorage.setItem(COOLDOWN_KEY, JSON.stringify({ cooldown: true, remainingTime: 59 }));
+        
+        setTimeout(() => {
+          setCooldown(false);
+          localStorage.removeItem(COOLDOWN_KEY);
+        }, 30000);
+        
+        location.reload();
 
       } catch (error) {
-        // Handle errors that do not come from the response
         toast({
           title: 'Register Failed',
-          description: 'There was an error register your account. Please try again.',
+          description: 'There was an error registering your account. Please try again.',
         });
       }
     });
   };
 
-  // Example signUp function
-  const userRegister = async (userData: { regitype: string; phonenumber: string; token: string; status: string; id: string; }) => {
+  const userRegister = async (userData: { regitype: string; phonenumber: string; token: string; status: string; id: string }) => {
     try {
       const response = await fetch('/api/customer/register', {
         method: 'POST',
@@ -89,21 +131,20 @@ export default function UserRegistrationForm() {
         },
         body: JSON.stringify(userData),
       });
-      console.log(userData);
       if (!response.ok) {
         const errorData = await response.json();
-        return { error: errorData.message || 'UserRegister failed' }; // Handle response error
+        return { error: errorData.message || 'UserRegister failed' };
       }
 
-      return await response.json(); // Assume successful response returns user data or a success message
+      return await response.json();
     } catch (error) {
       console.error('Error during fetch:', error);
-      throw error; // Rethrow or return an error response
+      throw error;
     }
   };
 
   return (
-    <div >
+    <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2">
           <div className='grid grid-cols-3 gap-5'>
@@ -129,17 +170,25 @@ export default function UserRegistrationForm() {
                 <FormItem>
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <Input type='text' disabled={loading} {...field}
+                    <Input 
+                      type='text' 
+                      disabled={loading || cooldown} 
+                      {...field}
                       onInput={(e) => {
                         e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                      }} />
+                      }} 
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={loading} className="ml-auto w-full mt-8 text-white">
-              Send Code
+            <Button 
+              type="submit" 
+              disabled={loading || cooldown} 
+              className="ml-auto w-full mt-8 text-white"
+            >
+              {cooldown ? `Waiting (${remainingTime}s)` : "Send Code"}
             </Button>
           </div>
         </form>

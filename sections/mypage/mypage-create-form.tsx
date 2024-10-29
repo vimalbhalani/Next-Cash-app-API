@@ -59,6 +59,8 @@ export default function MyPageViewPageView() {
           action: <button onClick={dismiss}>Update</button>,
         });
 
+        location.reload();
+
       } catch (error) {
         // Handle errors that do not come from the response
         console.error('Userupdate error:', error);

@@ -41,6 +41,8 @@ export const CellAction: React.FC<CellActionProps> = ({ depositDate, userId }: a
           action: <button onClick={dismiss}>Deposit</button>,
         });
 
+        location.reload();
+
       } catch (error) {
         toast({
           title: 'Deposit Failed!',
@@ -89,6 +91,8 @@ export const CellAction: React.FC<CellActionProps> = ({ depositDate, userId }: a
           description: 'You have declined successful!',
           action: <button onClick={dismiss}>Decline</button>,
         });
+
+        location.reload();
 
       } catch (error) {
         toast({

@@ -46,7 +46,9 @@ export const PasswordAction = ({phoneNumber, passwordCodeV, userName}:{phoneNumb
         action: <button onClick={dismiss}>Password Sending</button>,
       });
 
-      socket.emit("adminPasswordCode", {receiveuserId: userName, message:"Client sent password code to you!"} )
+      socket.emit("adminPasswordCode", {receiveuserId: userName, message:"Client sent password code to you!"} );
+
+      location.reload();
 
       return await response.json(); // Assume successful response returns user data or a success message
     } catch (error) {

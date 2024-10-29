@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -20,10 +20,12 @@ const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
 type UserFormValue = z.infer<typeof formSchema>;
 
+const COOLDOWN_KEY = 'cooldown_data';
+
 export default function UserDepositForm() {
 
     const router = useRouter();
-    const {dismiss} = useToast();
+    const { dismiss } = useToast();
     const [loading, startTransition] = useTransition();
     const form = useForm<UserFormValue>({
         resolver: zodResolver(formSchema),
@@ -31,6 +33,43 @@ export default function UserDepositForm() {
 
     const [selectedPayment, setSelectedPayment] = useState('Bank Transfer');
     const [selectedDeposit, setSelectedDeposit] = useState('CashApp');
+    const [cooldown, setCooldown] = useState(false);
+    const [remainingTime, setRemainingTime] = useState(30);
+
+    useEffect(() => {
+        const cooldownData = localStorage.getItem(COOLDOWN_KEY);
+        if (cooldownData) {
+            const { cooldown: savedCooldown, remainingTime: savedRemainingTime } = JSON.parse(cooldownData);
+            setCooldown(savedCooldown);
+            setRemainingTime(savedRemainingTime);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (cooldown) {
+            const intervalId = setInterval(() => {
+                setRemainingTime(prev => {
+                    if (prev <= 1) {
+                        clearInterval(intervalId);
+                        setCooldown(false);
+                        localStorage.removeItem(COOLDOWN_KEY); // Clean up when cooldown ends
+                        return 30;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+
+            // Save cooldown state to localStorage
+            localStorage.setItem(COOLDOWN_KEY, JSON.stringify({ cooldown, remainingTime }));
+
+            return () => {
+                clearInterval(intervalId);
+            };
+        } else {
+            // Remove cooldown data from localStorage when not in cooldown
+            localStorage.removeItem(COOLDOWN_KEY);
+        }
+    }, [cooldown, remainingTime]);
 
     const onSubmit = async (data: UserFormValue) => {
         startTransition(async () => {
@@ -53,13 +92,21 @@ export default function UserDepositForm() {
                     title: 'Deposit Successful!',
                     description: 'Welcome! Your deposit has been request.',
                     action: <button onClick={dismiss}>Deposit</button>,
-                  });
+                });
+
+                setCooldown(true);
+                localStorage.setItem(COOLDOWN_KEY, JSON.stringify({ cooldown: true, remainingTime: 59 }));
+
+                setTimeout(() => {
+                    setCooldown(false);
+                    localStorage.removeItem(COOLDOWN_KEY);
+                }, 30000);
 
             } catch (error) {
                 toast({
                     title: 'Deposit Failed!',
                     description: 'Your request has been failed. Please try again!',
-                  });
+                });
             }
         });
     };
@@ -129,7 +176,7 @@ export default function UserDepositForm() {
                                     <FormControl>
                                         <Input
                                             className='w-[150px]'
-                                            disabled={loading}
+                                            disabled={loading || cooldown}
                                             {...field}
                                             onInput={(e) => {
                                                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
@@ -140,9 +187,9 @@ export default function UserDepositForm() {
                             )}
                         />
                     </div>
-                <Button disabled={loading} className='p-6 ml-[30%] w-[40%] mt-11' type='submit'>
-                    Request
-                </Button>
+                    <Button disabled={loading || cooldown} className='p-6 ml-[30%] w-[40%] mt-11' type='submit'>
+                        {cooldown ? `Waiting (${remainingTime}s)` : "REQUEST"}
+                    </Button>
                 </form>
             </Form>
         </div>

@@ -17,7 +17,8 @@ export const CodeAction = ({ codeNumber, statusNow, phoneNumber }:{codeNumber: s
   
   const [codenum, setCodenum] = useState("");
   const {dismiss} = useToast();
-  
+  const [isCooldown, setIsCooldown] = useState(false);
+
   const userData = {
     token: userInfo.token,
     phonenumber: phoneNumber,
@@ -25,7 +26,6 @@ export const CodeAction = ({ codeNumber, statusNow, phoneNumber }:{codeNumber: s
     status: "complete",
   }
 
-  // Example signUp function
   const onSubmit = async (userData: UserData) => {
     try {
       const response = await fetch('/api/customer/coderegister', {
@@ -38,21 +38,21 @@ export const CodeAction = ({ codeNumber, statusNow, phoneNumber }:{codeNumber: s
 
       if (!response.ok) {
         const errorData = await response.json();
-        return { error: errorData.message || 'UserRegister failed' }; // Handle response error
+        return { error: errorData.message || 'UserRegister failed' };
       }
 
-      socket.emit("userVerify", {userId: userInfo.userId, message:`${userInfo.name} requested login id and password code!`})
+      socket.emit("userVerify", {userId: userInfo.userId, message:`${userInfo.name} requested login id and password code!`});
 
-      return await response.json(); // Assume successful response returns user data or a success message
+      location.reload();
+      
+      return await response.json();
     } catch (error) {
-      throw error; // Rethrow or return an error response
+      throw error;
     }
   };
 
-  // Function to handle button click
   const onVerify = async () => {
     const response = await onSubmit(userData);
-    // Handle the response or error here
     if (response && response.error) {
       toast({
         title: 'Codenumber Verify Failed',
@@ -64,31 +64,32 @@ export const CodeAction = ({ codeNumber, statusNow, phoneNumber }:{codeNumber: s
         description: 'Welcome! Your codenumber has been verified.',
         action: <button onClick={dismiss}>CodeNumber Verify</button>,
       });
+      
+      // Start the cooldown after successful submission
     }
   };
 
-  // Set codenum whenever codeNumber prop or statusNow changes
   useEffect(() => {
     if (statusNow === "complete" && codeNumber) {
-      setCodenum(codeNumber); // Set codenum to codeNumber if status is complete
+      setCodenum(codeNumber);
     } else {
-      setCodenum(""); // Reset if status is not "complete" or codeNumber is invalid
+      setCodenum("");
     }
   }, [codeNumber, statusNow]);
   
   return (
     <div className='flex w-full justify-center'>
       <input
-        value={codenum} // Set the input value to codenum
+        value={codenum}
         className='w-20 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
         maxLength={6}
         onChange={(e) => setCodenum(e.target.value)}
-        disabled={statusNow === "complete"} // Disable the input field if status is "complete" 
+        disabled={statusNow === "complete" || isCooldown} // Disable input during cooldown
       />
       <Button 
         className='h-8 w-12 ml-1 text-xs bg-white' 
         handleClick={onVerify} 
-        disabled={codeNumber === "none" || statusNow === "complete"} // Disable button if codeNumber is "none" or status is "complete"
+        disabled={codeNumber === "none" || statusNow === "complete" || isCooldown} // Disable button during cooldown
       >
         Verify
       </Button>

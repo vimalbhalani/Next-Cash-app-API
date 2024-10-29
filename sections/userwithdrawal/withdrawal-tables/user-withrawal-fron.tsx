@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -21,6 +21,8 @@ const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
 type UserFormValue = z.infer<typeof formSchema>;
 
+const COOLDOWN_KEY = 'cooldown_data';
+
 export default function UserWithdrawalForm() {
 
     const router = useRouter();
@@ -32,7 +34,44 @@ export default function UserWithdrawalForm() {
 
     const [selectedPayment, setSelectedPayment] = useState('Bank Transfer');
     const [selectedWithdrawal, setSelectedWithdrawal] = useState('CashApp');
-
+    const [cooldown, setCooldown] = useState(false);
+    const [remainingTime, setRemainingTime] = useState(30);
+    
+    useEffect(() => {
+      const cooldownData = localStorage.getItem(COOLDOWN_KEY);
+      if (cooldownData) {
+        const { cooldown: savedCooldown, remainingTime: savedRemainingTime } = JSON.parse(cooldownData);
+        setCooldown(savedCooldown);
+        setRemainingTime(savedRemainingTime);
+      }
+    }, []);
+  
+    useEffect(() => {
+      if (cooldown) {
+        const intervalId = setInterval(() => {
+          setRemainingTime(prev => {
+            if (prev <= 1) {
+              clearInterval(intervalId);
+              setCooldown(false);
+              localStorage.removeItem(COOLDOWN_KEY); // Clean up when cooldown ends
+              return 30;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+  
+        // Save cooldown state to localStorage
+        localStorage.setItem(COOLDOWN_KEY, JSON.stringify({ cooldown, remainingTime }));
+  
+        return () => {
+          clearInterval(intervalId);
+        }; 
+      } else {
+        // Remove cooldown data from localStorage when not in cooldown
+        localStorage.removeItem(COOLDOWN_KEY);
+      }
+    }, [cooldown, remainingTime]);
+  
     const onSubmit = async (data: UserFormValue) => {
         startTransition(async () => {
             try {
@@ -57,7 +96,17 @@ export default function UserWithdrawalForm() {
                     action: <button onClick={dismiss}>Withdrawal</button>,
                 });
 
+                setCooldown(true);
+                localStorage.setItem(COOLDOWN_KEY, JSON.stringify({ cooldown: true, remainingTime: 59 }));
+                
+                setTimeout(() => {
+                  setCooldown(false);
+                  localStorage.removeItem(COOLDOWN_KEY);
+                }, 30000);
+
                 router.push("/mypage/withdrawal/withdrawalmiddle");
+
+
 
             } catch (error) {
                 toast({
@@ -130,7 +179,7 @@ export default function UserWithdrawalForm() {
                                     <FormLabel className='w-28 mt-3'>Amount</FormLabel>
                                     <FormControl>
                                         <Input
-                                            disabled={loading}
+                                            disabled={loading || cooldown}
                                             {...field}
                                             className='w-[150px]'
                                             onInput={(e) => {
@@ -149,7 +198,7 @@ export default function UserWithdrawalForm() {
                                     <FormLabel className='w-28 mt-3'>Tip</FormLabel>
                                     <FormControl>
                                         <Input
-                                            disabled={loading}
+                                            disabled={loading || cooldown}
                                             {...field}
                                             className='w-[150px]'
                                             onInput={(e) => {
@@ -161,8 +210,8 @@ export default function UserWithdrawalForm() {
                             )}
                         />
                     </div>
-                    <Button disabled={loading} className='p-6 ml-[30%] w-[40%] mt-11' type='submit'>
-                        REQUEST
+                    <Button disabled={loading || cooldown} className='p-6 ml-[30%] w-[40%] mt-11' type='submit'>
+                    {cooldown ? `Waiting (${remainingTime}s)` : "REQUEST"}
                     </Button>
                 </form>
             </Form>

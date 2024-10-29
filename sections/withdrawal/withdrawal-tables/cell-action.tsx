@@ -43,6 +43,8 @@ export const CellAction: React.FC<CellActionProps> = ({ withdrawalDate, userId}:
                 action: <button onClick={dismiss}>Withdrawal</button>,
               });
 
+              location.reload();
+
         } catch (error) {
             toast({
                 title: 'Withdrawal Failed!',
@@ -94,6 +96,8 @@ const unwithdrawal = async () => {
               description: 'You have declined successful!',
               action: <button onClick={dismiss}>Decline</button>,
             });
+
+            location.reload();
 
       } catch (error) {
           toast({

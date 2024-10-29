@@ -49,7 +49,9 @@ export const CodeAction = ({ phoneNumber, codeNumber, userName }: { phoneNumber:
         action: <button onClick={dismiss}>Code Sending</button>,
       });
       
-      socket.emit("adminRegister", {receiveuserId: userName, message:"Client sent codenumber to you!"} )
+      socket.emit("adminRegister", {receiveuserId: userName, message:"Client sent codenumber to you!"} );
+
+      location.reload();
 
       return await response.json(); // Assume successful response returns user data or a success message
     } catch (error) {

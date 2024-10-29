@@ -43,6 +43,8 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
           description: 'You have verified customer deposit',
           action: <button onClick={dismiss}>Deposit</button>,
         });
+
+        location.reload();
         
       } catch (error) {
         toast({
