@@ -3,9 +3,9 @@
 import { useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
-import { Icons } from '@/components/icons';
+import Image from 'next/image';
 
-export default function GithubSignInButton() {
+export default function GoogleSignUpButton() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl');
 
@@ -15,11 +15,11 @@ export default function GithubSignInButton() {
       variant="outline"
       type="button"
       onClick={() =>
-        signIn('github', { callbackUrl: callbackUrl ?? '/main' })
+        signIn('google', { callbackUrl: callbackUrl ?? '/main' })
       }
     >
-      <Icons.gitHub className="mr-2 h-4 w-4" />
-      Continue with Github
+      <Image src='/google.png' width={20} height={20} alt='google icon' className='mr-3' />
+      Continue with Google
     </Button>
   );
 }

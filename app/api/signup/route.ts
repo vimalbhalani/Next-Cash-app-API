@@ -26,8 +26,9 @@ export const POST = async (request: NextRequest) => {
         
         return NextResponse.json({ 
           ok: 'User created', 
-          firstname // Send the IP address in the response
+          email
         }, { status: 201 });
+
       } catch (err: any) {
         return new NextResponse(err.message, { status: 500 });
       }

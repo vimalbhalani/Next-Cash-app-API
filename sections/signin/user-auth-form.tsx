@@ -14,9 +14,9 @@ import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { useToast, toast } from '@/components/ui/use-toast';
-import GithubSignInButton from './github-auth-button';
 import useSocket from '@/lib/socket';
 import { useRouter } from 'next/navigation';
+import GoogleSignUpButton from './google-auth-button';
 
 const {socket} = useSocket()
 
@@ -165,7 +165,7 @@ export default function UserAuthForm() {
           </span>
         </div>
       </div>
-      <GithubSignInButton />
+      <GoogleSignUpButton />
     </>
   );
 }

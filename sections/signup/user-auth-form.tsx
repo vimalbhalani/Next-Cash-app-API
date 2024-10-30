@@ -14,8 +14,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import GithubSignInButton from './github-auth-button';
 import { useToast, toast } from '@/components/ui/use-toast';
+import GoogleSignUpButton from './google-auth-button';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Enter a valid email address' }),
@@ -49,7 +49,6 @@ export default function UserAuthForm() {
           password: data.password,
         });
 
-        console.log(response);
         
         if (response.error) {
           // Handle error (e.g. show error message)
@@ -57,8 +56,8 @@ export default function UserAuthForm() {
           return;
         }
         
-        // Redirect user after successful signup
-        router.push("/");
+        localStorage.setItem('verifyemail', JSON.stringify(response.email));
+        router.push("/sendemail");
         
       } catch (error) {
         // Handle errors that do not come from the response
@@ -88,12 +87,15 @@ export default function UserAuthForm() {
         description: 'Welcome! Your SignUp has been succeuest.',
         action: <button onClick={dismiss}>SignUp</button>,
       });
+
       return await response.json(); // Assume successful response returns user data or a success message
+
     } catch (error) {
-      console.error('Error during fetch:', error);
+      
       toast({
-        title: 'SignIn ro=',
+        title: 'Signup Failed',
         description: 'Sorry! Your SignUp has been failed. Please try again',
+
       });
       throw error; // Rethrow or return an error response
     }
@@ -186,7 +188,7 @@ export default function UserAuthForm() {
           </span>
         </div>
       </div>
-      <GithubSignInButton />
+      <GoogleSignUpButton/>
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { SignInViewPage } from '@/sections/signin/view';
+import { EmailVerifyPage } from '@/sections/emailverify/view';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <SignInViewPage />;
+  return <EmailVerifyPage />;
 }

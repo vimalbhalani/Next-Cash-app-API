@@ -37,6 +37,7 @@ export interface IUser extends Document {
     firstname: string;
     lastname: string;
     email: string;
+    emailcode: string;
     password: string;
     role: string;
     ip: string;
@@ -52,6 +53,7 @@ const userSchema: Schema = new Schema({
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
     email: { type: String, required: true, unique: true },
+    emailcode: {type:String, default:"none"},
     password: { type: String, required: true },
     role: { type: String, default: "user" },
     ip: { type: String },

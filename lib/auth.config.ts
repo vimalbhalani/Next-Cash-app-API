@@ -1,36 +1,52 @@
 import { NextAuthConfig } from 'next-auth';
 import CredentialProvider from 'next-auth/providers/credentials';
-import GithubProvider from 'next-auth/providers/github';
+import GoogleProvider from 'next-auth/providers/google';
+import dbConnect from './dbConnect';
+import User from '@/models/User';
+import bcrypt from "bcryptjs";
 
 const authConfig = {
   providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID ?? '',
-      clientSecret: process.env.GITHUB_SECRET ?? ''
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID!,
+      clientSecret: process.env.GOOGLE_SECRET!,
+      allowDangerousEmailAccountLinking: true,
     }),
     CredentialProvider({
+      name: "Credentials",
+      id: "credentials",
       credentials: {
         email: {
-          type: 'email'
+          label: "email",
+          type: "email",
+          placeholder: "email@example.com",
         },
-        password: {
-          type: 'password'
-        }
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        const user = {
-          id: '1',
-          name: 'John',
-          email: credentials?.email as string
-        };
-        if (user) {
-          // Any object returned will be saved in `user` property of the JWT
-          return user;
-        } else {
-          // If you return null then an error will be displayed advising the user to check their details.
-          return null;
+        await dbConnect();
+        // Add logic here to look up the user from the credentials supplied
+        if (credentials == null) return null;
+        // login
 
-          // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
+        try {
+          const user = await User.findOne({ email: credentials.email });
+          if (user) {
+            const isMatch = await bcrypt.compare(
+              credentials.password,
+              user.password,
+            );
+            if (isMatch) {
+              return user;
+            }
+            else {
+              throw new Error("Email or password is incorrect");
+            }
+          } else {
+            throw new Error("User not found");
+          }
+        } catch (err: any) {
+          throw new Error(err);
         }
       }
     })
