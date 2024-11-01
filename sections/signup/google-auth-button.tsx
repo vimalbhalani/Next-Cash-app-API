@@ -15,7 +15,7 @@ export default function GoogleSignUpButton() {
       variant="outline"
       type="button"
       onClick={() =>
-        signIn('google', { callbackUrl: callbackUrl ?? '/main' })
+        signIn('google', { callbackUrl: callbackUrl ?? '/mypage' })
       }
     >
       <Image src='/google.png' width={20} height={20} alt='google icon' className='mr-3' />
