@@ -79,6 +79,12 @@ export default function UserAuthForm() {
       
       if (!response.ok) {
         const errorData = await response.json();
+        toast({
+          title: 'User already exists.',
+          description: 'Sorry! Your email already exists. Please try again',
+  
+        });
+        
         return { error: errorData.message || 'Signup failed' }; // Handle response error
       }
       

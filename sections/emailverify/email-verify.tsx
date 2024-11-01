@@ -42,7 +42,7 @@ export default function EmailVerifySendPage() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email: verifyEmail, code }),
+                body: JSON.stringify({ email: userEmail, code }),
             });
 
             data = await response.json();
