@@ -18,7 +18,6 @@ export const POST = async (request: NextRequest) => {
 
     // Send the email
     await sgMail.send(msg);
-
     // Send success response
     return NextResponse.json({ message: 'Verification email sent successfully!' }, { status: 200 });
   } catch (error) {

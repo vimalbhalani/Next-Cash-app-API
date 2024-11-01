@@ -25,34 +25,33 @@ const authConfig = {
       },
       async authorize(credentials, req) {
         await dbConnect();
-        // Add logic here to look up the user from the credentials supplied
-        if (credentials == null) return null;
-        // login
+
+        // Ensure credentials are defined and contain strings
+        if (!credentials || !credentials.email || !credentials.password) {
+          throw new Error("Email and password must be provided");
+        }
 
         try {
+          // Find the user by email
           const user = await User.findOne({ email: credentials.email });
-          if (user) {
-            const isMatch = await bcrypt.compare(
-              credentials.password,
-              user.password,
-            );
+          if (user && typeof user.password === 'string') {
+            const isMatch = await bcrypt.compare(credentials.password, user.password);
             if (isMatch) {
               return user;
-            }
-            else {
+            } else {
               throw new Error("Email or password is incorrect");
             }
           } else {
             throw new Error("User not found");
           }
         } catch (err: any) {
-          throw new Error(err);
+          throw new Error(err.message || "An error occurred during authentication");
         }
       }
     })
   ],
   pages: {
-    signIn: '/' //sigin page
+    signIn: '/' // Sign-in page path
   }
 } satisfies NextAuthConfig;
 

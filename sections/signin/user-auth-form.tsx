@@ -16,7 +16,7 @@ import * as z from 'zod';
 import { useToast, toast } from '@/components/ui/use-toast';
 import useSocket from '@/lib/socket';
 import { useRouter } from 'next/navigation';
-import GoogleSignUpButton from './google-auth-button';
+import GoogleSignInButton from './google-auth-button';
 
 const {socket} = useSocket()
 
@@ -165,7 +165,7 @@ export default function UserAuthForm() {
           </span>
         </div>
       </div>
-      <GoogleSignUpButton />
+      <GoogleSignInButton />
     </>
   );
 }

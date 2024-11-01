@@ -5,7 +5,7 @@ import { signIn } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 
-export default function GoogleSignUpButton() {
+export default function GoogleSignInButton() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl');
 
