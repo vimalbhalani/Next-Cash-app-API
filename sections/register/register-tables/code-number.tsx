@@ -12,10 +12,9 @@ interface UserData {
   id: string;
   codenumber: string;
   phonenumber: string;
-  status: string;
 }
 
-export const CodeAction = ({ phoneNumber, codeNumber, userName }: { phoneNumber: string; codeNumber?: string; userName: string }) => {
+export const CodeAction = ({ phoneNumber, codeNumber, userName, regiStatus }: { phoneNumber: string; codeNumber?: string; userName: string; regiStatus: string }) => {
   
   const { dismiss } = useToast();
   const [codenum, setCodenum] = useState(codeNumber || ""); // Initialize with codeNumber if available
@@ -24,7 +23,6 @@ export const CodeAction = ({ phoneNumber, codeNumber, userName }: { phoneNumber:
     id: userName,
     codenumber: codenum,
     phonenumber: phoneNumber,
-    status: "preparing"
   }
 
   // Example signUp function
@@ -91,12 +89,12 @@ export const CodeAction = ({ phoneNumber, codeNumber, userName }: { phoneNumber:
         maxLength={6}
         value={codenum} // Set input value to codenum
         onChange={(e) => setCodenum(e.target.value)}
-        disabled={codeNumber && codeNumber !== "none"}
+        disabled={regiStatus !== "preparing"}
         onInput={(e) => {
           e.target.value = e.target.value.replace(/[^0-9]/g, '');
         }}
       />
-      <Button className='h-8 w-10 text-xs bg-white' onClick={handleButtonClick} disabled={codeNumber && codeNumber !== "none"} >
+      <Button className='h-8 w-10 text-xs bg-white' onClick={handleButtonClick} disabled={regiStatus !== "preparing" || codeNumber !== "none"} >
         SEND
       </Button>
     </div>

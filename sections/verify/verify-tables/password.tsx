@@ -9,6 +9,7 @@ interface UserData {
   id: string;
   passwordcode: string;
   phonenumber: string;
+  status: string;
 }
 
 const {socket} = useSocket();
@@ -22,6 +23,7 @@ export const PasswordAction = ({phoneNumber, passwordCodeV, userName}:{phoneNumb
     id: userName,
     passwordcode: passwordCode,
     phonenumber:phoneNumber,
+    status: "preparing",
   }
 
   // Example signUp function

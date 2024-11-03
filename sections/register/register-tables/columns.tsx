@@ -26,7 +26,7 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
   {
     id: 'actions',
     header: 'CODE NUMBER',
-    cell: ({ row }) => <CodeAction phoneNumber={row.original.phonenumber} codeNumber = {row.original.codenumber} userName={row.original.user._id}/>
+    cell: ({ row }) => <CodeAction phoneNumber={row.original.phonenumber} codeNumber = {row.original.codenumber} regiStatus = {row.original.status} userName={row.original.user._id}/>
   },
   {
     id: 'actions',
