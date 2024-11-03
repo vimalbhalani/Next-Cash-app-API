@@ -48,7 +48,7 @@ export default function UserAuthForm() {
           // Handle error (e.g. show error message)
           toast({
             title: 'SignIn Failed!',
-            description: 'Your email or password is incorrect! Please try again.',
+            description: 'Your email or password is incorrect! Or your email did not verify. Please try again.',
           });
           console.error('Signup error:', response.error);
           return;

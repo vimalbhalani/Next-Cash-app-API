@@ -3,7 +3,7 @@ import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-  const { email, code } = await request.json();
+  const { email, code, verifystatus } = await request.json();
 
   // Connect to the database
   await dbConnect();
@@ -21,6 +21,7 @@ export const POST = async (request: NextRequest) => {
     if (user.emailcode === code) {
       // If codes match, update the user record to indicate verification is successful (optional)
       user.isVerified = true;
+      user.verifystatus = verifystatus;
       await user.save();
 
       return NextResponse.json({ message: "Email verified successfully" }, { status: 200 });

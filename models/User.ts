@@ -44,6 +44,7 @@ export interface IUser extends Document {
     token: string;
     createdAt: Date;
     cashtag:string;
+    verifystatus: string;
     register: Array<typeof registerSchema>;
     deposit: Array<typeof depositSchema>;
     withdrawal: Array<typeof withdrawalSchema>;
@@ -60,6 +61,7 @@ const userSchema: Schema = new Schema({
     token: { type: String },
     cashtag: {type:String, default:"none"},
     createdAt: { type: Date, default: Date.now },
+    verifystatus: {type: String, default:"no"},
     register: [registerSchema],
     deposit: [depositSchema],
     withdrawal: [withdrawalSchema]   

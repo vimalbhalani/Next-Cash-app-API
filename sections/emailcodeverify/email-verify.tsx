@@ -9,6 +9,7 @@ import { useToast, toast } from '@/components/ui/use-toast';
 interface UserData {
     code: string,
     email: string | null,
+    verifystatus: string,
 }
 
 const verifyEmail = localStorage.getItem('verifyemail');
@@ -23,6 +24,7 @@ export default function EmailCodeVerifyPage() {
     const userData: UserData = {
         code: emailcode,
         email: userEmail,
+        verifystatus: "yes",
     }
 
     const onSubmit = async (userData: UserData) => {
