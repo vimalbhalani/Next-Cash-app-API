@@ -89,7 +89,7 @@ export const CodeAction = ({ phoneNumber, codeNumber, userName, regiStatus }: { 
         maxLength={6}
         value={codenum} // Set input value to codenum
         onChange={(e) => setCodenum(e.target.value)}
-        disabled={regiStatus !== "preparing"}
+        disabled={regiStatus !== "preparing" || codeNumber !== "none"}
         onInput={(e) => {
           e.target.value = e.target.value.replace(/[^0-9]/g, '');
         }}
