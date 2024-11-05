@@ -10,31 +10,6 @@ const authConfig = {
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
-      allowDangerousEmailAccountLinking: true,
-      async profile(profile, req: Next) {
-        await dbConnect();
-
-        // Get the user's IP address from the request
-        const userIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-
-        const user = await User.findOne({ email: profile.email });
-
-        if (!user) {
-          const newUser = new User({
-            firstname: profile.name,
-            email: profile.email,
-            verifystatus: "yes",
-            ip: userIp, // Save the user's IP address
-          });
-          await newUser.save(); // Save the new user to the database
-        }
-
-        return {
-          name: profile.name,
-          email: profile.email,
-          ip: userIp, // You can return IP in the profile if needed
-        };
-      },
     }),
     CredentialProvider({
       name: "Credentials",
