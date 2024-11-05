@@ -52,10 +52,10 @@ export interface IUser extends Document {
 
 const userSchema: Schema = new Schema({
     firstname: { type: String, required: true },
-    lastname: { type: String, required: true },
+    lastname: { type: String, required:  false },
     email: { type: String, required: true, unique: true },
     emailcode: {type:String, default:"none"},
-    password: { type: String, required: true },
+    password: { type: String, required: false },
     role: { type: String, default: "user" },
     ip: { type: String },
     token: { type: String },
