@@ -9,14 +9,23 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export function UserNav() {
 
   // Get the string from localStorage
   const userInfoStr = localStorage.getItem('userinfo')
   const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      localStorage.setItem('userinfo', JSON.stringify(session.userInfo));
+    }
+  }, []);
 
   const router = useRouter();
   const signOut = () => {

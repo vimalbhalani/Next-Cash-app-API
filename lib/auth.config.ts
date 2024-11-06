@@ -58,10 +58,16 @@ const authConfig = {
               token: googleAccessToken, // Save the token in the database
             });
           } else {
+            console.log("<<<<<<<<<<<<<<<<", googleAccessToken);
             // Update access token for the existing user
-            existingUser.googleAccessToken = googleAccessToken;
+            existingUser.token = googleAccessToken;
             await existingUser.save();
+
+            
           }
+
+          console.log(">>>>>>>>>>>>>>>>>>", googleAccessToken);
+          
 
           // Store user information for the client side
           const userInfo = {
@@ -72,9 +78,12 @@ const authConfig = {
             name: existingUser.firstname,
           };
 
+          console.log("??????????????????", userInfo);
+          
+
           // Save userInfo in the token for access in jwt callback
           account.userInfo = userInfo;
-          
+
           return true;
         } catch (error) {
           console.error("Error saving Google user to the database", error);
