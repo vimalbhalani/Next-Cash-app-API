@@ -26,6 +26,14 @@ export const PasswordAction = ({phoneNumber, passwordCodeV, userName}:{phoneNumb
     status: "preparing",
   }
 
+  if(passwordCode===""){
+    toast({
+      title: 'Passwordcode empty!',
+      description: 'Please input passwordcode!',
+    });
+    return;
+  }
+
   // Example signUp function
   const onSubmit = async (userData: UserData) => {
     try {

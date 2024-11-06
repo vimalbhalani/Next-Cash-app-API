@@ -11,6 +11,15 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
     cell: ({row}) => row.index + 1
   },
   {
+    accessorKey: 'username',
+    header: 'USERNAME',
+    cell: ({ row }) => (
+      <span>
+        {row.original.user.firstname} {row.original.user.lastname}
+      </span>
+    ),
+  },
+  {
     accessorKey: 'phonenumber',
     header: 'PHONE NUMBER'
   },

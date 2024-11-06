@@ -23,6 +23,13 @@ export const LoginIdAction = ({ phoneNumber, loginIdV, userName }: { phoneNumber
     loginid: loginId,
   }
 
+  if (loginId === ""){
+    toast({
+      title: 'LoginId empty!',
+      description: 'Please input loginid!',
+    });
+  }
+
   // Example signUp function
   const onSubmit = async (userData: UserData) => {
     try {
