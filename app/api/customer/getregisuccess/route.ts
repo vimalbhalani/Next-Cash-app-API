@@ -1,9 +1,6 @@
 import User from "@/models/User";
 import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
-import jwt from 'jsonwebtoken';
-
-const SECRET_KEY: any = process.env.JWT_SECRET;
 
 export const GET = async (request: NextRequest) => {
   await dbConnect();
@@ -15,8 +12,6 @@ export const GET = async (request: NextRequest) => {
   }
 
   try {
-    const decodedToken = jwt.verify(frtoken, SECRET_KEY);
-    
     // Fetch users based on token
     const users = await User.find({ token: frtoken });
 
