@@ -28,10 +28,6 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
     header: 'REGISTER TYPE'
   },
   {
-    accessorKey: 'codenumber',
-    header: 'CODE'
-  },
-  {
     id:'actions',
     header: 'LOGIN ID',
     cell: ({ row }) => <LoginIdAction phoneNumber={row.original.phonenumber} loginIdV = {row.original.loginid} userName={row.original.user._id}/>

@@ -29,6 +29,7 @@ export default function VerifyTable() {
             return { ...register, user }; 
           })
         );
+        
         console.log(combinedData);
         
         // Set data and total counts, adjust based on your API response

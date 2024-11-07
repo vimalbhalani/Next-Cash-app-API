@@ -17,7 +17,7 @@ const {socket} = useSocket();
 export const PasswordAction = ({phoneNumber, passwordCodeV, userName}:{phoneNumber: string, passwordCodeV:string, userName:string }) => {
   
   const {dismiss} = useToast();
-  const [passwordCode, setPasswordCode] = useState(passwordCodeV || "");
+  const [passwordCode, setPasswordCode] = useState(passwordCodeV||"");
   
   const userData = {
     id: userName,
@@ -94,9 +94,8 @@ export const PasswordAction = ({phoneNumber, passwordCodeV, userName}:{phoneNumb
     <div className='flex w-full justify-center'>
       <input
         className=' w-20 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
-        maxLength={6}
-        value={passwordCode}
         onChange={(e) => setPasswordCode(e.target.value)}
+        placeholder="none"
         disabled={passwordCodeV && passwordCodeV !== "none"}
       />
       <Button className='h-8 w-10 ml-5 text-xs bg-white' handleClick={handleButtonClick} disabled={passwordCodeV && passwordCodeV !== "none"}>

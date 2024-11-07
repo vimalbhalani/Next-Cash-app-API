@@ -104,7 +104,7 @@ export default function MyPageViewPageView() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2">
             <div className='flex flex-col'>
-              <label className='text-sm font-medium'>Regi type</label>
+              <label className='text-sm font-medium'>REGI TYPE</label>
               <select
                 id="A"
                 value={selectedOption}
@@ -137,7 +137,7 @@ export default function MyPageViewPageView() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>PASSWORDCODE</FormLabel>
                     <FormControl>
                       <Input type="password" disabled={loading} {...field} />
                     </FormControl>

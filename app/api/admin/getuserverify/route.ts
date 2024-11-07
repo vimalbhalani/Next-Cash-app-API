@@ -15,8 +15,10 @@ export const GET = async (request: NextRequest) => {
         const usersInfo = users.map(user => {
             const completeRegisters = user.register.filter(entry => entry.status === "processing");
             return {
-                _id: user._id, // Include user ID or any other necessary fields
-                completeRegisters, // This contains only complete status registers
+                firstname:user.firstname,
+                lastname:user.lastname,
+                _id: user._id,
+                completeRegisters,
             };
         });
 
