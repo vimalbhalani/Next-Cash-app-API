@@ -3,6 +3,7 @@ import PageContainer from '@/components/layout/page-container';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import NotificationTable from '../notification-tables';
+import { GameLink } from '../notification-tables/game-link';
 
 const breadcrumbItems = [
   { title: 'MyPage', link: '/mpage' },
@@ -26,6 +27,7 @@ export default async function NotificationListingPage({}: TEmployeeListingPage) 
         </div>
         <Separator />
         <NotificationTable />
+        <GameLink/>
       </div>
     </PageContainer>
   );

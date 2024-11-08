@@ -8,12 +8,12 @@ export const GET = async (request: NextRequest) => {
     try {
         // Find users with at least one object in the 'register' array having 'status' as 'complete'
         const users = await User.find({
-            register: { $elemMatch: { status: "processing" } },
+            register: { $elemMatch: { phonenumber: { $ne: "none" } } },
         });
 
         // Map users to extract 'register' arrays containing only 'complete' statuses
         const usersInfo = users.map(user => {
-            const completeRegisters = user.register.filter(entry => entry.status === "processing");
+            const completeRegisters = user.register.filter(entry => entry.phonenumber !== "none");
             return {
                 firstname:user.firstname,
                 lastname:user.lastname,

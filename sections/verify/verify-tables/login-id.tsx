@@ -23,15 +23,28 @@ export const LoginIdAction = ({ phoneNumber, loginIdV, userName }: { phoneNumber
     loginid: loginId,
   }
 
-  if (loginId === ""){
-    toast({
-      title: 'LoginId empty!',
-      description: 'Please input loginid!',
-    });
-  }
-
+  
   // Example signUp function
   const onSubmit = async (userData: UserData) => {
+
+    if (loginId === ""){
+      
+      toast({
+        title: 'LoginId empty!',
+        description: 'Please input loginid!',
+      });
+      return;
+    }
+
+    if (loginId.length < 15 ){
+
+      toast({
+        title: 'LoginId!',
+        description: 'Your login ID must be at least 15 characters long.',
+      });
+      return;
+    }
+
     try {
       const response = await fetch('/api/admin/loginid', {
         method: 'POST',
@@ -91,7 +104,7 @@ export const LoginIdAction = ({ phoneNumber, loginIdV, userName }: { phoneNumber
       <input
         className=' w-20 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
         onChange={(e) => setLoginId(e.target.value)}
-        placeholder={"none"}
+        value={loginId}
         disabled={loginIdV && loginIdV !== "none"}
       />
       <Button className='h-8 w-10 ml-5 text-xs bg-white' handleClick={handleButtonClick} disabled={loginIdV &&loginIdV !== "none"}>

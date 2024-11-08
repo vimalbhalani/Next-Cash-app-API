@@ -39,7 +39,7 @@ export const CellAction: React.FC<CellActionProps> = ({ withdrawalDate, userId}:
 
             toast({
                 title: 'Withdrawal Verify Successful!',
-                description: 'You have verified customer deposit',
+                description: 'You have verified customer redeem',
                 action: <button onClick={dismiss}>Withdrawal</button>,
               });
 

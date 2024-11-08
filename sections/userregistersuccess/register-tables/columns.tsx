@@ -4,8 +4,8 @@ import { ColumnDef } from '@tanstack/react-table';
 
 export const columns: ColumnDef<AdminRegisterUsers>[] = [
   {
-    accessorKey: 'regitype',
-    header: 'REGISTER TYPE'
+    accessorKey: 'category',
+    header: 'CATEGORY'
   },
   {
     accessorKey: 'loginid',

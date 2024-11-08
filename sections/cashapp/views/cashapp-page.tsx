@@ -6,8 +6,8 @@ import UserCashApp from '../cashapp-fron';
 
 const breadcrumbItems = [
   { title: 'MyPage', link: '/mypage' },
-  { title: 'Deposit', link: '/mypage/deposit' },
-  { title : 'CashApp', link: '/mypage/deposit/cashapp'}
+  { title: 'redeem', link: '/mypage/redeem' },
+  { title : 'CashApp', link: '/mypage/redeem/cashapp'}
 ];
 
 type TEmployeeListingPage = {};
@@ -21,7 +21,7 @@ export default async function UserCashAppPage({}: TEmployeeListingPage) {
 
         <div className="flex items-start justify-between">
           <Heading
-            title={`Deposit`}
+            title={`redeem`}
             description=""
           />
         </div>

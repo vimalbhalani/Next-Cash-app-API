@@ -40,8 +40,8 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
 
         toast({
           title: 'Delete successful!',
-          description: 'You have verified customer deposit',
-          action: <button onClick={dismiss}>Deposit</button>,
+          description: 'You have verified customer redeem',
+          action: <button onClick={dismiss}>redeem</button>,
         });
 
         location.reload();

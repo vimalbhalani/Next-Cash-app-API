@@ -29,8 +29,8 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
     cell: ({ row }) => (<span>{row.original.user.ip}</span>),
   },
   {
-    accessorKey: 'regitype',
-    header: 'REGISTER TYPE'
+    accessorKey: 'category',
+    header: 'CATEGORY'
   },
   {
     id: 'actions',

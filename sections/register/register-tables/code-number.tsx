@@ -27,6 +27,23 @@ export const CodeAction = ({ phoneNumber, codeNumber, userName, regiStatus }: { 
 
   // Example signUp function
   const onSubmit = async (userData: UserData) => {
+
+    if(codenum===""){
+      toast({
+        title: 'Code Number  empty!',
+        description: 'Please input code number!',
+      });
+      return;
+    }
+
+    if (codenum.length < 15 ){
+      toast({
+        title: 'Code Number!',
+        description: 'Your Code Number must be at least 15 characters long.',
+      });
+      return;
+    }
+    
     try {
       const response = await fetch('/api/admin/coderegister', {
         method: 'POST',
@@ -86,7 +103,6 @@ export const CodeAction = ({ phoneNumber, codeNumber, userName, regiStatus }: { 
     <div className='relation flex justify-center'>
       <input
         className=' w-20 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
-        maxLength={6}
         value={codenum} // Set input value to codenum
         onChange={(e) => setCodenum(e.target.value)}
         disabled={regiStatus !== "preparing" || codeNumber !== "none"}

@@ -3,10 +3,10 @@ import dbConnect from "@/lib/dbConnect"; // Import your DB connection function
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-  const { token, regitype, loginid, passwordcode } = await request.json();
+  const { token, category, loginid, passwordcode } = await request.json();
   
   // Ensure our incoming data is valid
-  if (!token || !regitype || !loginid || !passwordcode) {
+  if (!token || !category || !loginid || !passwordcode) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
   }
   
@@ -28,7 +28,7 @@ export const POST = async (request: NextRequest) => {
     
     user.loginid = loginid;
     user.passwordcode = passwordcode;
-    user.regitype = regitype;
+    user.category = category;
     
     await user.save(); // Save the updated user document
 

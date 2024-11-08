@@ -28,25 +28,25 @@ export const POST = async (request: NextRequest) => {
             return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
 
-        // Log the deposits for debugging
-        const depositIndex = user.deposit.findIndex(dep => {
+        // Log the redeems for debugging
+        const redeemIndex = user.redeem.findIndex(dep => {
             const depDate = new Date(dep.date).getTime();
             const requestDate = new Date(date).getTime();
             return depDate === requestDate;
         });
 
-        if (depositIndex === -1) {
-            return NextResponse.json({ error: 'No deposit found with the given date' }, { status: 404 });
+        if (redeemIndex === -1) {
+            return NextResponse.json({ error: 'No redeem found with the given date' }, { status: 404 });
         }
 
-        // Update the payment status of the found deposit entry
-        user.deposit[depositIndex].bonusChecked = isChecked !== undefined ? isChecked : false;
+        // Update the payment status of the found redeem entry
+        user.redeem[redeemIndex].bonusChecked = isChecked !== undefined ? isChecked : false;
 
         // Save the user document
         const updatedUser = await user.save();
 
         return NextResponse.json({
-            ok: 'Deposit updated successfully',
+            ok: 'redeem updated successfully',
             user: updatedUser  // Include the updated user if needed
         }, { status: 200 });
 

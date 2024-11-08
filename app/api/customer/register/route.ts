@@ -3,7 +3,7 @@ import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-    const { token, regitype, phonenumber, status, id } = await request.json();
+    const { token, category, phonenumber, status, id } = await request.json();
     await dbConnect();
 
     try {
@@ -11,9 +11,9 @@ export const POST = async (request: NextRequest) => {
         const user = await User.findOne({ token: token });
 
         if (user) {
-            // Add new deposit information to the existing deposits array
+            // Add new redeem information to the existing redeems array
             user.register.push({
-                regitype: regitype,
+                category: category,
                 phonenumber: phonenumber,
                 status: status,
                 id: id,
@@ -24,7 +24,7 @@ export const POST = async (request: NextRequest) => {
                 await user.save();
 
                 return NextResponse.json({
-                    ok: 'Deposit added successfully',
+                    ok: 'redeem added successfully',
                 }, { status: 200 }); // Return success with a 200 status
             } catch (err: any) {
                 return NextResponse.json({ error: 'Failed to save updated user' }, { status: 500 });

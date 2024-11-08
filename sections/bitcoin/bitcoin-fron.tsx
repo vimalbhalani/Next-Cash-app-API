@@ -11,7 +11,7 @@ export default function UserBitcoin() {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const bitcoin = () => {
-        router.push("/mypage/deposit");
+        router.push("/mypage/redeem");
     }
 
     const copyToClipboard = () => {

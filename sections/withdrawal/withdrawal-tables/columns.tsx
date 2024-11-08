@@ -10,9 +10,9 @@ export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
     cell: ({row}) => row.index + 1
   },
   {
-    accessorKey: 'user.regitype',
-    header: 'REGISTER TYPE',
-    cell:({row})=>(<span>{row.original.user.register[0].regitype}</span>)
+    accessorKey: 'user.category',
+    header: 'CATEGORY',
+    cell:({row})=>(<span>{row.original.user.register[0].category}</span>)
   },
   {
     accessorKey: 'username',
@@ -31,10 +31,6 @@ export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
   {
     accessorKey: 'amount',
     header: 'AMOUNT'
-  },
-  {
-    accessorKey: 'tip',
-    header: 'TIP'
   },
   {
     accessorKey:'paymentgateway',

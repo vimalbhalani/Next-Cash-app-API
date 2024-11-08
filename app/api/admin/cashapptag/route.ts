@@ -14,7 +14,7 @@ export const POST = async (request: NextRequest) => {
   await dbConnect();
   
   try {
-    // Use findOneAndUpdate to find user by token and update regitype and phonenumber
+    // Use findOneAndUpdate to find user by token and update category and phonenumber
     const user = await User.findOneAndUpdate(
       { token }, // search condition
       { cashtag}, // update operation

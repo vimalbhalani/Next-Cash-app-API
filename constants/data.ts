@@ -6,14 +6,14 @@ const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 export type UserRegister = {
   id: string,
   phonenumber: string;
-  regitype: string;
+  category: string;
   codenumber: string;
   loginid: string;
   passwordcode: string;
   status: string;
 }
 
-export type PaymentDeposits = {
+export type Paymentredeems = {
   id: string,
   amount: number,
   paymentoption: string,
@@ -30,7 +30,6 @@ export type PaymentWithdrawals ={
   paymentoption: string,
   paymenttype: string,
   paymentstatus: string,
-  tip: string,
   date: Date,
 }
 
@@ -42,7 +41,7 @@ export type AdminRegisterUsers = {
   ip: string; 
   cashtag: string;
   register: UserRegister[];
-  deposit: PaymentDeposits[];
+  redeem: Paymentredeems[];
   withdrawal: PaymentWithdrawals[];
 };
 
@@ -66,21 +65,21 @@ export const navItems: NavItem[] = userInfo.role === "admin" ? [
     label: 'verify'
   },
   {
-    title: 'Deposit',
+    title: 'Redeem',
     icon: 'wallet',
-    label: 'deposit',
+    label: 'redeem',
     children: [
       {
         title: "Request",
-        href: '/main/deposit',
+        href: '/main/redeem',
         icon: 'wallet',
-        label: 'depositRequest'
+        label: 'redeemRequest'
       },
       {
         title: "History",
-        href: '/main/deposithistory',
+        href: '/main/redeemhistory',
         icon: 'notebookpen',
-        label: 'depositHistory'
+        label: 'redeemHistory'
       }
     ]
   },
@@ -123,16 +122,22 @@ export const navItems: NavItem[] = userInfo.role === "admin" ? [
     label: 'register'
   },
   {
-    title: 'Deposit',
-    href: '/mypage/deposit',
+    title: 'Redeem',
+    href: '/mypage/redeem',
     icon: 'wallet',
-    label: 'deposit'
+    label: 'redeem'
   },
   {
     title: 'Withdrawal',
     href: '/mypage/withdrawal',
     icon: 'wallet2',
     label: 'withdrawal'
+  },
+  {
+    title: 'Promotion',
+    href: '/mypage/promotion',
+    icon: 'product',
+    label: 'promotion'
   },
   {
     title: 'Notification',

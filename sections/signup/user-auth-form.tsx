@@ -89,8 +89,8 @@ export default function UserAuthForm() {
       }
       
       toast({
-        title: 'SignUp Successful',
-        description: 'Welcome! Your SignUp has been succeuest.',
+        title: 'Successful!',
+        description: 'Welcome! Your request has been success.',
         action: <button onClick={dismiss}>SignUp</button>,
       });
 

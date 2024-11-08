@@ -14,15 +14,15 @@ export default function AdminMainTablePage() {
       try {
         setLoading(true);
 
-        // Fetch Payment Deposits
-        const response = await fetch('/api/admin/totalwithdrawal'); // Your API for deposits
+        // Fetch Payment redeems
+        const response = await fetch('/api/admin/totalwithdrawal'); // Your API for redeems
         const result = await response.json();
 
         console.log(result);
 
         // Transform the result using map
         const transformedData = result.data.map((item: any) => ({
-          // Assuming each item has properties that resemble PaymentDeposits and AdminRegisterUsers
+          // Assuming each item has properties that resemble Paymentredeems and AdminRegisterUsers
           ...item, // Spread existing data
           // Add any additional transformations needed
         }));

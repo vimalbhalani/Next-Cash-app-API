@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 const registerSchema: Schema = new Schema({
     id: {type:String, default:"none"},
-    regitype: {type: String, default: "none"},
+    category: {type: String, default: "none"},
     phonenumber: {type: String, default: "none"},
     status: {type: String, default: "none"},
     codenumber: {type: String, default: "none"},
@@ -11,7 +11,7 @@ const registerSchema: Schema = new Schema({
 
 }, {_id: false});
 
-const depositSchema: Schema = new Schema({
+const redeemSchema: Schema = new Schema({
     id: {type: String, default: "none"},
     amount: { type: Number, default: 0 },
     paymentoption: { type: String, default: "none" },
@@ -27,7 +27,6 @@ const withdrawalSchema: Schema = new Schema({
     amount: { type: Number, default: 0},
     paymentoption: { type: String, default: "none" },
     paymenttype: {type: String, default: "none"},
-    tip: {type: String, default: "none"},
     paymentstatus: {type: String, default: "processing"},
     paymentgateway: {type: String, default:"none"},
     date: { type: Date, default: Date.now },
@@ -46,7 +45,7 @@ export interface IUser extends Document {
     cashtag:string;
     verifystatus: string;
     register: Array<typeof registerSchema>;
-    deposit: Array<typeof depositSchema>;
+    redeem: Array<typeof redeemSchema>;
     withdrawal: Array<typeof withdrawalSchema>;
 }
 
@@ -63,7 +62,7 @@ const userSchema: Schema = new Schema({
     createdAt: { type: Date, default: Date.now },
     verifystatus: {type: String, default:"no"},
     register: [registerSchema],
-    deposit: [depositSchema],
+    redeem: [redeemSchema],
     withdrawal: [withdrawalSchema]   
 });
 

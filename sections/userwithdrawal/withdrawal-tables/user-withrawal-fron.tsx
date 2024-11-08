@@ -13,7 +13,6 @@ import { useRouter } from 'next/navigation';
 // Extend schema to include password confirmation
 const formSchema = z.object({
     amount: z.string(),
-    tip: z.string()
 });
 
 const userInfoStr = localStorage.getItem('userinfo')
@@ -75,13 +74,12 @@ export default function UserWithdrawalForm() {
     const onSubmit = async (data: UserFormValue) => {
         startTransition(async () => {
             try {
-                const response = await signUp({
+                const response = await userWithdrawal({
                     token: userInfo.token,
                     id: userInfo.userId,
                     amount: data.amount,
                     paymentoption: selectedPayment,
                     paymenttype: selectedWithdrawal,
-                    tip: data.tip
                 });
 
                 console.log(response);
@@ -117,7 +115,7 @@ export default function UserWithdrawalForm() {
         });
     };
 
-    const signUp = async (userData: { token: string, paymentoption: string, paymenttype: string, tip: string, amount: number; }) => {
+    const userWithdrawal = async (userData: { token: string, paymentoption: string, paymenttype: string, amount: number; }) => {
         try {
             const response = await fetch('/api/withdrawal', {
                 method: 'POST',
@@ -145,22 +143,26 @@ export default function UserWithdrawalForm() {
                 <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2">
                     <div>
                         <div className='flex justify-center'>
-                            <label className='text-sm font-medium w-28 mt-4'>Payment Option</label>
+                            <label className='text-sm font-medium w-28 mt-4'>Category</label>
                             <select
-                                id='Bank Transfer'
+                                id='FireKirin'
                                 value={selectedPayment}
                                 onChange={(e) => setSelectedPayment(e.target.value)}
                                 className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-3 bg-background w-[150px]'
                             >
-                                <option value="Bank Transfer">Bank Transfer</option>
-                                <option value="Credit or Debit Card">Credit or Debit Card</option>
-                                <option value="Digital Wallets">Digital Wallets</option>
-                                <option value="Cryptocurrency">Cryptocurrency</option>
-                                <option value="eChecks">eChecks</option>
+                                <option value="FireKirin">FireKirin</option>
+                                <option value="MilkyWay">MilkyWay</option>
+                                <option value="OrionStars">OrionStars</option>
+                                <option value="Juwa">Juwa</option>
+                                <option value="GameVault">GameVault</option>
+                                <option value="VegasSweep">VegasSweep</option>
+                                <option value="YOLO">YOLO</option>
+                                <option value="UltraPanda">UltraPanda</option>
+                                <option value="VBlink">VBlink</option>
                             </select>
                         </div>
                         <div className='flex justify-center'>
-                            <label className='text-sm font-medium w-28 mt-4'>Deposit Type</label>
+                            <label className='text-sm font-medium w-28 mt-4'>Withdraw Type</label>
                             <select
                                 id='CashApp'
                                 value={selectedWithdrawal}
@@ -177,25 +179,6 @@ export default function UserWithdrawalForm() {
                             render={({ field }) => (
                                 <FormItem className='flex justify-center'>
                                     <FormLabel className='w-28 mt-3'>Amount</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            disabled={loading || cooldown}
-                                            {...field}
-                                            className='w-[150px]'
-                                            onInput={(e) => {
-                                                e.target.value = e.target.value.replace(/[^0-9]/g, ''); // Allow only digits
-                                            }} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="tip"
-                            render={({ field }) => (
-                                <FormItem className='flex justify-center'>
-                                    <FormLabel className='w-28 mt-3'>Tip</FormLabel>
                                     <FormControl>
                                         <Input
                                             disabled={loading || cooldown}

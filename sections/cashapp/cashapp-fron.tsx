@@ -31,11 +31,12 @@ export default function UserCashApp() {
       }
 
       const back = () => {
-        router.push("/mypage/deposit");
+        router.push("/mypage/redeem");
       }
 
     return (
         <div>
+          
             <div className='grid justify-items-center' >
                 <div className='flex items-center text-center w-52 h-52 mt-20 self-auto '>If you click "QR Code", you can get admin's QR code.</div>
             </div>

@@ -1,15 +1,15 @@
 'use client';
 import { columns } from './columns';
 import { useState, useEffect } from 'react';
-import { PaymentDeposits } from '@/constants/data';
+import { Paymentredeems } from '@/constants/data';
 import NotificationTableView from './notification-table';
 
 const userInfoStr = localStorage.getItem('userinfo');
 const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
-export default function UserDepositTable() {
+export default function UserredeemTable() {
 
-  const [data, setData] = useState<PaymentDeposits[]>([]);
+  const [data, setData] = useState<Paymentredeems[]>([]);
   const [totalData, setTotalData] = useState<number>(0); // Store total items for pagination
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -36,9 +36,9 @@ export default function UserDepositTable() {
 
         const result = await response.json();
 
-        // Combine deposit and withdrawal data
+        // Combine redeem and withdrawal data
         const combinedData = [
-          ...(result.data[0].deposit || []), // Use empty array as a fallback
+          ...(result.data[0].redeem || []), // Use empty array as a fallback
           ...(result.data[0].withdrawal || []) // Use empty array as a fallback
         ];
         

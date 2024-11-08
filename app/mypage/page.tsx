@@ -1,7 +1,7 @@
 import { MyPageViewPage } from '@/sections/mypage/view';
 
 export const metadata = {
-  title: 'MyPage'
+  title: 'Island House'
 };
 
 export default function page() {

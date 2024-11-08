@@ -39,7 +39,7 @@ export default function UserRegistrationForm() {
   const [selectedOption, setSelectedOption] = useState('A');
   const [cooldown, setCooldown] = useState(false);
   const [remainingTime, setRemainingTime] = useState(30);
-  
+
   useEffect(() => {
     const cooldownData = localStorage.getItem(COOLDOWN_KEY);
     if (cooldownData) {
@@ -68,7 +68,7 @@ export default function UserRegistrationForm() {
 
       return () => {
         clearInterval(intervalId);
-      }; 
+      };
     } else {
       // Remove cooldown data from localStorage when not in cooldown
       localStorage.removeItem(COOLDOWN_KEY);
@@ -81,7 +81,7 @@ export default function UserRegistrationForm() {
     startTransition(async () => {
       try {
         const response = await userRegister({
-          regitype: selectedOption,
+          category: selectedOption,
           phonenumber: data.phonenumber,
           token: userInfo.token,
           status: "processing",
@@ -102,15 +102,15 @@ export default function UserRegistrationForm() {
         });
 
         socket.emit("userRegister", { userId: userInfo.userId, message: `${userInfo.name} requested codenumber!` });
-        
+
         setCooldown(true);
         localStorage.setItem(COOLDOWN_KEY, JSON.stringify({ cooldown: true, remainingTime: 59 }));
-        
+
         setTimeout(() => {
           setCooldown(false);
           localStorage.removeItem(COOLDOWN_KEY);
         }, 30000);
-        
+
         location.reload();
 
       } catch (error) {
@@ -122,7 +122,7 @@ export default function UserRegistrationForm() {
     });
   };
 
-  const userRegister = async (userData: { regitype: string; phonenumber: string; token: string; status: string; id: string }) => {
+  const userRegister = async (userData: { category: string; phonenumber: string; token: string; status: string; id: string }) => {
     try {
       const response = await fetch('/api/customer/register', {
         method: 'POST',
@@ -149,18 +149,22 @@ export default function UserRegistrationForm() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2">
           <div className='grid grid-cols-3 gap-5'>
             <div className='flex flex-col'>
-              <label className='text-sm font-medium'>Regi type</label>
+              <label className='text-sm font-medium'>Category</label>
               <select
-                id="A"
+                id="FireKirin"
                 value={selectedOption}
                 onChange={(e) => setSelectedOption(e.target.value)}
                 className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-3 bg-background'
               >
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-                <option value="D">D</option>
-                <option value="E">E</option>
+                <option value="FireKirin">FireKirin</option>
+                <option value="MilkyWay">MilkyWay</option>
+                <option value="OrionStars">OrionStars</option>
+                <option value="Juwa">Juwa</option>
+                <option value="GameVault">GameVault</option>
+                <option value="VegasSweep">VegasSweep</option>
+                <option value="YOLO">YOLO</option>
+                <option value="UltraPanda">UltraPanda</option>
+                <option value="VBlink">VBlink</option>
               </select>
             </div>
             <FormField
@@ -170,22 +174,22 @@ export default function UserRegistrationForm() {
                 <FormItem>
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <Input 
-                      type='text' 
-                      disabled={loading || cooldown} 
+                    <Input
+                      type='text'
+                      disabled={loading || cooldown}
                       {...field}
                       onInput={(e) => {
                         e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                      }} 
+                      }}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button 
-              type="submit" 
-              disabled={loading || cooldown} 
+            <Button
+              type="submit"
+              disabled={loading || cooldown}
               className="ml-auto w-full mt-8 text-white"
             >
               {cooldown ? `Waiting (${remainingTime}s)` : "Send Code"}

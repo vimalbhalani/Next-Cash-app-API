@@ -4,6 +4,7 @@ import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import UserWithdrawalForm from '../withdrawal-tables/user-withrawal-fron';
 import UserWithdrawalTable from '../withdrawal-tables';
+import { GameLink } from '../withdrawal-tables/game-link';
 
 const breadcrumbItems = [
   { title: 'MyPage', link: '/mypage' },
@@ -27,7 +28,9 @@ export default async function UserWithdrawalListingPage({}: TEmployeeListingPage
         </div>
         <Separator />
         <UserWithdrawalForm/>
+        <p className='py-5 text-medium font-bold text-center'>Withdrawal History</p>
         <UserWithdrawalTable/>
+        <GameLink/>
       </div>
     </PageContainer>
   );

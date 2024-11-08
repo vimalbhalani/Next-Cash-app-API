@@ -5,8 +5,8 @@ import { CodeAction } from './code-number';
 
 export const columns: ColumnDef<UserRegister>[] = [
   {
-    accessorKey: 'regitype',
-    header: 'REGISTER TYPE'
+    accessorKey: 'category',
+    header: 'CATEGORY'
   },
   {
     accessorKey: 'phonenumber',

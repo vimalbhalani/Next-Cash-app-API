@@ -26,16 +26,24 @@ export const PasswordAction = ({phoneNumber, passwordCodeV, userName}:{phoneNumb
     status: "preparing",
   }
 
-  if(passwordCode===""){
-    toast({
-      title: 'Passwordcode empty!',
-      description: 'Please input passwordcode!',
-    });
-    return;
-  }
-
+  
   // Example signUp function
   const onSubmit = async (userData: UserData) => {
+    if(passwordCode===""){
+      toast({
+        title: 'Passwordcode empty!',
+        description: 'Please input passwordcode!',
+      });
+      return;
+    }
+
+    if (passwordCode.length < 15 ){
+      toast({
+        title: 'PasswordCode!',
+        description: 'Your Password Code must be at least 15 characters long.',
+      });
+      return;
+    }
     try {
       const response = await fetch('/api/admin/passwordcode', {
         method: 'POST',
@@ -95,7 +103,7 @@ export const PasswordAction = ({phoneNumber, passwordCodeV, userName}:{phoneNumb
       <input
         className=' w-20 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
         onChange={(e) => setPasswordCode(e.target.value)}
-        placeholder="none"
+        value={passwordCode}
         disabled={passwordCodeV && passwordCodeV !== "none"}
       />
       <Button className='h-8 w-10 ml-5 text-xs bg-white' handleClick={handleButtonClick} disabled={passwordCodeV && passwordCodeV !== "none"}>

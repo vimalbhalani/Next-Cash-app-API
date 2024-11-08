@@ -14,8 +14,8 @@ export default function AdminWithdrawalHistoryTable() {
       try {
         setLoading(true);
   
-        // Fetch Payment Deposits
-        const withdrawalsResponse = await fetch('/api/admin/getuser'); // Your API for deposits
+        // Fetch Payment redeems
+        const withdrawalsResponse = await fetch('/api/admin/getuser'); // Your API for redeems
         const withdrawalsResult = await withdrawalsResponse.json();
         // console.log(withdrawalResult);
         

@@ -2,7 +2,7 @@ import { Breadcrumbs } from '@/components/breadcrumbs';
 import PageContainer from '@/components/layout/page-container';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
-import AdminMainTablePage from '../main-deposit-tables';
+import AdminMainTablePage from '../main-redeem-tables';
 import AdminMainWithdrawalTablePage from '../main-withdrawal-tables';
 
 const breadcrumbItems = [

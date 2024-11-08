@@ -6,6 +6,7 @@ import UserRegisterTableView from './user-register-table';
 import UserRegistrationForm from './user-register-fron';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { GameLink } from './game-link';
 
 const userInfoStr = localStorage.getItem('userinfo');
 const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
@@ -73,6 +74,7 @@ export default function UserRegisterTable() {
       </Button>
       <p className='py-5 text-medium font-bold text-center'>Register History</p>
       <UserRegisterTableView columns={columns} data={data} totalItems={totalData} />
+      <GameLink />
     </div>
   );
 }

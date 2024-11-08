@@ -15,8 +15,8 @@ export default function VerifyTable() {
       try {
         setLoading(true);
 
-        // Fetch Payment Deposits
-        const registerResponse = await fetch('/api/admin/getuserverify'); // Your API for deposits
+        // Fetch Payment redeems
+        const registerResponse = await fetch('/api/admin/getuserverify'); // Your API for redeems
         const registerResult = await registerResponse.json();
         
         // Fetch Admin Register Users

@@ -124,7 +124,7 @@ export default function NotificationTableView<TData, TValue>({
 
   return (
     <>
-      <ScrollArea className="h-[calc(90vh-220px)] rounded-md border">
+      <ScrollArea className="h-[calc(80vh-220px)] rounded-md border">
         <Table className="relative">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

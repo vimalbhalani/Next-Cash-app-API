@@ -24,7 +24,7 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
     header: 'PHONE NUMBER'
   },
   {
-    accessorKey: 'regitype',
+    accessorKey: 'category',
     header: 'REGISTER TYPE'
   },
   {

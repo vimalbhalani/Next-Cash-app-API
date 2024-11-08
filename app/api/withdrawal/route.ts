@@ -3,7 +3,7 @@ import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-    const { token, paymentoption, paymenttype, amount, tip, id } = await request.json();
+    const { token, paymentoption, paymenttype, amount, id } = await request.json();
     await dbConnect();
 
     try {
@@ -11,12 +11,11 @@ export const POST = async (request: NextRequest) => {
         const user = await User.findOne({ token: token });
 
         if (user) {
-            // Add new deposit information to the existing deposits array
+            // Add new redeem information to the existing redeems array
             user.withdrawal.push({
                 amount: amount,
                 paymentoption: paymentoption,
                 paymenttype: paymenttype,
-                tip: tip,
                 id: id
             });
 

@@ -1,8 +1,8 @@
 'use client';
-import { AdminRegisterUsers, PaymentDeposits } from '@/constants/data';
+import { AdminRegisterUsers, Paymentredeems } from '@/constants/data';
 import { ColumnDef } from '@tanstack/react-table';
 
-export const columns: ColumnDef<AdminRegisterUsers & PaymentDeposits>[] = [
+export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
   {
     accessorKey: 'paymenttype',
     header: 'Type'

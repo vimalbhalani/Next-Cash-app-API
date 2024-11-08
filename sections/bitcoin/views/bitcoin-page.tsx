@@ -6,8 +6,8 @@ import UserBitcoin from '../bitcoin-fron';
 
 const breadcrumbItems = [
   { title: 'MyPage', link: '/mypage' },
-  { title: 'Deposit', link: '/mypage/deposit' },
-  { title : 'Bitcoin', link: '/mypage/deposit/bitcoin'},
+  { title: 'redeem', link: '/mypage/redeem' },
+  { title : 'Bitcoin', link: '/mypage/redeem/bitcoin'},
 ];
 
 type TEmployeeListingPage = {};

@@ -2,7 +2,7 @@ import { Breadcrumbs } from '@/components/breadcrumbs';
 import PageContainer from '@/components/layout/page-container';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
-import UserDepositMiddle from '../withdrawal-fron';
+import UserredeemMiddle from '../withdrawal-fron';
 
 const breadcrumbItems = [
   { title: 'MyPage', link: '/mypage' },
@@ -26,7 +26,7 @@ export default async function UserWithdrawalMiddlePage({}: TEmployeeListingPage)
           />
         </div>
         <Separator />
-        <UserDepositMiddle/>
+        <UserredeemMiddle/>
       </div>
     </PageContainer>
   );

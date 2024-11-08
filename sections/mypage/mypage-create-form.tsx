@@ -1,158 +1,96 @@
 'use client';
-import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState, useTransition } from 'react';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { useToast, toast } from '@/components/ui/use-toast';
 
-// Extend schema to include password confirmation
-const formSchema = z.object({
-  ID: z.string(),
-  password: z.string()
-})
+import { useEffect, useState } from 'react';
+import { GameLink } from './game-link';
+import { UserRegister } from '@/constants/data';
+import { useRouter } from 'next/navigation';
 
-const userInfoStr = localStorage.getItem('userinfo')
+const userInfoStr = localStorage.getItem('userinfo');
 const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
-type UserFormValue = z.infer<typeof formSchema>;
-
 export default function MyPageViewPageView() {
+  const [data, setData] = useState<UserRegister[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const router = useRouter();
 
-  const { dismiss } = useToast();
-  const [loading, startTransition] = useTransition();
-  const form = useForm<UserFormValue>({
-    resolver: zodResolver(formSchema),
-  });
-
-  const [selectedOption, setSelectedOption] = useState("A");
-
-  const onSubmit = async (data: UserFormValue) => {
-    startTransition(async () => {
+  useEffect(() => {
+    async function fetchData() {
       try {
-        // Replace signIn with your signUp function or API call
-        const response = await userUpdate({
-          regitype: selectedOption,
-          loginid: data.ID,
-          passwordcode: data.password,
-          token: userInfo.token,
-        });
-
-        if (response.error) {
-          // Handle error (e.g. show error message)
-          console.error('Userupdate error:', response.error);
-          return;
+        if (!userInfo.token) {
+          throw new Error("User not authenticated.");
         }
 
-        toast({
-          title: 'User update Successful',
-          description: 'Welcome! Your update has been request.',
-          action: <button onClick={dismiss}>Update</button>,
+        setLoading(true);
+
+        const response = await fetch('/api/customer/getregisuccess', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${userInfo.token}` // Assuming the token is sent this way
+          }
         });
 
-        location.reload();
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
 
+        const result = await response.json();
+        setData(result.data[0].register);
       } catch (error) {
-        // Handle errors that do not come from the response
-        console.error('Userupdate error:', error);
-        toast({
-          title: 'User update failed',
-          description: 'Sorry! Your update has been failed.',
-        });
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
       }
-    });
-  };
-
-  // Example signUp function
-  const userUpdate = async (userData: { regitype: string; loginid: string; passwordcode: string; token: string }) => {
-    try {
-      const response = await fetch('/api/customer/userupdate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        return { error: errorData.message || 'Userupdate failed' }; // Handle response error
-      }
-
-      return await response.json(); // Assume successful response returns user data or a success message
-    } catch (error) {
-      console.error('Error during fetch:', error);
-      throw error; // Rethrow or return an error response
     }
-  };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; // Replace with a spinner or loading message if needed
+  }
+
+  // Determine if loginid and passwordcode exist
+  const hasCredentials = data[0]?.loginid && data[0]?.passwordcode;
+
+  const request = () =>{
+    router.push("/mypage/register");
+  }
 
   return (
-    <div className='h-screen'>
+    <div className='w-full h-screen'>
       <h1 className='text-3xl font-bold'>My Page</h1>
       <hr className='mt-5' />
       <h2 className='p-2 text-center font-semibold text-2xl mt-5'>Login Info</h2>
-      <div className='px-10'>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2">
-            <div className='flex flex-col'>
-              <label className='text-sm font-medium'>REGI TYPE</label>
-              <select
-                id="A"
-                value={selectedOption}
-                onChange={(e) => setSelectedOption(e.target.value)}
-                className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-3 bg-background'
-              >
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-                <option value="D">D</option>
-                <option value="E">E</option>
-              </select>
-            </div>
-            <div className='grid grid-cols-2 gap-10 mt-11'>
-              <FormField
-                control={form.control}
-                name="ID"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>LOGIN ID</FormLabel>
-                    <FormControl>
-                      <Input type="text" disabled={loading} {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>PASSWORDCODE</FormLabel>
-                    <FormControl>
-                      <Input type="password" disabled={loading} {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <Button disabled={loading} className="ml-auto w-full mt-[320px]" type="submit">
-              Setting Personal Information
-            </Button>
-          </form>
-        </Form>
+      <div className='mt-24'>
+        <div className='flex justify-center'>
+          <p className='w-[150px] font-bold text-base'>Your Category:</p>
+          <p className='w-[150px]'>{data[0]?.category || 'N/A'}</p>
+        </div>
+        <div className='flex justify-center mt-5'>
+          <p className='w-[150px] font-bold text-base'>Login Id:</p>
+          <p className='w-[150px]'>{data[0]?.loginid || 'N/A'}</p>
+        </div>
+        <div className='flex justify-center mt-5'>
+          <p className='w-[150px] font-bold text-base'>Password Code:</p>
+          <p className='w-[150px]'>{data[0]?.passwordcode || 'N/A'}</p>
+        </div>
       </div>
+
+      {/* Conditionally render button if loginid and passwordcode are missing */}
+      {!hasCredentials && (
+        <div className="flex justify-center mt-10">
+          <button
+            className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-gray-500"
+            onClick={request}
+          >
+            Request Credentials
+          </button>
+        </div>
+      )}
+
       <div className='mt-52'>
+        <GameLink />
       </div>
     </div>
   );

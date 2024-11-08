@@ -6,7 +6,6 @@ export const GET = async (request: NextRequest) => {
   await dbConnect();
 
   const frtoken = request.headers.get("Authorization")?.split(" ")[1]; // Assuming the header is in the format "Bearer <token>"
-  console.log(frtoken);
   
   if (!frtoken) {
     return NextResponse.json({ error: 'Authorization token is required' }, { status: 401 });
