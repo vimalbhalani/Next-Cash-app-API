@@ -3,6 +3,7 @@ import { AdminRegisterUsers, UserRegister } from '@/constants/data';
 import { ColumnDef } from '@tanstack/react-table';
 import { LoginIdAction } from './login-id';
 import { PasswordAction } from './password';
+import { CellAction } from './cell-action';
 
 export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
   {
@@ -29,12 +30,12 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
   },
   {
     id:'actions',
-    header: 'LOGIN ID',
-    cell: ({ row }) => <LoginIdAction phoneNumber={row.original.phonenumber} loginIdV = {row.original.loginid} userName={row.original.user._id}/>
+    header: 'LOGIN ID AND PASSWORD CODE',
+    cell: ({ row }) => <LoginIdAction phoneNumber={row.original.phonenumber} loginIdV = {row.original.loginid} passwordCodeV = {row.original.passwordcode} userName={row.original.user._id}/>
   },
   {
-  id: 'actions',
-  header: 'PASSWORD',
-  cell: ({ row }) => <PasswordAction phoneNumber={row.original.phonenumber} passwordCodeV = {row.original.passwordcode} userName={row.original.user._id}/>
-  },
+    id: 'actions',
+    header:'ACTION',
+    cell: ({ row }) => <CellAction phoneNumber= {row.original.phonenumber} userId = {row.original.user._id} />
+  }
 ];

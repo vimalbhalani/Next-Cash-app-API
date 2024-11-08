@@ -31,7 +31,7 @@ export default function UserWithdrawalForm() {
         resolver: zodResolver(formSchema),
     });
 
-    const [selectedPayment, setSelectedPayment] = useState('Bank Transfer');
+    const [selectedPayment, setSelectedPayment] = useState('FireKirin');
     const [selectedWithdrawal, setSelectedWithdrawal] = useState('CashApp');
     const [cooldown, setCooldown] = useState(false);
     const [remainingTime, setRemainingTime] = useState(30);

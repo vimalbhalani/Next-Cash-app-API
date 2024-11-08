@@ -3,10 +3,10 @@ import dbConnect from "@/lib/dbConnect"; // Import your DB connection function
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-  const { phonenumber, loginid, id } = await request.json();
+  const { phonenumber, loginid, id, passwordcode, status } = await request.json();
   
   // Ensure our incoming data is valid
-  if (!phonenumber || !loginid || !id) {
+  if (!phonenumber || !loginid || !passwordcode || !status || !id) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
   }
   
@@ -27,6 +27,8 @@ export const POST = async (request: NextRequest) => {
       { 
         $set: {
           'register.$.loginid': loginid, // Update the codenumber of the found index
+          'register.$.passwordcode': passwordcode, // Update the codenumber of the found index
+          'register.$.status': status // Update the status of the found index
         }
       }, // update operation
       { new: true } // options: return the updated document

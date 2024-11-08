@@ -36,7 +36,7 @@ export default function UserRegistrationForm() {
     resolver: zodResolver(formSchema),
   });
 
-  const [selectedOption, setSelectedOption] = useState('A');
+  const [selectedOption, setSelectedOption] = useState('FireKirin');
   const [cooldown, setCooldown] = useState(false);
   const [remainingTime, setRemainingTime] = useState(30);
 

@@ -31,7 +31,7 @@ export default function UserredeemForm() {
         resolver: zodResolver(formSchema),
     });
 
-    const [selectedPayment, setSelectedPayment] = useState('Bank Transfer');
+    const [selectedPayment, setSelectedPayment] = useState('FireKirin');
     const [selectedredeem, setSelectedredeem] = useState('CashApp');
     const [cooldown, setCooldown] = useState(false);
     const [remainingTime, setRemainingTime] = useState(30);
