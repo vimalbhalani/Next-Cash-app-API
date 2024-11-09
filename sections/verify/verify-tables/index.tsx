@@ -33,8 +33,6 @@ export default function VerifyTable() {
 
         // Calculate count of items with status "processing"
         const processingItemsCount = combinedData.filter((item) => item.status === 'processing').length;
-
-        console.log(combinedData);
         
         // Set data, total counts, and processing count
         setData(combinedData);
@@ -56,7 +54,7 @@ export default function VerifyTable() {
 
   return (
     <div className="space-y-4 ">
-      <div className='text-red-500 font-medium'>Pending Request Count: {processingCount}</div> {/* Display the count */}
+      <div className='text-red-500 font-semibold'>Pending Request Count: {processingCount}</div> {/* Display the count */}
       <VerifyTablePage columns={columns} data={data} totalItems={totalData} />
     </div>
   );

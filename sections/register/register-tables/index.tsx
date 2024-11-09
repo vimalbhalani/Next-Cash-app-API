@@ -55,7 +55,7 @@ export default function RegisterTable() {
 
   return (
     <div className="space-y-4 ">
-      <div className='text-red-500 font-medium'>Pending Request Count: {preparingCount}</div>
+      <div className='text-red-500 font-semibold'>Pending Request Count: {preparingCount}</div>
       <RegisterTablePage columns={columns} data={data} totalItems={totalData} />
     </div>
   );

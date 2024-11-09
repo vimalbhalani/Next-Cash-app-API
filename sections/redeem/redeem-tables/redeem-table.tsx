@@ -124,8 +124,8 @@ export default function AdminRedeemTableView<TData, TValue>({
 
   return (
     <>
-      <ScrollArea className="h-[calc(90vh-220px)] rounded-md border">
-        <Table className="relative">
+      <ScrollArea className="h-[calc(90vh-220px)] w-[92vw] sm:w-[95vw] lg:w-full rounded-md border">
+        <Table className="w-[700px] lg:w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
