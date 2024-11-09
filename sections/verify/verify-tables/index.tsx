@@ -9,6 +9,7 @@ export default function VerifyTable() {
   const [data, setData] = useState<AdminRegisterUsers[]>([]);
   const [totalData, setTotalData] = useState<number>(0); // Store total items for pagination
   const [loading, setLoading] = useState<boolean>(true);
+  const [processingCount, setProcessingCount] = useState<number>(0); // Count of "processing" items
 
   useEffect(() => {
     async function fetchData() {
@@ -29,12 +30,16 @@ export default function VerifyTable() {
             return { ...register, user }; 
           })
         );
-        
+
+        // Calculate count of items with status "processing"
+        const processingItemsCount = combinedData.filter((item) => item.status === 'processing').length;
+
         console.log(combinedData);
         
-        // Set data and total counts, adjust based on your API response
+        // Set data, total counts, and processing count
         setData(combinedData);
         setTotalData(registerResult.totalCount); // Adjust if necessary
+        setProcessingCount(processingItemsCount);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -51,6 +56,7 @@ export default function VerifyTable() {
 
   return (
     <div className="space-y-4 ">
+      <div className='text-red-500 font-medium'>Pending Request Count: {processingCount}</div> {/* Display the count */}
       <VerifyTablePage columns={columns} data={data} totalItems={totalData} />
     </div>
   );

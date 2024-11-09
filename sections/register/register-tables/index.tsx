@@ -1,4 +1,5 @@
 'use client';
+
 import { AdminRegisterUsers, UserRegister } from '@/constants/data';
 import { columns } from './columns';
 import { useState, useEffect } from 'react';
@@ -9,6 +10,7 @@ export default function RegisterTable() {
   const [data, setData] = useState<AdminRegisterUsers[]>([]);
   const [totalData, setTotalData] = useState<number>(0); // Store total items for pagination
   const [loading, setLoading] = useState<boolean>(true);
+  const [preparingCount, setPreparingCount] = useState<number>(0); // Count of "preparing" items
 
   useEffect(() => {
     async function fetchData() {
@@ -29,9 +31,14 @@ export default function RegisterTable() {
             return { ...register, user }; 
           })
         );
-        // Set data and total counts, adjust based on your API response
+
+        // Calculate count of items with status "preparing"
+        const preparingItemsCount = combinedData.filter((item) => item.status === 'preparing').length;
+
+        // Set data, total counts, and preparing count
         setData(combinedData);
         setTotalData(registerResult.totalCount); // Adjust if necessary
+        setPreparingCount(preparingItemsCount);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -48,6 +55,7 @@ export default function RegisterTable() {
 
   return (
     <div className="space-y-4 ">
+      <div className='text-red-500 font-medium'>Pending Request Count: {preparingCount}</div>
       <RegisterTablePage columns={columns} data={data} totalItems={totalData} />
     </div>
   );
