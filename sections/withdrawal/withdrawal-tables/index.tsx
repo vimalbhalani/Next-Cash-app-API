@@ -25,7 +25,7 @@ export default function AdminWithdrawalTable() {
 
         // Filter withdrawals to only include those with paymentStatus "processing"
         const filteredWithdrawals = withdrawalsResult.data.flatMap((withdrawalEntry: any) =>
-          withdrawalEntry.withdrawal.filter((withdrawal: PaymentWithdrawals) => withdrawal.paymentstatus === "processing")
+          withdrawalEntry.withdrawal.filter((withdrawal: PaymentWithdrawals) => withdrawal.paymentstatus === "Processing")
         );
 
         // Combine datasets: Map the filtered withdrawals with user data

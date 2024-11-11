@@ -32,7 +32,7 @@ export default function VerifyTable() {
         );
 
         // Calculate count of items with status "processing"
-        const processingItemsCount = combinedData.filter((item) => item.status === 'processing').length;
+        const processingItemsCount = combinedData.filter((item) => item.status === 'Processing').length;
         
         // Set data, total counts, and processing count
         setData(combinedData);

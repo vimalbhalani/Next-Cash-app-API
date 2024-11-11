@@ -6,8 +6,8 @@ import UserredeemMiddle from '../redeem-fron';
 
 const breadcrumbItems = [
   { title: 'Main', link: '/mypage' },
-  { title: 'Redeem', link: '/mypage/redeem' },
-  { title : 'Middle', link: '/mypage/redeem/middle'}
+  { title: 'Depsit', link: '/mypage/deposit' },
+  { title : 'Middle', link: '/mypage/deposit/middle'}
 ];
 
 type TEmployeeListingPage = {};
@@ -21,7 +21,7 @@ export default async function UserredeemMiddlePage({}: TEmployeeListingPage) {
 
         <div className="flex items-start justify-between">
           <Heading
-            title={`Redeem`}
+            title={`Deposit`}
             description=""
           />
         </div>

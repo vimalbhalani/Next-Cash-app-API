@@ -81,12 +81,12 @@ export const CodeAction = ({ codeNumber, statusNow, phoneNumber }:{codeNumber: s
     <div className='flex w-full justify-center'>
       <input
         value={codenum}
-        className='w-20 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
+        className='w-48 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
         onChange={(e) => setCodenum(e.target.value)}
         disabled={statusNow === "complete" || isCooldown} // Disable input during cooldown
       />
       <Button 
-        className='h-8 w-12 ml-1 text-xs bg-white' 
+        className='h-8 w-12 ml-1 text-xs bg-green-500 text-white' 
         handleClick={onVerify} 
         disabled={codeNumber === "none" || statusNow === "complete" || isCooldown} // Disable button during cooldown
       >

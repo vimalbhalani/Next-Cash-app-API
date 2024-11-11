@@ -82,16 +82,15 @@ export default function UserredeemForm() {
                     id: userInfo.userId
                 });
 
-                console.log(response);
                 if (response.error) {
-                    console.error('redeem error:', response.error);
+                    console.error('deposit error:', response.error);
                     return;
                 }
 
                 toast({
-                    title: 'redeem Successful!',
-                    description: 'Welcome! Your redeem has been request.',
-                    action: <button onClick={dismiss}>redeem</button>,
+                    title: 'Deposit Request Successful!',
+                    description: 'Welcome! Your deposit request has been request.',
+                    action: <button onClick={dismiss}>Deposit Request</button>,
                 });
 
                 setCooldown(true);
@@ -104,7 +103,7 @@ export default function UserredeemForm() {
 
             } catch (error) {
                 toast({
-                    title: 'redeem Failed!',
+                    title: 'Deposit Request Failed!',
                     description: 'Your request has been failed. Please try again!',
                 });
             }
@@ -126,7 +125,7 @@ export default function UserredeemForm() {
                 return { error: errorData.message || 'redeem failed' };
             }
 
-            router.push("/mypage/redeem/redeemmiddle");
+            router.push("/mypage/deposit/depositmiddle");
 
             return await response.json();
         } catch (error) {
@@ -137,8 +136,11 @@ export default function UserredeemForm() {
 
     return (
         <div >
-            <p className='text-center'>When depositing, please make sure to enter your 'Tag Number' in the 'Note.'
-            If you do not enter the correct information, the balance will not load. (ex. $H0000)</p>
+            <div className='border border-solid border-4 border-gray-500 p-3 bg-white rounded-xl'>
+                <p className='text-center text-red-500 font-semibold'>※Warning※</p>
+                <p className='text-center text-sm mt-2 text-black font-semibold'>When you Deposit, please make sure to enter your 'Tag Number' in the 'Note'
+                    if you do not enter the correct information, loading may be very slow. Thank you🙂</p>
+            </div>
             <br />
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2">
@@ -163,7 +165,7 @@ export default function UserredeemForm() {
                             </select>
                         </div>
                         <div className='flex justify-center'>
-                            <label className='text-sm font-medium w-28 mt-4'>Redeem Type</label>
+                            <label className='text-sm font-medium w-28 mt-4'>Deposit Type</label>
                             <select
                                 id='CashApp'
                                 value={selectedredeem}
@@ -172,6 +174,9 @@ export default function UserredeemForm() {
                             >
                                 <option value="CashApp">CashApp</option>
                                 <option value="Bitcoin">Bitcoin</option>
+                                <option value="Bitcoin">Venmo</option>
+                                <option value="Bitcoin">Paypal</option>
+                                <option value="Bitcoin">Zelle</option>
                             </select>
                         </div>
                         <FormField

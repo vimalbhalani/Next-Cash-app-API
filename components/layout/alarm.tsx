@@ -57,16 +57,21 @@ export function UserAlarm() {
       <DropdownMenuContent className="w-60" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <ul>
-              {messages
-                .slice()
-                .reverse()
-                .map((msg, index) => (
-                  <li key={index}><p className="text-sm font-medium leading-none mt-2">{msg}</p>
-                    <hr className='mt-2' />
-                  </li>
-                ))}
-            </ul>
+            {messages.length === 0 ? (
+              <p className="text-sm font-medium leading-none mt-2">No messages!</p>
+            ) : (
+              <ul>
+                {messages
+                  .slice()
+                  .reverse()
+                  .map((msg, index) => (
+                    <li key={index}>
+                      <p className="text-sm font-medium leading-none mt-2">{msg}</p>
+                      <hr className="mt-2" />
+                    </li>
+                  ))}
+              </ul>
+            )}
           </div>
         </DropdownMenuLabel>
       </DropdownMenuContent>

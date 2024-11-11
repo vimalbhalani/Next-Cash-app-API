@@ -40,6 +40,10 @@ export type AdminRegisterUsers = {
   email:string;
   ip: string; 
   cashtag: string;
+  venmo:string;
+  paypal:string;
+  zelle:string;
+  bitcoin:string;
   register: UserRegister[];
   redeem: Paymentredeems[];
   withdrawal: PaymentWithdrawals[];
@@ -103,17 +107,23 @@ export const navItems: NavItem[] = userInfo.role === "admin" ? [
     ]
   },
   {
-    title: 'Cash App Info',
+    title: 'Payment Setting',
     href: '/main/cashappinfo',
     icon: 'user2',
     label: 'kanban'
   },
 ] : [
   {
-    title: 'Mypage',
+    title: 'Promotion',
     href: '/mypage',
-    icon: 'userPen',
+    icon: 'product',
     label: 'mypage'
+  },
+  {
+    title: 'Mypage',
+    href: '/mypage/promotion',
+    icon: 'userPen',
+    label: 'promotion'
   },
   {
     title: 'Register',
@@ -122,8 +132,8 @@ export const navItems: NavItem[] = userInfo.role === "admin" ? [
     label: 'register'
   },
   {
-    title: 'Redeem',
-    href: '/mypage/redeem',
+    title: 'Deposit',
+    href: '/mypage/deposit',
     icon: 'wallet',
     label: 'redeem'
   },
@@ -133,16 +143,4 @@ export const navItems: NavItem[] = userInfo.role === "admin" ? [
     icon: 'wallet2',
     label: 'withdrawal'
   },
-  {
-    title: 'Promotion',
-    href: '/mypage/promotion',
-    icon: 'product',
-    label: 'promotion'
-  },
-  {
-    title: 'Notification',
-    href: '/mypage/notification',
-    icon: 'ring',
-    label: 'mypage'
-  }
 ];

@@ -36,14 +36,6 @@ export const CodeAction = ({ phoneNumber, codeNumber, userName, regiStatus }: { 
       return;
     }
 
-    if (codenum.length < 15 ){
-      toast({
-        title: 'Code Number!',
-        description: 'Your Code Number must be at least 15 characters long.',
-      });
-      return;
-    }
-    
     try {
       const response = await fetch('/api/admin/coderegister', {
         method: 'POST',

@@ -39,29 +39,11 @@ export const LoginIdAction = ({ phoneNumber, loginIdV, passwordCodeV, userName }
       return;
     }
 
-    if (loginId.length < 15 ){
-
-      toast({
-        title: 'LoginId!',
-        description: 'Your login ID must be at least 15 characters long.',
-      });
-      return;
-    }
-
     if(passwordCode === ""){
 
       toast({
         title: 'Passwordcode empty!',
         description: 'Please input passwordcode!',
-      });
-      return;
-    }
-
-    if (passwordCode.length < 15 ){
-
-      toast({
-        title: 'PasswordCode!',
-        description: 'Your Password Code must be at least 15 characters long.',
       });
       return;
     }

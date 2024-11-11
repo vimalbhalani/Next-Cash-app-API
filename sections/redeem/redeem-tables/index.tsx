@@ -25,7 +25,7 @@ export default function AdminRedeemTable() {
         
         const combinedData = redeemsResult.data.flatMap((redeemEntry: any) => 
           redeemEntry.redeem
-            .filter((redeem: Paymentredeems) => redeem.paymentstatus === "processing") // Filter for processing status
+            .filter((redeem: Paymentredeems) => redeem.paymentstatus === "Processing") // Filter for processing status
             .map((redeem: Paymentredeems) => {
               const user = usersResult.data.find((user: AdminRegisterUsers) => user._id === redeem.id);
               return { ...redeem, user }; 

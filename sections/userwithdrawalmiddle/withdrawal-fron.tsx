@@ -23,7 +23,7 @@ type UserFormValue = z.infer<typeof formSchema>;
 export default function UserWithdrawalMiddle() {
 
     const router = useRouter();
-    const {dismiss} = useToast();
+    const { dismiss } = useToast();
     const [loading, startTransition] = useTransition();
     const form = useForm<UserFormValue>({
         resolver: zodResolver(formSchema),
@@ -74,12 +74,24 @@ export default function UserWithdrawalMiddle() {
         }
     };
 
-    const withdrawalmiddle = () =>{
+    const withdrawalmiddle = () => {
 
     }
 
     return (
         <div >
+            <div className='border border-solid border-4 border-gray-500 p-3 bg-white rounded-xl'>
+                <p className='text-center text-red-500 font-semibold'>※Warning※</p>
+                <p className='text-center text-sm mt-1 text-black font-semibold'>You must enter your account information correctly.
+                    Be careful not to enter incorrect information. Thank you.
+                </p>
+                <p className='text-center text-black text-xs mt-1'>Venmo: @username</p>
+                <p className='text-center text-black text-xs mt-1'>CashApp: $CashTag</p>
+                <p className='text-center text-black text-xs mt-1'>Zelle: Email or Phone Number</p>
+                <p className='text-center text-black text-xs mt-1'>Paypal: @username or Email</p>
+                <p className='text-center text-black text-xs mt-1'>Bitcoin: BTC Address</p>
+            </div>
+            <br />
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2">
                     <div>
@@ -87,10 +99,9 @@ export default function UserWithdrawalMiddle() {
                             control={form.control}
                             name="paymentgateway"
                             render={({ field }) => (
-                                <FormItem className='w-[50%] mt-20 ml-[25%]'>
-                                    <p className='py-10 text-center font-bold text-8 '>YOUR CASHTAG OR BTC ADDRESS </p>
+                                <FormItem className='w-[50%] mt-10 ml-[25%]'>
                                     <FormControl>
-                                        <Input disabled={loading} {...field}/>
+                                        <Input disabled={loading} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

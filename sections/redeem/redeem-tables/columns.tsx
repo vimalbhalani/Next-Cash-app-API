@@ -8,12 +8,12 @@ import { CheckboxBonus } from './checkboxbonus';
 export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
   {
     accessorKey: 'id',
-    header: 'NO',
+    header: 'TAG NUMBER',
     cell: ({row}) => row.index + 1
   },
   {
     accessorKey: 'user.category',
-    header: 'CATEGORY',
+    header: 'GAME',
     cell:({row})=>(<span>{row.original.user.register[0].category}</span>)
   },
   {
@@ -27,8 +27,12 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
   },
   {
     accessorKey: 'user.loginid',
-    header: 'LOGIN ID',
+    header: 'GAME ID',
     cell:({row})=>(<span>{row.original.user.register[0].loginid}</span>)
+  },
+  {
+    accessorKey: 'paymenttype',
+    header: 'TYPE'
   },
   {
     accessorKey: 'amount',

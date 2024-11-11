@@ -9,17 +9,32 @@ export default function UserredeemMiddle() {
     const router = useRouter();
 
     const cashapp = () => {
-        router.push("/mypage/redeem/cashapp");
+        router.push("/mypage/deposit/cashapp");
     }
 
     const bitcoin = () => {
-        router.push("/mypage/redeem/bitcoin");
+        router.push("/mypage/deposit/bitcoin");
+    }
+
+    const venmo = () => {
+
+    }
+
+    const paypal = () => {
+        
+    }
+
+    const zelle = () => {
+        
     }
 
     return (
         <div >
-            <Button className='border p-6 ml-[25%] w-[55%] mt-11' handleClick={cashapp}>Directly redeem to admin cash app</Button>
+            <Button className='border p-6 ml-[25%] w-[55%] mt-11' handleClick={cashapp}>Cash App</Button>
             <Button className='border p-6 ml-[25%] w-[55%] mt-11' handleClick={bitcoin}>Bitcoin</Button>
+            <Button className='border p-6 ml-[25%] w-[55%] mt-11' handleClick={venmo}>Venmo</Button>
+            <Button className='border p-6 ml-[25%] w-[55%] mt-11' handleClick={paypal}>Paypal</Button>
+            <Button className='border p-6 ml-[25%] w-[55%] mt-11' handleClick={zelle}>Zelle</Button>
         </div>
     );
 }

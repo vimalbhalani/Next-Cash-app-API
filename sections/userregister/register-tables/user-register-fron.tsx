@@ -84,7 +84,7 @@ export default function UserRegistrationForm() {
           category: selectedOption,
           phonenumber: data.phonenumber,
           token: userInfo.token,
-          status: "processing",
+          status: "Processing",
           id: userInfo.userId,
         });
 

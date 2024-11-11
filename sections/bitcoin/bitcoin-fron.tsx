@@ -11,7 +11,7 @@ export default function UserBitcoin() {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const bitcoin = () => {
-        router.push("/mypage/redeem");
+        router.push("/mypage/deposit");
     }
 
     const copyToClipboard = () => {
@@ -20,13 +20,13 @@ export default function UserBitcoin() {
             document.execCommand("copy");
             toast({
                 title: "BTC Address Copied Successful!",
-                description:"Welcome! Your bidcoin address have copied successfully.",
+                description:"Welcome! Bidcoin address have copied successfully.",
                 action: <button onClick={dismiss}>BTC Address</button>,                
             })
         } else {
             toast({
                 title: "BTC Address Copied Failed!",
-                description:"Your bidcoin address have copied failed. Please try again!",
+                description:"Bidcoin address have copied failed. Please try again!",
             })
         }
     }

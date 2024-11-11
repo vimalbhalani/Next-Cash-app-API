@@ -16,7 +16,7 @@ const redeemSchema: Schema = new Schema({
     amount: { type: Number, default: 0 },
     paymentoption: { type: String, default: "none" },
     paymenttype: {type: String, default: "none"},
-    paymentstatus: { type: String, default: "processing" },
+    paymentstatus: { type: String, default: "Processing" },
     dailyChecked: {type: Boolean, default: false},
     bonusChecked: {type: Boolean, default: false},
     date: { type: Date, default: Date.now },
@@ -27,7 +27,7 @@ const withdrawalSchema: Schema = new Schema({
     amount: { type: Number, default: 0},
     paymentoption: { type: String, default: "none" },
     paymenttype: {type: String, default: "none"},
-    paymentstatus: {type: String, default: "processing"},
+    paymentstatus: {type: String, default: "Processing"},
     paymentgateway: {type: String, default:"none"},
     date: { type: Date, default: Date.now },
 }, { _id: false });
@@ -43,6 +43,10 @@ export interface IUser extends Document {
     token: string;
     createdAt: Date;
     cashtag:string;
+    venmo:string;
+    paypal:string;
+    zelle:string;
+    bitcoin:string;
     verifystatus: string;
     register: Array<typeof registerSchema>;
     redeem: Array<typeof redeemSchema>;
@@ -59,6 +63,10 @@ const userSchema: Schema = new Schema({
     ip: { type: String },
     token: { type: String },
     cashtag: {type:String, default:"none"},
+    venmo: {type:String, default:"none"},
+    paypal: {type:String, default:"none"},
+    zelle: {type:String, default:"none"},
+    bitcoin: {type:String, default:"none"},
     createdAt: { type: Date, default: Date.now },
     verifystatus: {type: String, default:"no"},
     register: [registerSchema],

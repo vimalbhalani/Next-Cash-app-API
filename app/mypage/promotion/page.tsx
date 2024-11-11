@@ -1,5 +1,5 @@
 import { searchParamsCache } from '@/lib/searchparams';
-import { Promotion } from '@/sections/promotion/views';
+import { MyPageListingPage } from '@/sections/mypage/views';
 import { SearchParams } from 'nuqs/parsers';
 import React from 'react';
 
@@ -15,5 +15,5 @@ export default async function Page({ searchParams }: pageProps) {
   // Allow nested RSCs to access the search params (in a type-safe way)
   searchParamsCache.parse(searchParams);
 
-  return <Promotion />;
+  return <MyPageListingPage />;
 }

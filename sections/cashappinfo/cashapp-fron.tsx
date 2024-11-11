@@ -7,73 +7,54 @@ import { AdminRegisterUsers } from '@/constants/data';
 
 
 export default function CashAppInfoPageView() {
-    const [data, setData] = useState<AdminRegisterUsers[]>([]);
-    const [cashapptag, setCashapptag] = useState(data);
+    const [cashtag, setCashtag] = useState<AdminRegisterUsers[]>([]);
+    const [paypalV, setPaypal] = useState<AdminRegisterUsers[]>([]);
+    const [venmoV, setVenmo] = useState<AdminRegisterUsers[]>([]);
+    const [zelleV, setZelle] = useState<AdminRegisterUsers[]>([]);
+    const [bitcoinV, setBitcoin] = useState<AdminRegisterUsers[]>([]);
     const { dismiss } = useToast();
     const [loading, startTransition] = useTransition();
-    const [bitcoinAddress] = useState("bc1q9fsmlxu6rgjatnt75qccj9v7kq7jjja38ca9p4");
-    const inputRef = useRef<HTMLInputElement>(null);
+    const [cashapptag, setCashapptag] = useState(cashtag);
+    const [paypalvalue, setPaypalValue] = useState(paypalV);
+    const [venmovalue, setVenmoValue] = useState(venmoV);
+    const [zellevalue, setZelleValue] = useState(zelleV);
+    const [bitcoinvalue, setBitcoinValue] = useState(bitcoinV);
 
     const userInfoStr = localStorage.getItem('userinfo')
     const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
-    
-    const copyToClipboard = () => {
-        if (inputRef.current) {
-            inputRef.current.select();
-            document.execCommand("copy");
-            toast({
-                title: "BTC Address Copied Successful!",
-                description: "Welcome! Your bidcoin address have copied successfully.",
-                action: <button onClick={dismiss}>BTC Address</button>,
-            })
-        } else {
-            toast({
-                title: "BTC Address Copied Failed!",
-                description: "Your bidcoin address have copied failed. Please try again!",
-            })
-        }
-    }
-    
+
     const cashappinfo = async () => {
-        
-        
         startTransition(async () => {
             try {
-                // Replace signIn with your signUp function or API call
                 const response = await cash({
                     cashtag: cashapptag,
                     token: userInfo.token
                 });
-                
-                console.log(response, "response");
-                
+
                 if (response.error) {
-                    // Handle error (e.g. show error message)
                     console.error('Cashtag updated error:', response.error);
                     return;
                 }
-                
+
                 toast({
-                    title: "Chahapptag update successful!",
-                    description: "Welcome! Your bidcoin address have copied successfully.",
+                    title: "Cashtag update successful!",
+                    description: "Welcome! Your cashtag have updated successfully.",
                     action: <button onClick={dismiss}>Cashapptag</button>,
                 })
-                
+
                 location.reload();
             } catch (error) {
-                // Handle errors that do not come from the response
-                console.log("Update cashtag failed", error);
+
                 toast({
                     title: "Chahapptag update failed!",
                     description: "Chahapptag update failed. Please try again!",
                 })
-                
+
             }
         });
     };
-    
-    // Example signUp function
+
     const cash = async (userData: { cashtag: any, token: string }) => {
         try {
             const response = await fetch('/api/admin/cashapptag', {
@@ -83,81 +64,303 @@ export default function CashAppInfoPageView() {
                 },
                 body: JSON.stringify(userData),
             });
-            
+
             if (!response.ok) {
                 const errorData = await response.json();
-                return { error: errorData.message || 'Cashapptag update failed' }; // Handle response error
+                return { error: errorData.message || 'Cashapptag update failed' };
             }
-            
-            
-            return await response.json(); // Assume successful response returns user data or a success message
+
+
+            return await response.json();
         } catch (error) {
-            console.error('Error during fetch:', error);
-            throw error; // Rethrow or return an error response
+            throw error;
         }
     };
-    
+
+    const paypalinfo = async () => {
+        startTransition(async () => {
+            try {
+                const response = await paypaldata({
+                    paypal: paypalvalue,
+                    token: userInfo.token
+                });
+
+                if (response.error) {
+                    console.error('Paypal updated error:', response.error);
+                    return;
+                }
+
+                toast({
+                    title: "Paypal update successful!",
+                    description: "Welcome! Your paypal have updated successfully.",
+                    action: <button onClick={dismiss}>Paypal</button>,
+                })
+
+                location.reload();
+            } catch (error) {
+
+                toast({
+                    title: "Paypal update failed!",
+                    description: "Paypal update failed. Please try again!",
+                })
+
+            }
+        });
+    };
+
+    const paypaldata = async (userData: { paypal: any, token: string }) => {
+        try {
+            const response = await fetch('/api/admin/paypal', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                return { error: errorData.message || 'Cashapptag update failed' };
+            }
+
+            return await response.json();
+
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    const venmoinfo = async () => {
+        startTransition(async () => {
+            try {
+                const response = await venmodata({
+                    venmo: venmovalue,
+                    token: userInfo.token
+                });
+
+                if (response.error) {
+                    return;
+                }
+
+                toast({
+                    title: "Venmo update successful!",
+                    description: "Welcome! Your Venmo have updated successfully.",
+                    action: <button onClick={dismiss}>Venmo</button>,
+                })
+
+                location.reload();
+
+            } catch (error) {
+
+                toast({
+                    title: "Venmo update failed!",
+                    description: "Venmo update failed. Please try again!",
+                })
+
+            }
+        });
+    };
+
+    const venmodata = async (userData: { venmo: any, token: string }) => {
+        try {
+            const response = await fetch('/api/admin/venmo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                return { error: errorData.message || 'Cashapptag update failed' }; 
+            }
+
+
+            return await response.json();
+        } catch (error) {
+
+            throw error;
+        }
+    };
+
+    const zelleinfo = async () => {
+        startTransition(async () => {
+            try {
+                const response = await zelledata({
+                    zelle: zellevalue,
+                    token: userInfo.token
+                });
+
+                if (response.error) {
+                    return;
+                }
+
+                toast({
+                    title: "Zelle update successful!",
+                    description: "Welcome! Your zelle have updated successfully.",
+                    action: <button onClick={dismiss}>Zelle</button>,
+                })
+
+                location.reload();
+            } catch (error) {
+
+                toast({
+                    title: "Zelle update failed!",
+                    description: "Zelle update failed. Please try again!",
+                })
+
+            }
+        });
+    };
+
+    const zelledata = async (userData: { zelle: any, token: string }) => {
+        try {
+            const response = await fetch('/api/admin/zelle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                return { error: errorData.message || 'Cashapptag update failed' };
+            }
+
+            return await response.json();
+        } catch (error) {
+            throw error; 
+        }
+    };
+
+    const bitcoininfo = async () => {
+        startTransition(async () => {
+            try {
+                const response = await bitcoindata({
+                    bitcoin: bitcoinvalue,
+                    token: userInfo.token
+                });
+
+                if (response.error) {
+                    return;
+                }
+
+                toast({
+                    title: "Bitcoin update successful!",
+                    description: "Welcome! Your bidcoin address have updated successfully.",
+                    action: <button onClick={dismiss}>Cashapptag</button>,
+                })
+
+                location.reload();
+            } catch (error) {
+
+                toast({
+                    title: "Bitcoin address update failed!",
+                    description: "Bitcoin address update failed. Please try again!",
+                })
+
+            }
+        });
+    };
+
+    const bitcoindata = async (userData: { bitcoin: any, token: string }) => {
+        try {
+            const response = await fetch('/api/admin/bitcoin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                return { error: errorData.message || 'Cashapptag update failed' };
+            }
+
+
+            return await response.json();
+        } catch (error) {
+            throw error;
+        }
+    };
+
     useEffect(() => {
         async function fetchData() {
             try {
                 const response = await fetch('/api/admin/getadmin'); // Replace with your API endpoint
                 const result = await response.json();
-                console.log(result);
-                
-                setData(result.data[0].cashtag); // Adjust based on your API response
+                setCashtag(result.data[0].cashtag);
+                setPaypal(result.data[0].paypal); 
+                setVenmo(result.data[0].venmo); 
+                setZelle(result.data[0].zelle); 
+                setBitcoin(result.data[0].bitcoin);  
             } catch (error) {
                 console.error('Error fetching data:', error);
             } finally {
             }
         }
-        
+
         fetchData();
-      }, []);
+    }, []);
 
-      const cashappinfoview = ()=>{
-          
-          window.location.href = `https://cash.app/qr/${data}`;
-      }
-
-    
     if (loading) {
         return <div>Loading...</div>; // Replace with a spinner or loading message if needed
     }
-    
+
     return (
-        <div className='grid md:grid-cols-2 gap-5'>
-            <div>
-                <div className='grid justify-items-center' >
-                    <div className='flex items-center text-center w-52 h-52 mt-20 self-auto'>After enter your cashtag and clicking "OK", you can save the cash app QR code information. And then cliking "QR code view", you can see QR code.</div>
-                </div>
-                <div className='flex items-center justify-center mt-5'>
-                    <input
-                        type='text'
-                        defaultValue={data}
-                        className='border p-2 w-1/2 text-center outline-none rounded-md'
-                        onChange={(e) => { setCashapptag(e.target.value) }}
-                        />
-                </div>
-                <Button className='border p-6 ml-[30%] w-[40%] mt-16' handleClick={cashappinfoview}>QR code view</Button>
-                <Button className='border p-6 ml-[30%] w-[40%] mt-11' handleClick={cashappinfo}>OK</Button>
+        <div>
+            <div className='flex items-center justify-center mt-16'>
+                <p className='w-[100px]'>CashApp:</p>
+                <input
+                    type='text'
+                    defaultValue={cashtag}
+                    className='border p-2 w-1/3 text-center outline-none rounded-md'
+                    onChange={(e) => { setCashapptag(e.target.value) }}
+                />
+                <Button className='border p-5 w-[20%] ml-[10px] text-white' handleClick={cashappinfo}>OK</Button>
             </div>
-            <div>
-                <div className='grid justify-items-center'>
-                    <img src='/admin-btcaddress.png' className='border w-52 h-52 mt-20 self-auto' alt='Bitcoin Address' />
-                </div>
-                <div className='flex items-center justify-center mt-5'>
-                    <input
-                        type='text'
-                        value={bitcoinAddress}
-                        readOnly
-                        className='border p-2 w-1/2 text-center outline-none rounded-md'
-                        ref={inputRef}
-                    />
-                    <Button className='border py-5' handleClick={copyToClipboard}>
-                        Copy
-                    </Button>
-                </div>
-                <h1 className='border mt-32 ml-[30%] w-[40%] p-3 text-center text-xl font-bold'>Bitcoin Address</h1>
+            <div className='flex items-center justify-center mt-3'>
+                <p className='w-[100px]'>Paypal:</p>
+                <input
+                    type='text'
+                    defaultValue={paypalV}
+                    className='border p-2 w-1/3 text-center outline-none rounded-md'
+                    onChange={(e) => { setPaypalValue(e.target.value) }}
+                />
+                <Button className='border p-5 w-[20%] ml-[10px] text-white' handleClick={paypalinfo}>OK</Button>
+            </div>
+            <div className='flex items-center justify-center mt-3'>
+                <p className='w-[100px]'>Venmo:</p>
+                <input
+                    type='text'
+                    defaultValue={venmoV}
+                    className='border p-2 w-1/3 text-center outline-none rounded-md'
+                    onChange={(e) => { setVenmoValue(e.target.value) }}
+                />
+                <Button className='border p-5 w-[20%] ml-[10px] text-white' handleClick={venmoinfo}>OK</Button>
+            </div>
+            <div className='flex items-center justify-center mt-3'>
+                <p className='w-[100px]'>Zelle:</p>
+                <input
+                    type='text'
+                    defaultValue={zelleV}
+                    className='border p-2 w-1/3 text-center outline-none rounded-md'
+                    onChange={(e) => { setZelleValue(e.target.value) }}
+                />
+                <Button className='border p-5 w-[20%] ml-[10px] text-white' handleClick={zelleinfo}>OK</Button>
+            </div>
+            <div className='flex items-center justify-center mt-3'>
+                <p className='w-[100px]'>Bitcoin:</p>
+                <input
+                    type='text'
+                    defaultValue={bitcoinV}
+                    className='border p-2 w-1/3 text-center outline-none rounded-md'
+                    onChange={(e) => { setBitcoinValue(e.target.value) }}
+                />
+                <Button className='border p-5 w-[20%] ml-[10px] text-white' handleClick={bitcoininfo}>OK</Button>
             </div>
         </div>
     );

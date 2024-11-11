@@ -4,7 +4,7 @@ import CashAppInfoPageView from '../cashapp-fron';
 
 const breadcrumbItems = [
   { title: 'Main', link: '/main' },
-  { title: 'CashApp Info', link: '/main/cashappinfo' }
+  { title: 'Payment Setting', link: '/main/cashappinfo' }
 ];
 export default function CashAppInfoPage() {
 

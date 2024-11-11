@@ -35,42 +35,42 @@ export default function UserWithdrawalForm() {
     const [selectedWithdrawal, setSelectedWithdrawal] = useState('CashApp');
     const [cooldown, setCooldown] = useState(false);
     const [remainingTime, setRemainingTime] = useState(30);
-    
+
     useEffect(() => {
-      const cooldownData = localStorage.getItem(COOLDOWN_KEY);
-      if (cooldownData) {
-        const { cooldown: savedCooldown, remainingTime: savedRemainingTime } = JSON.parse(cooldownData);
-        setCooldown(savedCooldown);
-        setRemainingTime(savedRemainingTime);
-      }
+        const cooldownData = localStorage.getItem(COOLDOWN_KEY);
+        if (cooldownData) {
+            const { cooldown: savedCooldown, remainingTime: savedRemainingTime } = JSON.parse(cooldownData);
+            setCooldown(savedCooldown);
+            setRemainingTime(savedRemainingTime);
+        }
     }, []);
-  
+
     useEffect(() => {
-      if (cooldown) {
-        const intervalId = setInterval(() => {
-          setRemainingTime(prev => {
-            if (prev <= 1) {
-              clearInterval(intervalId);
-              setCooldown(false);
-              localStorage.removeItem(COOLDOWN_KEY); // Clean up when cooldown ends
-              return 30;
-            }
-            return prev - 1;
-          });
-        }, 1000);
-  
-        // Save cooldown state to localStorage
-        localStorage.setItem(COOLDOWN_KEY, JSON.stringify({ cooldown, remainingTime }));
-  
-        return () => {
-          clearInterval(intervalId);
-        }; 
-      } else {
-        // Remove cooldown data from localStorage when not in cooldown
-        localStorage.removeItem(COOLDOWN_KEY);
-      }
+        if (cooldown) {
+            const intervalId = setInterval(() => {
+                setRemainingTime(prev => {
+                    if (prev <= 1) {
+                        clearInterval(intervalId);
+                        setCooldown(false);
+                        localStorage.removeItem(COOLDOWN_KEY); // Clean up when cooldown ends
+                        return 30;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+
+            // Save cooldown state to localStorage
+            localStorage.setItem(COOLDOWN_KEY, JSON.stringify({ cooldown, remainingTime }));
+
+            return () => {
+                clearInterval(intervalId);
+            };
+        } else {
+            // Remove cooldown data from localStorage when not in cooldown
+            localStorage.removeItem(COOLDOWN_KEY);
+        }
     }, [cooldown, remainingTime]);
-  
+
     const onSubmit = async (data: UserFormValue) => {
         startTransition(async () => {
             try {
@@ -96,10 +96,10 @@ export default function UserWithdrawalForm() {
 
                 setCooldown(true);
                 localStorage.setItem(COOLDOWN_KEY, JSON.stringify({ cooldown: true, remainingTime: 59 }));
-                
+
                 setTimeout(() => {
-                  setCooldown(false);
-                  localStorage.removeItem(COOLDOWN_KEY);
+                    setCooldown(false);
+                    localStorage.removeItem(COOLDOWN_KEY);
                 }, 30000);
 
                 router.push("/mypage/withdrawal/withdrawalmiddle");
@@ -171,6 +171,9 @@ export default function UserWithdrawalForm() {
                             >
                                 <option value="CashApp">CashApp</option>
                                 <option value="Bitcoin">Bitcoin</option>
+                                <option value="Bitcoin">Venmo</option>
+                                <option value="Bitcoin">Paypal</option>
+                                <option value="Bitcoin">Zelle</option>
                             </select>
                         </div>
                         <FormField
@@ -194,7 +197,7 @@ export default function UserWithdrawalForm() {
                         />
                     </div>
                     <Button disabled={loading || cooldown} className='p-6 ml-[30%] w-[40%] mt-11' type='submit'>
-                    {cooldown ? `Waiting (${remainingTime}s)` : "REQUEST"}
+                        {cooldown ? `Waiting (${remainingTime}s)` : "REQUEST"}
                     </Button>
                 </form>
             </Form>

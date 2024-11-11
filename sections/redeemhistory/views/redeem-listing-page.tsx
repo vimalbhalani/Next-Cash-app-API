@@ -6,8 +6,8 @@ import AdminredeemHistoryTable from '../redeem-tables';
 
 const breadcrumbItems = [
   { title: 'Main', link: '/main' },
-  { title: 'redeem', link: '/main/redeem' },
-  { title: 'redeem History', link: '/main/redeem/redeemhistory' }
+  { title: 'Redeem', link: '/main/redeem' },
+  { title: 'Redeem History', link: '/main/redeem/redeemhistory' }
 ];
 
 type TEmployeeListingPage = {};

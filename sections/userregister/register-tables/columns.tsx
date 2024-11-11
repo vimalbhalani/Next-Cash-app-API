@@ -6,7 +6,7 @@ import { CodeAction } from './code-number';
 export const columns: ColumnDef<UserRegister>[] = [
   {
     accessorKey: 'category',
-    header: 'CATEGORY'
+    header: 'GAME'
   },
   {
     accessorKey: 'phonenumber',

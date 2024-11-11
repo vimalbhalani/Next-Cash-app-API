@@ -8,7 +8,7 @@ import { GameLink } from '../user-redeem-tables/game-link';
 
 const breadcrumbItems = [
   { title: 'Mypage', link: '/mypage' },
-  { title: 'Redeem', link: '/mypage/redeem' }
+  { title: 'Deposit', link: '/mypage/deposit' }
 ];
 
 type TEmployeeListingPage = {};
@@ -23,13 +23,13 @@ export default async function UserredeemListingPage({}: TEmployeeListingPage) {
 
         <div className="flex items-start justify-between">
           <Heading
-            title={`Redeem`}
+            title={`Deposit`}
             description=""
           />
         </div>
         <Separator />
         <UserredeemForm />
-        <p className='py-5 text-medium font-bold text-center'>Redeem History</p>
+        <p className='py-5 text-medium font-bold text-center'>Deposit History</p>
         <UserredeemTable />
         <GameLink/>
       </div>

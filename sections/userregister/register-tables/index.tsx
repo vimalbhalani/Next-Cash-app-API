@@ -57,11 +57,8 @@ export default function UserRegisterTable() {
   }
 
   const requestSuccess = () => {
-    router.push("/mypage/register/registersuccess");
+    router.push("/mypage/promotion");
   }
-
-  // Check if there's a login and password code in the register data
-  const hasLoginAndPassword = data.some(item => item.loginid !== "none" && item.passwordcode !== "none");
 
   return (
     <div className="space-y-4 ">
@@ -70,7 +67,7 @@ export default function UserRegisterTable() {
         className='border p-6 ml-[20%] w-[60%] text-white'
         handleClick={requestSuccess}
       >
-        {hasLoginAndPassword ? 'Check Your Register Info' : 'Register Successful'}
+        Check Your Register Info
       </Button>
       <p className='py-5 text-medium font-bold text-center'>Register History</p>
       <UserRegisterTableView columns={columns} data={data} totalItems={totalData} />
