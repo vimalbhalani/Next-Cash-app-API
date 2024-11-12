@@ -7,7 +7,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { CheckCircle, MoreHorizontal, Send, Trash, X } from 'lucide-react';
+import { CheckCircle, MoreHorizontal, X } from 'lucide-react';
 import { useTransition } from 'react';
 import { useToast, toast } from '@/components/ui/use-toast';
 import { AdminRegisterUsers } from '@/constants/data';

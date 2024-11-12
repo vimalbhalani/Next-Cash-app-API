@@ -125,8 +125,22 @@ export const navItems: NavItem[] = userInfo.role === "admin" ? [
   {
     title: 'Payment Setting',
     href: '/main/cashappinfo',
+    icon: 'settings',
+    label: 'setting',
+    alarm: ''
+  },
+  {
+    title: 'User',
+    href: '/main/user',
     icon: 'user2',
-    label: 'kanban',
+    label: 'user',
+    alarm: ''
+  },
+  {
+    title: 'Banned List',
+    href: '/main/bannedlist',
+    icon: 'warning',
+    label: 'banned list',
     alarm: ''
   },
 ] : [
