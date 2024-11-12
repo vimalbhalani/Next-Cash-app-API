@@ -42,6 +42,9 @@ export const POST = async (request: NextRequest) => {
         // Update the payment status of the found redeem entry
         user.redeem[redeemIndex].paymentstatus = paymentstatus;
 
+        // Add the current date and time to the 'comdate' field
+        user.redeem[redeemIndex].comdate = new Date(); // Captures the current date and time
+
         // Save the user document
         const updatedUser = await user.save();
 

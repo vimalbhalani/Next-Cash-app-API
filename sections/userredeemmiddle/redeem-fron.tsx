@@ -17,15 +17,15 @@ export default function UserredeemMiddle() {
     }
 
     const venmo = () => {
-
+        router.push("/mypage/deposit/venmo");
     }
 
     const paypal = () => {
-        
+        router.push("/mypage/deposit/paypal");
     }
 
     const zelle = () => {
-        
+        router.push("/mypage/deposit/zelle");
     }
 
     return (

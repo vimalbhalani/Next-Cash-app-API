@@ -49,7 +49,7 @@ export default function UserCashApp() {
   }
 
   const back = () => {
-    router.push("/mypage/redeem");
+    router.push("/mypage/deposit");
   }
 
   return (

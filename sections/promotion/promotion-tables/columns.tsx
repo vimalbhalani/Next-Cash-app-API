@@ -1,16 +1,16 @@
 'use client';
-import { PaymentWithdrawals } from '@/constants/data';
+import { AdminRegisterUsers, PaymentWithdrawals } from '@/constants/data';
 import { ColumnDef } from '@tanstack/react-table';
-import { CellAction } from './cell-action';
 
-export const columns: ColumnDef<PaymentWithdrawals>[] = [
+export const columns: ColumnDef<PaymentWithdrawals & AdminRegisterUsers>[] = [
   {
     accessorKey: 'paymentoption',
     header: 'Game'
   },
   {
-    accessorKey: 'paymenttype',
-    header: 'Tag Number'
+    accessorKey: 'tag',
+    header: 'Tag Number',
+    cell:({row})=>(<span>{row.original.user.tag}</span>)
   },
   {
     accessorKey: 'amount',

@@ -12,7 +12,7 @@ interface UserData {
 
 const {socket} = useSocket();
 
-export const LoginIdAction = ({ phoneNumber, loginIdV, passwordCodeV, userName }: { phoneNumber: string; loginIdV?: string; passwordCodeV:string; userName: string; }) => {
+export const LoginIdAction = ({loginIdV, passwordCodeV, userName, dateV }: { phoneNumber: string; loginIdV?: string; passwordCodeV:string; userName: string; dateV: any }) => {
 
   const { dismiss } = useToast();
   const [loginId, setLoginId] = useState(loginIdV|| "");
@@ -20,7 +20,7 @@ export const LoginIdAction = ({ phoneNumber, loginIdV, passwordCodeV, userName }
 
   const userData = {
     id: userName,
-    phonenumber: phoneNumber,
+    date: dateV,
     loginid: loginId,
     passwordcode: passwordCode,
     status: "preparing"
@@ -112,19 +112,19 @@ export const LoginIdAction = ({ phoneNumber, loginIdV, passwordCodeV, userName }
   return (
     <div className='flex w-full justify-center'>
       <input
-        className=' w-48 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
+        className=' w-40 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
         onChange={(e) => setLoginId(e.target.value)}
         value={loginId}
         disabled={loginIdV && loginIdV !== "none"}
       />
 
       <input
-        className=' w-48 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
+        className=' w-40 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 ml-1'
         onChange={(e) => setPasswordCode(e.target.value)}
         value={passwordCode}
         disabled={passwordCodeV && passwordCodeV !== "none"}
       />
-      <Button className='h-8 w-10 ml-5 text-xs bg-white' handleClick={handleButtonClick} disabled={loginIdV &&loginIdV !== "none"}>
+      <Button className='h-8 w-10 ml-5 text-xs bg-blue-500 text-white' handleClick={handleButtonClick} disabled={loginIdV &&loginIdV !== "none"}>
         SEND
       </Button>
     </div>

@@ -10,7 +10,7 @@ export default function RegisterTable() {
   const [data, setData] = useState<AdminRegisterUsers[]>([]);
   const [totalData, setTotalData] = useState<number>(0); // Store total items for pagination
   const [loading, setLoading] = useState<boolean>(true);
-  const [preparingCount, setPreparingCount] = useState<number>(0); // Count of "preparing" items
+  const [preparingCount, setPreparingCount] = useState<number>(0);
 
   useEffect(() => {
     async function fetchData() {

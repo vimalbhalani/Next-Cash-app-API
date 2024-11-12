@@ -1,7 +1,7 @@
 'use client';
 import { columns } from './columns';
 import { useState, useEffect } from 'react';
-import { PaymentWithdrawals } from '@/constants/data';
+import { AdminRegisterUsers, PaymentWithdrawals } from '@/constants/data';
 import UserPromotionTableView from './user-promtion-table';
 
 const userInfoStr = localStorage.getItem('userinfo');
@@ -9,7 +9,7 @@ const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
 export default function UserPromotionTable() {
 
-  const [data, setData] = useState<PaymentWithdrawals[]>([]);  
+  const [data, setData] = useState<(PaymentWithdrawals & AdminRegisterUsers)[]>([]);  
   const [totalData, setTotalData] = useState<number>(0); // Store total items for pagination
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -22,7 +22,7 @@ export default function UserPromotionTable() {
 
         setLoading(true);
         
-        const response = await fetch('/api/customer/getuserInfo', {
+        const withdrawalsResponse = await fetch('/api/customer/getuserInfo', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -30,13 +30,37 @@ export default function UserPromotionTable() {
           }
         });
 
-        if (!response.ok) {
+        if (!withdrawalsResponse.ok) {
           throw new Error('Network response was not ok');
         }
 
-        const result = await response.json();
-        setData(result.data[0].withdrawal); // Adjust based on your API response
-        setTotalData(result.totalCount); // Adjust based on your API response
+        const withdrawalsResult = await withdrawalsResponse.json();
+
+        const usersResponse = await fetch('/api/customer/getuserInfo', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${userInfo.token}` // Assuming the token is sent this way
+          }
+        });
+
+        if (!usersResponse.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const usersResult = await usersResponse.json();
+
+        const filteredWithdrawals = withdrawalsResult.data.flatMap((withdrawalEntry: any) =>
+          withdrawalEntry.withdrawal.filter((withdrawal: PaymentWithdrawals) => withdrawal.paymentstatus === "complete")
+        );
+
+        const combinedData = filteredWithdrawals.map((withdrawal: PaymentWithdrawals) => {
+          const user = usersResult.data.find((user: AdminRegisterUsers) => user._id === withdrawal.id);
+          return { ...withdrawal, user };
+        });
+
+        setData(combinedData);
+        setTotalData(filteredWithdrawals.length); 
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -55,6 +79,9 @@ export default function UserPromotionTable() {
   const latestData = data
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) // Sort by date
     .slice(0, 5); // Get the top 5 latest records
+
+    console.log(latestData);
+    
 
   return (
     <div className="space-y-4 ">

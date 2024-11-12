@@ -54,6 +54,11 @@ const NavItemContent = React.memo(
       >
         <Icon className="size-5 flex-none" />
         {!isMinimized && <span className="mr-2 truncate">{item.title}</span>}
+        {item.alarm !== "0" && (
+          <p className='rounded-full bg-red-500 text-white w-5 text-center'>
+            {item.alarm}
+          </p>
+        )}
         {hasChildren && !isMinimized && (
           <ChevronRight
             className={cn('ml-auto h-4 w-4', isExpanded && 'rotate-90')}

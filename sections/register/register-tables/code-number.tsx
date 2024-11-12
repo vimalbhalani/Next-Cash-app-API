@@ -94,7 +94,7 @@ export const CodeAction = ({ phoneNumber, codeNumber, userName, regiStatus }: { 
   return (
     <div className='relation flex justify-center'>
       <input
-        className=' w-48 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
+        className=' w-32 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
         value={codenum} // Set input value to codenum
         onChange={(e) => setCodenum(e.target.value)}
         disabled={regiStatus !== "preparing" || codeNumber !== "none"}
@@ -102,7 +102,7 @@ export const CodeAction = ({ phoneNumber, codeNumber, userName, regiStatus }: { 
           e.target.value = e.target.value.replace(/[^0-9]/g, '');
         }}
       />
-      <Button className='h-8 w-10 text-xs bg-white' onClick={handleButtonClick} disabled={regiStatus !== "preparing" || codeNumber !== "none"} >
+      <Button className='h-8 w-10 text-xs bg-blue-500 text-white ml-1' onClick={handleButtonClick} disabled={regiStatus !== "preparing" || codeNumber !== "none"} >
         SEND
       </Button>
     </div>

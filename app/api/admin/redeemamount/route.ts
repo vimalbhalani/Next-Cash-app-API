@@ -3,10 +3,10 @@ import dbConnect from "@/lib/dbConnect"; // Import your DB connection function
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-  const { date, loginid, id, passwordcode, status } = await request.json();
+  const { date, id, amount } = await request.json();
   
   // Ensure our incoming data is valid
-  if (!date || !loginid || !passwordcode || !status || !id) {
+  if (!date || !amount || !id) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
   }
   
@@ -23,12 +23,10 @@ export const POST = async (request: NextRequest) => {
 
     // Update the user's information in the "register" array by matching both id and date
     const updatedUser = await User.findOneAndUpdate(
-      { _id: id, "register.date": date }, // Search condition includes both id and date
+      { _id: id, "redeem.date": date }, // Search condition includes both id and date
       { 
         $set: {
-          'register.$.loginid': loginid, // Update the loginid
-          'register.$.passwordcode': passwordcode, // Update the passwordcode
-          'register.$.status': status // Update the status
+          'redeem.$.amount': amount, // Update the loginid
         }
       }, // Update operation
       { new: true } // Options: return the updated document

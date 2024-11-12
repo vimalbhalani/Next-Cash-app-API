@@ -8,7 +8,7 @@ const registerSchema: Schema = new Schema({
     codenumber: {type: String, default: "none"},
     loginid: {type: String, default: "none"},
     passwordcode: {type: String, default: "none"},
-
+    date: { type: Date, default: Date.now },
 }, {_id: false});
 
 const redeemSchema: Schema = new Schema({
@@ -20,6 +20,7 @@ const redeemSchema: Schema = new Schema({
     dailyChecked: {type: Boolean, default: false},
     bonusChecked: {type: Boolean, default: false},
     date: { type: Date, default: Date.now },
+    comdate: {type: Date},
 }, { _id: false });
 
 const withdrawalSchema: Schema = new Schema({
@@ -30,11 +31,13 @@ const withdrawalSchema: Schema = new Schema({
     paymentstatus: {type: String, default: "Processing"},
     paymentgateway: {type: String, default:"none"},
     date: { type: Date, default: Date.now },
+    comdate:{type: Date},
 }, { _id: false });
 
 export interface IUser extends Document {
     firstname: string;
     lastname: string;
+    tag: number;
     email: string;
     emailcode: string;
     password: string;
@@ -56,6 +59,7 @@ export interface IUser extends Document {
 const userSchema: Schema = new Schema({
     firstname: { type: String, required: true },
     lastname: { type: String, required:  false },
+    tag: {type: Number, required: true, unique: true},
     email: { type: String, required: true, unique: true },
     emailcode: {type:String, default:"none"},
     password: { type: String, required: false },

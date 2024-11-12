@@ -31,7 +31,7 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
   {
     id:'actions',
     header: 'LOGIN ID AND PASSWORD CODE',
-    cell: ({ row }) => <LoginIdAction phoneNumber={row.original.phonenumber} loginIdV = {row.original.loginid} passwordCodeV = {row.original.passwordcode} userName={row.original.user._id}/>
+    cell: ({ row }) => <LoginIdAction dateV={row.original.date} loginIdV = {row.original.loginid} passwordCodeV = {row.original.passwordcode} userName={row.original.user._id}/>
   },
   {
     id: 'actions',

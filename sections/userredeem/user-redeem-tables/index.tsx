@@ -1,7 +1,7 @@
 'use client';
 import { columns } from './columns';
 import { useState, useEffect } from 'react';
-import { Paymentredeems } from '@/constants/data';
+import { Paymentredeems, UserRegister } from '@/constants/data';
 import UserredeemTableView from './user-redeem-table';
 
 const userInfoStr = localStorage.getItem('userinfo');
@@ -12,6 +12,7 @@ export default function UserredeemTable() {
   const [data, setData] = useState<Paymentredeems[]>([]);
   const [totalData, setTotalData] = useState<number>(0); // Store total items for pagination
   const [loading, setLoading] = useState<boolean>(true);
+  const [category, setCategory] = useState<string>("");
 
   useEffect(() => {
     async function fetchData() {
@@ -26,7 +27,7 @@ export default function UserredeemTable() {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${userInfo.token}` // Assuming the token is sent this way
+            'Authorization': `Bearer ${userInfo.token}`
           }
         });
 
@@ -35,8 +36,10 @@ export default function UserredeemTable() {
         }
 
         const result = await response.json();
-        setData(result.data[0].redeem); // Adjust based on your API response
-        setTotalData(result.totalCount); // Adjust based on your API response
+        setData(result.data[0].redeem); 
+        setCategory(result.data[0].register[0].status);
+        setTotalData(result.totalCount); 
+
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -46,9 +49,14 @@ export default function UserredeemTable() {
 
     fetchData();
   }, [userInfo]);
-
+  console.log(category);
+  
+  if(category !== "complete"){
+    return<div className='text-xl text-center font-bold text-red-500'>First at all, You must register!</div>;
+  }
+  
   if (loading) {
-    return <div>Loading...</div>; // Replace with a spinner or loading message if needed
+    return <div>Loading...</div>;
   }
 
   return (

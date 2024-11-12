@@ -3,6 +3,9 @@ import { NavItem } from '@/types';
 const userInfoStr = localStorage.getItem('userinfo')
 const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
+const requestStr = localStorage.getItem('adminRequest')
+const request = requestStr ? JSON.parse(requestStr) : {};
+
 export type UserRegister = {
   id: string,
   phonenumber: string;
@@ -10,6 +13,7 @@ export type UserRegister = {
   codenumber: string;
   loginid: string;
   passwordcode: string;
+  date: Date,
   status: string;
 }
 
@@ -22,6 +26,7 @@ export type Paymentredeems = {
   dailyChecked: boolean,
   bonusChecked: boolean,
   date: Date,
+  comdate: Date,
 }
 
 export type PaymentWithdrawals ={
@@ -31,12 +36,14 @@ export type PaymentWithdrawals ={
   paymenttype: string,
   paymentstatus: string,
   date: Date,
+  comdate: Date,
 }
 
 export type AdminRegisterUsers = {
   _id: string;
   firstname:string;
   lastname:string;
+  tag:number;
   email:string;
   ip: string; 
   cashtag: string;
@@ -54,36 +61,42 @@ export const navItems: NavItem[] = userInfo.role === "admin" ? [
     title: 'Main',
     href: '/main',
     icon: 'dashboard',
-    label: 'main'
+    label: 'main',
+    alarm: ''
   },
   {
     title: 'Register',
     href: '/main/register',
     icon: 'user',
-    label: 'register'
+    label: 'register',
+    alarm: `${request.registerR}`
   },
   {
     title: 'Code Verify',
     href: '/main/verify',
     icon: 'verify',
-    label: 'verify'
+    label: 'verify',
+    alarm: `${request.verifyR}`
   },
   {
     title: 'Redeem',
     icon: 'wallet',
     label: 'redeem',
+    alarm: `${request.redeemR}`,
     children: [
       {
         title: "Request",
         href: '/main/redeem',
         icon: 'wallet',
-        label: 'redeemRequest'
+        label: 'redeemRequest',
+        alarm: `${request.redeemR}`
       },
       {
         title: "History",
         href: '/main/redeemhistory',
         icon: 'notebookpen',
-        label: 'redeemHistory'
+        label: 'redeemHistory',
+        alarm: ''
       }
     ]
   },
@@ -91,18 +104,21 @@ export const navItems: NavItem[] = userInfo.role === "admin" ? [
     title: 'Withdrawal',
     icon: 'wallet2',
     label: 'withdrawal',
+    alarm: `${request.withdrawalR}`,
     children: [
       {
         title: "Request",
         href: '/main/withdrawal',
         icon: 'wallet2',
-        label: 'withdrawalRequest'
+        label: 'withdrawalRequest',
+        alarm: `${request.withdrawalR}`
       },
       {
         title: "History",
         href: '/main/withdrawalhistory',
         icon: 'notebookpen',
-        label: 'withdrawalHistory'
+        label: 'withdrawalHistory',
+        alarm: ''
       }
     ]
   },
@@ -110,37 +126,43 @@ export const navItems: NavItem[] = userInfo.role === "admin" ? [
     title: 'Payment Setting',
     href: '/main/cashappinfo',
     icon: 'user2',
-    label: 'kanban'
+    label: 'kanban',
+    alarm: ''
   },
 ] : [
   {
     title: 'Promotion',
     href: '/mypage',
     icon: 'product',
-    label: 'mypage'
+    label: 'mypage',
+    alarm: ''
   },
   {
     title: 'Mypage',
     href: '/mypage/promotion',
     icon: 'userPen',
-    label: 'promotion'
+    label: 'promotion',
+    alarm: ''
   },
   {
     title: 'Register',
     href: '/mypage/register',
     icon: 'user',
-    label: 'register'
+    label: 'register',
+    alarm: ''
   },
   {
     title: 'Deposit',
     href: '/mypage/deposit',
     icon: 'wallet',
-    label: 'redeem'
+    label: 'redeem',
+    alarm: ''
   },
   {
     title: 'Withdrawal',
     href: '/mypage/withdrawal',
     icon: 'wallet2',
-    label: 'withdrawal'
+    label: 'withdrawal',
+    alarm: ''
   },
 ];

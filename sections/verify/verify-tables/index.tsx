@@ -9,7 +9,7 @@ export default function VerifyTable() {
   const [data, setData] = useState<AdminRegisterUsers[]>([]);
   const [totalData, setTotalData] = useState<number>(0); // Store total items for pagination
   const [loading, setLoading] = useState<boolean>(true);
-  const [processingCount, setProcessingCount] = useState<number>(0); // Count of "processing" items
+  const [processingCount, setProcessingCount] = useState<number>(0);
 
   useEffect(() => {
     async function fetchData() {

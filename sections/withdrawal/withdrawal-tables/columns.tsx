@@ -2,16 +2,17 @@
 import { AdminRegisterUsers, PaymentWithdrawals } from '@/constants/data';
 import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from './cell-action';
+import { AmountAction } from './amount';
 
 export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
   {
     accessorKey: 'id',
-    header: 'NO',
-    cell: ({row}) => row.index + 1
+    header: 'TAG NUMBER',
+    cell: ({row}) => (<span>{row.original.user.tag}</span>)
   },
   {
     accessorKey: 'user.category',
-    header: 'CATEGORY',
+    header: 'GAME',
     cell:({row})=>(<span>{row.original.user.register[0].category}</span>)
   },
   {
@@ -25,12 +26,17 @@ export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
   },
   {
     accessorKey: 'user.loginid',
-    header: 'LOGIN ID',
+    header: 'GAME ID',
     cell:({row})=>(<span>{row.original.user.register[0].loginid}</span>)
   },
   {
-    accessorKey: 'amount',
-    header: 'AMOUNT'
+    accessorKey: 'paymenttype',
+    header: 'TYPE'
+  },
+  {
+    id: 'amount',
+    header: 'AMOUNT',
+    cell: ({ row }) =><AmountAction withdrawalDate={row.original.date} userId = {row.original.user._id} withdrawalAmount={row.original.amount} />
   },
   {
     accessorKey:'paymentgateway',

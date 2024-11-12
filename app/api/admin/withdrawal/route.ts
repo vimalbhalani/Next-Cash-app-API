@@ -17,7 +17,7 @@ export const POST = async (request: NextRequest) => {
     if (!id || !paymentstatus || !date) {
         return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
-    
+
     await dbConnect();
 
     try {
@@ -41,6 +41,9 @@ export const POST = async (request: NextRequest) => {
 
         // Update the payment status of the found withdrawal entry
         user.withdrawal[withdrawalIndex].paymentstatus = paymentstatus;
+
+        // Add the current date and time to the 'comdate' field
+        user.withdrawal[withdrawalIndex].comdate = new Date(); // Captures the current date and time
 
         // Save the user document
         const updatedUser = await user.save();

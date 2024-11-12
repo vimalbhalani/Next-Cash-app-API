@@ -12,6 +12,7 @@ export default function UserWithdrawalTable() {
   const [data, setData] = useState<PaymentWithdrawals[]>([]);  
   const [totalData, setTotalData] = useState<number>(0); // Store total items for pagination
   const [loading, setLoading] = useState<boolean>(true);
+  const [category, setCategory] = useState<string>("");
 
   useEffect(() => {
     async function fetchData() {
@@ -35,24 +36,31 @@ export default function UserWithdrawalTable() {
         }
 
         const result = await response.json();
-        setData(result.data[0].withdrawal); // Adjust based on your API response
-        setTotalData(result.totalCount); // Adjust based on your API response
+        setData(result.data[0].withdrawal);
+        setCategory(result.data[0].register[0].status)
+        setTotalData(result.totalCount);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }
     }
-
     fetchData();
   }, [userInfo]);
+  
+console.log(totalData);
+
+  if (category !== "complete") {
+    return<div className='text-xl text-center font-bold text-red-500'>First at all, You must register!</div>;
+  }
+
   if (loading) {
-    return <div>Loading...</div>; // Replace with a spinner or loading message if needed
+    return <div>Loading...</div>;
   }
 
   return (
     <div className="space-y-4 ">
-      <UserWithdrawalTableView columns={columns} data={data} totalItems={totalData} />
+      <UserWithdrawalTableView columns={columns} data={data} totalItems={data.length} />
     </div>
   );
 }

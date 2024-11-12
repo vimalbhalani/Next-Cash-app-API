@@ -35,6 +35,7 @@ export default function UserredeemForm() {
     const [selectedredeem, setSelectedredeem] = useState('CashApp');
     const [cooldown, setCooldown] = useState(false);
     const [remainingTime, setRemainingTime] = useState(30);
+    const [category, setCategory] = useState<string>("");
 
     useEffect(() => {
         const cooldownData = localStorage.getItem(COOLDOWN_KEY);
@@ -134,6 +135,36 @@ export default function UserredeemForm() {
         }
     };
 
+    useEffect(() => {
+        async function fetchData() {
+          try {
+            if (!userInfo.token) {
+              throw new Error("User not authenticated.");
+            }
+    
+            const response = await fetch('/api/customer/getuserInfo', {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userInfo.token}`
+              }
+            });
+    
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+    
+            const result = await response.json();
+            setCategory(result.data[0].register[0].status);
+    
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          } 
+        }
+    
+        fetchData();
+      }, [userInfo]);
+
     return (
         <div >
             <div className='border border-solid border-4 border-gray-500 p-3 bg-white rounded-xl'>
@@ -199,7 +230,7 @@ export default function UserredeemForm() {
                             )}
                         />
                     </div>
-                    <Button disabled={loading || cooldown} className='p-6 ml-[30%] w-[40%] mt-11' type='submit'>
+                    <Button disabled={loading || cooldown || category !== "complete"} className='p-6 ml-[30%] w-[40%] mt-11' type='submit'>
                         {cooldown ? `Waiting (${remainingTime}s)` : "REQUEST"}
                     </Button>
                 </form>

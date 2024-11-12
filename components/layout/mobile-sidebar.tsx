@@ -24,7 +24,7 @@ export function MobileSidebar({ className }: SidebarProps) {
           <div className="space-y-4 py-4">
             <div className="px-3 py-2">
               <Image src='/logo.png' width={150} height={150} alt='logo'/>
-              <div className="space-y-1">
+              <div className="space-y-1 mt-5">
                 <DashboardNav
                   items={navItems}
                   isMobileNav={true}

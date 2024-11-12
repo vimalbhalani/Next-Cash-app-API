@@ -4,12 +4,13 @@ import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from './cell-action';
 import { CheckboxDaily } from './checkboxdaily';
 import { CheckboxBonus } from './checkboxbonus';
+import { AmountAction } from './amount';
 
 export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
   {
     accessorKey: 'id',
     header: 'TAG NUMBER',
-    cell: ({row}) => row.index + 1
+    cell: ({row}) => (<span>{row.original.user.tag}</span>)
   },
   {
     accessorKey: 'user.category',
@@ -35,8 +36,9 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
     header: 'TYPE'
   },
   {
-    accessorKey: 'amount',
-    header: 'AMOUNT'
+    id: 'amount',
+    header: 'AMOUNT',
+    cell: ({ row }) =><AmountAction redeemDate={row.original.date} userId = {row.original.user._id} redeemAmount={row.original.amount} />
   },
   {
     id: 'daily',
