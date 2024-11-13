@@ -12,6 +12,7 @@ import { FileWarning, History, MoreHorizontal, Trash2, UserPen } from 'lucide-re
 import { useState, useTransition} from 'react';
 import { useToast, toast } from '@/components/ui/use-toast';
 import { AdminRegisterUsers } from '@/constants/data';
+import { useRouter } from 'next/navigation';
 
 interface CellActionProps {
   data: AdminRegisterUsers;
@@ -20,6 +21,7 @@ interface CellActionProps {
 
 export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: any) => {
 
+  const router = useRouter();
   const {dismiss} = useToast();
   const [loading, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
@@ -81,11 +83,11 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
   }
 
   const userdetail = () => {
-
-  }
-
+    router.push(`/main/user/userdetail?id=${userId}`);
+  };
+ 
   const ban = () => {
-
+    
   }
 
   const userhistory = () => {

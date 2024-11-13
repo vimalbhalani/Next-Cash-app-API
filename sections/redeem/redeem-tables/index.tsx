@@ -7,7 +7,6 @@ import AdminRedeemTableView from './redeem-table';
 export default function AdminRedeemTable() {
   const [data, setData] = useState<(Paymentredeems & AdminRegisterUsers)[]>([]);
   const [totalData, setTotalData] = useState<number>(0);
-  const [combinedDataCount, setCombinedDataCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -35,7 +34,6 @@ export default function AdminRedeemTable() {
         // Set data, total counts, and combined data count
         setData(combinedData);
         setTotalData(redeemsResult.totalCount); // Adjust if necessary
-        setCombinedDataCount(combinedData.length); // Set count of combined data
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -53,7 +51,6 @@ export default function AdminRedeemTable() {
 
   return (
     <div className="space-y-4 ">
-      <div className='text-red-500 font-semibold'>Pending Request Count: {combinedDataCount}</div>
       <AdminRedeemTableView columns={columns} data={data} totalItems={totalData} />
     </div>
   );

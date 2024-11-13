@@ -31,10 +31,6 @@ export default function UserTable() {
           })
         );
 
-        // Calculate count of items with status "preparing"
-        const preparingItemsCount = combinedData.filter((item) => item.status === 'preparing').length;
-
-        // Set data, total counts, and preparing count
         setData(combinedData);
         setTotalData(UserResult.totalCount); // Adjust if necessary
       } catch (error) {

@@ -202,9 +202,9 @@ export default function UserWithdrawalForm() {
                             >
                                 <option value="CashApp">CashApp</option>
                                 <option value="Bitcoin">Bitcoin</option>
-                                <option value="Bitcoin">Venmo</option>
-                                <option value="Bitcoin">Paypal</option>
-                                <option value="Bitcoin">Zelle</option>
+                                <option value="Venmo">Venmo</option>
+                                <option value="Paypal">Paypal</option>
+                                <option value="Zelle">Zelle</option>
                             </select>
                         </div>
                         <FormField

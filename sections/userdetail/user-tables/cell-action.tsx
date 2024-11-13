@@ -8,11 +8,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { ArchiveRestore, History, MoreHorizontal, Trash2, UserPen } from 'lucide-react';
+import { FileWarning, History, MoreHorizontal, Trash2, UserPen } from 'lucide-react';
 import { useState, useTransition} from 'react';
 import { useToast, toast } from '@/components/ui/use-toast';
 import { AdminRegisterUsers } from '@/constants/data';
-import { useRouter } from 'next/navigation';
 
 interface CellActionProps {
   data: AdminRegisterUsers;
@@ -21,7 +20,6 @@ interface CellActionProps {
 
 export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: any) => {
 
-  const router = useRouter();
   const {dismiss} = useToast();
   const [loading, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
@@ -82,15 +80,7 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
     return <div>Loading...</div>; // Replace with a spinner or loading message if needed
   }
 
-  const userdetail = () => {
-    router.push("/main/user/userdetail");
-  }
-
-  const restore = () => {
-
-  }
-
-  const userhistory = () => {
+  const modify = () => {
 
   }
 
@@ -112,19 +102,9 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Action</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={userdetail}
+            onClick={modify}
           >
-            <UserPen className="mr-2 h-4 w-4" /> User Detail
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={restore}
-          >
-            <ArchiveRestore className="mr-2 h-4 w-4" />Restore
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={userhistory}
-          >
-            <History className="mr-2 h-4 w-4" /> History
+            <UserPen className="mr-2 h-4 w-4" /> Modify
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash2 className="mr-2 h-4 w-4" /> Delete

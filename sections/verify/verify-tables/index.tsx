@@ -9,7 +9,6 @@ export default function VerifyTable() {
   const [data, setData] = useState<AdminRegisterUsers[]>([]);
   const [totalData, setTotalData] = useState<number>(0); // Store total items for pagination
   const [loading, setLoading] = useState<boolean>(true);
-  const [processingCount, setProcessingCount] = useState<number>(0);
 
   useEffect(() => {
     async function fetchData() {
@@ -37,7 +36,6 @@ export default function VerifyTable() {
         // Set data, total counts, and processing count
         setData(combinedData);
         setTotalData(registerResult.totalCount); // Adjust if necessary
-        setProcessingCount(processingItemsCount);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -54,7 +52,6 @@ export default function VerifyTable() {
 
   return (
     <div className="space-y-4 ">
-      <div className='text-red-500 font-semibold'>Pending Request Count: {processingCount}</div> {/* Display the count */}
       <VerifyTablePage columns={columns} data={data} totalItems={totalData} />
     </div>
   );

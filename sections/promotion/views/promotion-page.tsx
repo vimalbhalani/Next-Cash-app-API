@@ -7,7 +7,7 @@ import UserPromotionTable from '../promotion-tables';
 import { PromotionRule } from '../promotion-rule';
 
 const breadcrumbItems = [
-  { title: 'MyPage', link: '/mypage' },
+  { title: 'Main', link: '/mypage' },
 ];
 
 type TEmployeeListingPage = {};
@@ -21,7 +21,7 @@ export default async function Promotion({}: TEmployeeListingPage) {
 
         <div className="flex items-start justify-between">
           <Heading
-            title={`MyPage`}
+            title={`Promotion`}
             description=""
           />
         </div>

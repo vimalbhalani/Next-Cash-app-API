@@ -7,7 +7,6 @@ import AdminWithdrawalTableView from './withdrawal-table';
 export default function AdminWithdrawalTable() {
   const [data, setData] = useState<(PaymentWithdrawals & AdminRegisterUsers)[]>([]);
   const [totalData, setTotalData] = useState<number>(0); // Store total items for pagination
-  const [combinedDataCount, setCombinedDataCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -36,7 +35,6 @@ export default function AdminWithdrawalTable() {
 
         // Set data and total counts, adjust based on your API response
         setData(combinedData);
-        setCombinedDataCount(combinedData.length);
         setTotalData(filteredWithdrawals.length); // Count of filtered withdrawals
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -55,7 +53,6 @@ export default function AdminWithdrawalTable() {
 
   return (
     <div className="space-y-4">
-      <div className='text-red-500 font-semibold'>Pending Request Count: {combinedDataCount}</div>
       <AdminWithdrawalTableView columns={columns} data={data} totalItems={totalData} />
     </div>
   );

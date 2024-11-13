@@ -2,16 +2,18 @@ import { Breadcrumbs } from '@/components/breadcrumbs';
 import PageContainer from '@/components/layout/page-container';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
-import BanTable from '../ban-tables';
+import UserdetailTable from '../user-tables';
 
 const breadcrumbItems = [
   { title: 'Main', link: '/main' },
-  { title: 'Banned List', link: '/main/bannedlist' }
+  { title: 'User', link: '/main/user' },
+  { title: 'User Detail', link: '/main/user/userdetail' }
 ];
 
 type TEmployeeListingPage = {};
 
-export default async function BanListingPage({}: TEmployeeListingPage) {
+export default async function UserdetailListingPage({}: TEmployeeListingPage) {
+  // Showcasing the use of search params cache in nested RSCs
 
   return (
     <PageContainer scrollable>
@@ -20,12 +22,12 @@ export default async function BanListingPage({}: TEmployeeListingPage) {
 
         <div className="flex items-start justify-between">
           <Heading
-            title={`Banned List`}
+            title={`User Details`}
             description=""
           />
         </div>
         <Separator />
-        <BanTable/>
+        <UserdetailTable/>
       </div>
     </PageContainer>
   );
