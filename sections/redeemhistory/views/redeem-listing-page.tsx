@@ -6,8 +6,8 @@ import AdminredeemHistoryTable from '../redeem-tables';
 
 const breadcrumbItems = [
   { title: 'Main', link: '/main' },
-  { title: 'Redeem', link: '/main/redeem' },
-  { title: 'Redeem History', link: '/main/redeem/redeemhistory' }
+  { title: 'Deposit', link: '/main/redeem' },
+  { title: 'Deposit History', link: '/main/redeem/redeemhistory' }
 ];
 
 type TEmployeeListingPage = {};
@@ -22,7 +22,7 @@ export default async function RedeemListingPage({}: TEmployeeListingPage) {
 
         <div className="flex items-start justify-between">
           <Heading
-            title={`Redeem History`}
+            title={`Deposit History`}
             description=""
           />
         </div>

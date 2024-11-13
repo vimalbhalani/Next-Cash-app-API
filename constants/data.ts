@@ -79,7 +79,7 @@ export const navItems: NavItem[] = userInfo.role === "admin" ? [
     alarm: `${request.verifyR}`
   },
   {
-    title: 'Redeem',
+    title: 'Deposit',
     icon: 'wallet',
     label: 'redeem',
     alarm: `${request.redeemR}`,

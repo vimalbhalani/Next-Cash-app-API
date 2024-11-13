@@ -13,6 +13,7 @@ const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 export default function MyPageTable() {
   const router = useRouter();
   const [data, setData] = useState<UserRegister[]>([]);
+  const [tag, setTag] = useState<AdminRegisterUsers[]>([]);
   const [totalData, setTotalData] = useState<number>(0); // Store total items for pagination
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -38,6 +39,7 @@ export default function MyPageTable() {
         }
 
         const result = await response.json();
+        setTag(result.data)
         setData(result.data[0].register); // Adjust based on your API response
         setTotalData(result.totalCount); // Adjust based on your API response
         
@@ -64,11 +66,27 @@ export default function MyPageTable() {
 
   return (
     <div className="space-y-4">
+      <p className='text-xl font-semibold'>Your Tag Number</p>
+      <p className='text-lg font-medium'>#{tag[0].tag}</p>
       <p className='py-5 text-medium font-bold text-center'>Login Info</p>
       <MyPageTableView columns={columns} data={filteredData} totalItems={totalData} />
-
       <div className='flex justify-center py-10'>
         <Button variant='default' handleClick={requestSuccess} className='text-white'>Request Game Register</Button>
+      </div>
+      <div>
+        <p className='text-center text-xl font-semibold'>User Info</p>
+        <div className='grid grid-cols-2 gap-5 mt-10'>
+          <p className='text-end'>Name:</p>
+          <p className='text-start'>{tag[0].firstname}{" "}{tag[0].lastname}</p>
+        </div>
+        <div className='grid grid-cols-2 gap-5 mt-3'>
+          <p className='text-end'>Username:</p>
+          <p className='w-[170px] sm:w-full text-start break-words'>{tag[0].email}</p>
+        </div>
+        <div className='grid grid-cols-2 gap-5 mt-3'>
+          <p className='text-end'>Phone Number:</p>
+          <p className='text-start'>{data[0].phonenumber}</p>
+        </div>
       </div>
 
       <GameLink />
