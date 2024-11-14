@@ -66,8 +66,8 @@ export default function MyPageTable() {
 
   return (
     <div className="space-y-4">
-      <p className='text-xl font-semibold'>Your Tag Number</p>
-      <p className='text-lg font-medium'>#{tag[0].tag}</p>
+      <p className='text-xl font-semibold ml-10'>Your Tag Number</p>
+      <p className='text-lg font-medium ml-10'>#{tag[0].tag}</p>
       <p className='py-5 text-medium font-bold text-center'>Login Info</p>
       <MyPageTableView columns={columns} data={filteredData} totalItems={totalData} />
       <div className='flex justify-center py-10'>

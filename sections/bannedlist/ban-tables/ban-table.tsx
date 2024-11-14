@@ -206,7 +206,7 @@ export default function BanTablePage<TData, TValue>({
               aria-label="Go to first page"
               variant="outline"
               className="hidden h-8 w-8 p-0 lg:flex"
-              onClick={() => table.setPageIndex(0)}
+              handleClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
               <DoubleArrowLeftIcon className="h-4 w-4" aria-hidden="true" />
@@ -215,7 +215,7 @@ export default function BanTablePage<TData, TValue>({
               aria-label="Go to previous page"
               variant="outline"
               className="h-8 w-8 p-0"
-              onClick={() => table.previousPage()}
+              handleClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
               <ChevronLeftIcon className="h-4 w-4" aria-hidden="true" />
@@ -224,7 +224,7 @@ export default function BanTablePage<TData, TValue>({
               aria-label="Go to next page"
               variant="outline"
               className="h-8 w-8 p-0"
-              onClick={() => table.nextPage()}
+              handleClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
               <ChevronRightIcon className="h-4 w-4" aria-hidden="true" />
@@ -233,7 +233,7 @@ export default function BanTablePage<TData, TValue>({
               aria-label="Go to last page"
               variant="outline"
               className="hidden h-8 w-8 p-0 lg:flex"
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+              handleClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >
               <DoubleArrowRightIcon className="h-4 w-4" aria-hidden="true" />

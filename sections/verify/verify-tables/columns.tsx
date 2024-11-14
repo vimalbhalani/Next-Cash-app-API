@@ -2,7 +2,6 @@
 import { AdminRegisterUsers, UserRegister } from '@/constants/data';
 import { ColumnDef } from '@tanstack/react-table';
 import { LoginIdAction } from './login-id';
-import { PasswordAction } from './password';
 import { CellAction } from './cell-action';
 
 export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [

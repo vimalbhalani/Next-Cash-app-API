@@ -45,7 +45,6 @@ export default function UserWithdrawalMiddle() {
             toast({
                 title: 'Withdrawal Request Successful!',
                 description: 'Welcome! Your withdrawal has been request.',
-                action: <button onClick={dismiss}>Withdrawal</button>,
             });
 
             router.push("/mypage/withdrawal");

@@ -20,8 +20,7 @@ export default function UserPaypal() {
             document.execCommand("copy");
             toast({
                 title: "Paypal Copied Successful!",
-                description:"Welcome! Paypal have copied successfully.",
-                action: <button onClick={dismiss}>Paypal</button>,                
+                description:"Welcome! Paypal have copied successfully.",               
             })
         } else {
             toast({

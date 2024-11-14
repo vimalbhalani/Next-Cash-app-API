@@ -21,7 +21,6 @@ export default function UserVenmo() {
             toast({
                 title: "Venmo Copied Successful!",
                 description:"Welcome! Venmo have copied successfully.",
-                action: <button onClick={dismiss}>Venmo</button>,                
             })
         } else {
             toast({

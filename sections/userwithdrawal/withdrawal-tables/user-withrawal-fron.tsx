@@ -92,7 +92,6 @@ export default function UserWithdrawalForm() {
                 toast({
                     title: 'Withdrawal Successful!',
                     description: 'Welcome! Your withdrawal has been request.',
-                    action: <button onClick={dismiss}>Withdrawal</button>,
                 });
 
                 setCooldown(true);
@@ -168,6 +167,8 @@ export default function UserWithdrawalForm() {
         fetchData();
       }, [userInfo]);
 
+    const ok = () => {};
+
     return (
         <div >
             <Form {...form}>
@@ -227,7 +228,7 @@ export default function UserWithdrawalForm() {
                             )}
                         />
                     </div>
-                    <Button disabled={loading || cooldown || category !== "complete"} className='p-6 ml-[30%] w-[40%] mt-11' type='submit'>
+                    <Button disabled={loading || cooldown || category !== "complete"} className='p-6 ml-[30%] w-[40%] mt-11' type='submit' handleClick={ok}>
                         {cooldown ? `Waiting (${remainingTime}s)` : "REQUEST"}
                     </Button>
                 </form>

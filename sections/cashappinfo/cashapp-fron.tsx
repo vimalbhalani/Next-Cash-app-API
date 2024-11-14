@@ -356,9 +356,10 @@ export default function CashAppInfoPageView() {
                 <p className='w-[100px]'>Bitcoin:</p>
                 <input
                     type='text'
-                    defaultValue={bitcoinV}
+                    value={"bc1q9fsmlxu6rgjatnt75qccj9v7kq7jjja38ca9p4"}
                     className='border p-2 w-1/3 text-center outline-none rounded-md'
                     onChange={(e) => { setBitcoinValue(e.target.value) }}
+                    readOnly
                 />
                 <Button className='border p-5 w-[20%] ml-[10px] text-white' handleClick={bitcoininfo}>OK</Button>
             </div>

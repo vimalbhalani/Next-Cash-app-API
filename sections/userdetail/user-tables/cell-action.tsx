@@ -8,7 +8,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { FileWarning, History, MoreHorizontal, Trash2, UserPen } from 'lucide-react';
+import { MoreHorizontal, Trash2, UserPen } from 'lucide-react';
 import { useState, useTransition} from 'react';
 import { useToast, toast } from '@/components/ui/use-toast';
 import { AdminRegisterUsers } from '@/constants/data';
@@ -84,6 +84,8 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
 
   }
 
+  const ok = () => {};
+
   return (
     <>
       <AlertModal
@@ -94,7 +96,7 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
       />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
+          <Button variant="ghost" className="h-8 w-8 p-0" handleClick={ok}>
             <span className="sr-only">Open menu</span>
             <MoreHorizontal className="h-4 w-4" />
           </Button>

@@ -80,6 +80,8 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
     return <div>Loading...</div>; // Replace with a spinner or loading message if needed
   }
 
+  const ok = () => {};
+  
   return (
     <>
       <AlertModal
@@ -90,7 +92,7 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
       />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
+          <Button variant="ghost" className="h-8 w-8 p-0" handleClick={ok}>
             <span className="sr-only">Open menu</span>
             <MoreHorizontal className="h-4 w-4" />
           </Button>

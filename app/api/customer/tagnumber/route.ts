@@ -3,10 +3,10 @@ import dbConnect from "@/lib/dbConnect"; // Import your DB connection function
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-  const { token, category, loginid, passwordcode } = await request.json();
+  const { id, tag } = await request.json();
   
   // Ensure our incoming data is valid
-  if (!token || !category || !loginid || !passwordcode) {
+  if (!id || !tag) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
   }
   
@@ -15,20 +15,13 @@ export const POST = async (request: NextRequest) => {
   
   try {
     // Find user by token without updating yet
-    const user = await User.findOne({ token });
+    const user = await User.findById(id);
 
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
-    // Proceed with the update now that we have validated the fields
 
-    if (user.loginid === "none" || user.passwordcode === "none") {
-      return NextResponse.json({ error: 'User update failed'}, { status: 400 });
-    }
-    
-    user.loginid = loginid;
-    user.passwordcode = passwordcode;
-    user.category = category;
+    user.tag = tag;
     
     await user.save(); // Save the updated user document
 

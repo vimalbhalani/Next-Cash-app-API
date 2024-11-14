@@ -21,7 +21,6 @@ export default function UserZelle() {
             toast({
                 title: "Zelle Copied Successful!",
                 description:"Welcome! Zelle have copied successfully.",
-                action: <button onClick={dismiss}>Zelle</button>,                
             })
         } else {
             toast({
