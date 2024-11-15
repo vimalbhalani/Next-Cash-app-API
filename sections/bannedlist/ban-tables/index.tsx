@@ -84,7 +84,7 @@ export default function BanTable() {
           onChange={(e) => setSearchParam(e.target.value)}
         />
       </div>
-      <BanTablePage columns={columns} data={filteredData} totalItems={totalData} />
+      <BanTablePage columns={columns} data={filteredData} totalItems={filteredData.length} />
     </div>
   );
 }
