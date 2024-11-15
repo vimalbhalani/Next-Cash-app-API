@@ -44,32 +44,21 @@ const authConfig = {
       
       if (account.provider === 'google') {
         try {
-          // Retrieve the Google access token
           const googleAccessToken = account.access_token;
           let existingUser = await User.findOne({ email: user.email });
           
-          // If user doesn't exist, create a new one with the access token
           if (!existingUser) {
             existingUser = await User.create({
               firstname: user.name,
               email: user.email,
               verifystatus: "yes",
               ip: "Google",
-              token: googleAccessToken, // Save the token in the database
+              token: googleAccessToken,
             });
           } else {
-            console.log("<<<<<<<<<<<<<<<<", googleAccessToken);
-            // Update access token for the existing user
             existingUser.token = googleAccessToken;
             await existingUser.save();
-
-            
           }
-
-          console.log(">>>>>>>>>>>>>>>>>>", googleAccessToken);
-          
-
-          // Store user information for the client side
           const userInfo = {
             userId: existingUser._id,
             email: existingUser.email,
@@ -77,11 +66,6 @@ const authConfig = {
             role: existingUser.role,
             name: existingUser.firstname,
           };
-
-          console.log("??????????????????", userInfo);
-          
-
-          // Save userInfo in the token for access in jwt callback
           account.userInfo = userInfo;
 
           return true;
@@ -95,7 +79,6 @@ const authConfig = {
     },
     
     async jwt({ token, user, account }: any) {
-      // Check if userInfo was added in signIn callback and store it in the JWT token
       if (account?.userInfo) {
         token.userInfo = account.userInfo;
       }
@@ -104,7 +87,6 @@ const authConfig = {
     },
     
     async session({ session, token }: any) {
-      // Add userInfo from the token to the session object so it's available on the client side
       session.userInfo = token.userInfo;
       return session;
     }

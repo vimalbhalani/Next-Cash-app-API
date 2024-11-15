@@ -42,6 +42,7 @@ export interface IUser extends Document {
     emailcode: string;
     password: string;
     role: string;
+    action: string;
     ip: string;
     token: string;
     createdAt: Date;
@@ -64,6 +65,7 @@ const userSchema: Schema = new Schema({
     emailcode: {type:String, default:"none"},
     password: { type: String, required: false },
     role: { type: String, default: "user" },
+    action:{type: String, default: "yes"},
     ip: { type: String },
     token: { type: String },
     cashtag: {type:String, default:"none"},

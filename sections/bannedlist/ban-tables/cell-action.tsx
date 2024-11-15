@@ -86,9 +86,54 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
     router.push("/main/user/userdetail");
   }
 
-  const restore = () => {
+  const restore = async () => {
+    startTransition(async () => {
+      try {
+        const response = await userList({
+          id: userId,
+          action: "yes",
+        });
 
-  }
+        if (response.error) {
+          return;
+        }
+
+        toast({
+          title: 'User Restored Successful!',
+          description: 'User have restored successful!',
+        });
+
+        location.reload();
+
+      } catch (error) {
+        toast({
+          title: 'User Restored Failed!',
+          description: 'Your action has been failed. Please try again!',
+        });
+      }
+    });
+  };
+
+  const userList = async (userData: { action: string, id: string; }) => {
+    try {
+      const response = await fetch('/api/admin/userrestore', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return { error: errorData.message || 'redeem failed' };
+      }
+
+      return await response.json();
+    } catch (error) {
+      throw error;
+    }
+  };
 
   const userhistory = () => {
 

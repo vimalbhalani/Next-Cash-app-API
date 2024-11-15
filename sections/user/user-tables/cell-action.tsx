@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { FileWarning, History, MoreHorizontal, Trash2, UserPen } from 'lucide-react';
 import { useState, useTransition} from 'react';
-import { useToast, toast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { AdminRegisterUsers } from '@/constants/data';
 import { useRouter } from 'next/navigation';
 
@@ -22,7 +22,6 @@ interface CellActionProps {
 export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: any) => {
 
   const router = useRouter();
-  const {dismiss} = useToast();
   const [loading, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
 
@@ -43,7 +42,6 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
         toast({
           title: 'Delete successful!',
           description: 'You have verified customer redeem',
-          action: <button onClick={dismiss}>redeem</button>,
         });
 
         location.reload();
@@ -86,13 +84,60 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
     router.push(`/main/user/userdetail?id=${userId}`);
   };
  
-  const ban = () => {
-    
-  }
+  const ban = async () => {
+    startTransition(async () => {
+      try {
+        const response = await bannedList({
+          id: userId,
+          action: "no",
+        });
+
+        if (response.error) {
+          return;
+        }
+
+        toast({
+          title: 'User Banned Successful!',
+          description: 'User have banned successful!',
+        });
+
+        location.reload();
+
+      } catch (error) {
+        toast({
+          title: 'User Banned Failed!',
+          description: 'Your action has been failed. Please try again!',
+        });
+      }
+    });
+  };
+
+  const bannedList = async (userData: { action: string, id: string; }) => {
+    try {
+      const response = await fetch('/api/admin/addbannedlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return { error: errorData.message || 'redeem failed' };
+      }
+
+      return await response.json();
+    } catch (error) {
+      throw error;
+    }
+  };
 
   const userhistory = () => {
 
   }
+
+  const ok = () => {};
 
   return (
     <>
@@ -104,7 +149,7 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
       />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
+          <Button variant="ghost" className="h-8 w-8 p-0" handleClick={ok}>
             <span className="sr-only">Open menu</span>
             <MoreHorizontal className="h-4 w-4" />
           </Button>

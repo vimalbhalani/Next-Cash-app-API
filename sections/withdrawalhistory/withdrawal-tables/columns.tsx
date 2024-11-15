@@ -10,9 +10,8 @@ export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
     cell: ({row}) => (<span>{row.original.user.tag}</span>)
   },
   {
-    accessorKey: 'user.category',
+    accessorKey: 'paymentoption',
     header: 'GAME',
-    cell:({row})=>(<span>{row.original.user.register[0].category}</span>)
   },
   {
     accessorKey: 'username',

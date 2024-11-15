@@ -8,7 +8,7 @@ const request = requestStr ? JSON.parse(requestStr) : {};
 
 export type UserRegister = {
   id: string,
-  phonenumber: string;
+  phonenumber:string;
   category: string;
   codenumber: string;
   loginid: string;
@@ -46,11 +46,13 @@ export type AdminRegisterUsers = {
   tag:number;
   email:string;
   ip: string; 
+  action: string;
   cashtag: string;
   venmo:string;
   paypal:string;
   zelle:string;
   bitcoin:string;
+  user: any;
   register: UserRegister[];
   redeem: Paymentredeems[];
   withdrawal: PaymentWithdrawals[];

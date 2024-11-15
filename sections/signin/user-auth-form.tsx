@@ -61,7 +61,6 @@ export default function UserAuthForm() {
         toast({
           title: 'SignIn Successful!',
           description: 'Welcome! Your signin has been success.',
-          action: <button onClick={dismiss}>SignIn</button>,
         });
 
         // Redirect user after successful signup

@@ -10,15 +10,15 @@ import { useState, useEffect } from 'react';
 import useSocket from '@/lib/socket';
 
 const { socket } = useSocket();
-
 const userInfoStr = localStorage.getItem('userinfo')
 const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
+
 
 export function UserAlarm() {
   const [messages, setMessages] = useState<string[]>([]);
   const [hasNewMessage, setHasNewMessage] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false); // State to track if dropdown is open
-
+  
   // Handle receiving messages
   useEffect(() => {
     const handleMessage = (content: string) => {
@@ -47,7 +47,7 @@ export function UserAlarm() {
   return (
     <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className='relative text-2xl' onClick={handleToggleDropdown}>
+        <Button variant="outline" size="icon" className='relative text-2xl' handleClick={handleToggleDropdown}>
           &#128365;
           {hasNewMessage && (
             <span className="absolute bg-red-600 h-3 w-3 rounded-full -top-1 -right-[2.8px]" />

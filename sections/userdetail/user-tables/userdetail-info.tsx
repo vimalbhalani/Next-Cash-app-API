@@ -3,7 +3,7 @@
 import { AdminRegisterUsers } from "@/constants/data";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useToast, toast } from "@/components/ui/use-toast";
+import { toast } from "@/components/ui/use-toast";
 
 interface UserData {
     tag: string,
@@ -11,7 +11,6 @@ interface UserData {
 
 export default function UserdetailInfo() {
 
-    const dismiss = useToast();
     const [data, setData] = useState<AdminRegisterUsers[]>([]);
     const [totalData, setTotalData] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(true);

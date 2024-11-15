@@ -91,7 +91,6 @@ export default function UserAuthForm() {
       toast({
         title: 'Successful!',
         description: 'Welcome! Your request has been success.',
-        action: <button onClick={dismiss}>SignUp</button>,
       });
 
       return await response.json(); // Assume successful response returns user data or a success message

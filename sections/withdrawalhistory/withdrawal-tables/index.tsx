@@ -8,6 +8,8 @@ export default function AdminWithdrawalHistoryTable() {
   const [data, setData] = useState<(PaymentWithdrawals & AdminRegisterUsers)[]>([]);
   const [totalData, setTotalData] = useState<number>(0); // Store total items for pagination
   const [loading, setLoading] = useState<boolean>(true);
+  const [searchParam, setSearchParam] = useState("");
+  const [selectCategory, setSelectCategory] = useState("tag");
 
   useEffect(() => {
     async function fetchData() {
@@ -50,6 +52,23 @@ export default function AdminWithdrawalHistoryTable() {
     fetchData();
   }, []);
   
+  const filteredData = data.filter(item => {
+    const param = searchParam.toLowerCase();
+    switch (selectCategory) {
+      case 'tag':
+        return item.user?.tag?.toString().includes(param);
+      case 'firstname':
+        return item.user?.firstname?.toLowerCase().includes(param);
+      case 'email':
+        return item.user?.email?.toLowerCase().includes(param);
+      case 'paymentoption':
+        return item.paymentoption?.toLowerCase().includes(param);
+      case 'paymenttype':
+        return item.paymenttype?.toLowerCase().includes(param);
+      default:
+        return true;
+    }
+  });
 
   if (loading) {
     return <div>Loading...</div>; // Replace with a spinner or loading message if needed
@@ -57,7 +76,24 @@ export default function AdminWithdrawalHistoryTable() {
 
   return (
     <div className="space-y-4">
-      <AdminWithdrawalHistoryTableView columns={columns} data={data} totalItems={totalData} />
+            <div className='flex justify-end'>
+        <select
+          onChange={(e) => setSelectCategory(e.target.value)}
+          className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-3 bg-background'
+        >
+          <option value="tag">Tag Number</option>
+          <option value="firstname">Name</option>
+          <option value="email">Username</option>
+          <option value="paymentoption">Game</option>
+          <option value="paymenttype">Type</option>
+        </select>
+        <input
+          className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-3 bg-background'
+          placeholder='Search...'
+          onChange={(e) => setSearchParam(e.target.value)}
+        />
+      </div>
+      <AdminWithdrawalHistoryTableView columns={columns} data={filteredData} totalItems={totalData} />
     </div>
   );
 }

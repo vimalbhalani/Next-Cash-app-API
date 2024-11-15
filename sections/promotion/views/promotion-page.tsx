@@ -12,7 +12,7 @@ const breadcrumbItems = [
 
 type TEmployeeListingPage = {};
 
-export default async function Promotion({}: TEmployeeListingPage) {
+export default async function Promotion({ }: TEmployeeListingPage) {
 
   return (
     <PageContainer scrollable>
@@ -26,10 +26,10 @@ export default async function Promotion({}: TEmployeeListingPage) {
           />
         </div>
         <Separator />
-        <PromotionPage/>
+        <PromotionPage />
         <p className='flex justify-center font-bold'>Player Redeem List</p>
-        <UserPromotionTable/>
-        <PromotionRule/>
+        <UserPromotionTable />
+        <PromotionRule />
       </div>
     </PageContainer>
   );

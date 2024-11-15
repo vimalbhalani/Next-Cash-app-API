@@ -37,7 +37,6 @@ export const CellAction: React.FC<CellActionProps> = ({ redeemDate, userId }: an
         toast({
           title: 'Accept Successful!',
           description: 'You have accepted successful!',
-          action: <button onClick={dismiss}>Accept</button>,
         });
 
         location.reload();
