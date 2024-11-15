@@ -29,9 +29,6 @@ export default function VerifyTable() {
             return { ...register, user }; 
           })
         );
-
-        // Calculate count of items with status "processing"
-        const processingItemsCount = combinedData.filter((item) => item.status === 'Processing').length;
         
         // Set data, total counts, and processing count
         setData(combinedData);
@@ -52,7 +49,7 @@ export default function VerifyTable() {
 
   return (
     <div className="space-y-4 ">
-      <VerifyTablePage columns={columns} data={data} totalItems={totalData} />
+      <VerifyTablePage columns={columns} data={data} totalItems={data.length} />
     </div>
   );
 }

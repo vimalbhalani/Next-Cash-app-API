@@ -13,7 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { useToast, toast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import useSocket from '@/lib/socket';
 
 const { socket } = useSocket();
@@ -30,7 +30,7 @@ type UserFormValue = z.infer<typeof formSchema>;
 const COOLDOWN_KEY = 'cooldown_data';
 
 export default function UserRegistrationForm() {
-  const { dismiss } = useToast();
+
   const [loading, startTransition] = useTransition();
   const form = useForm<UserFormValue>({
     resolver: zodResolver(formSchema),
@@ -98,7 +98,6 @@ export default function UserRegistrationForm() {
         toast({
           title: 'Register Successful',
           description: 'Welcome! Your register has been requested.',
-          action: <button onClick={dismiss}>Register</button>,
         });
 
         socket.emit("userRegister", { userId: userInfo.userId, message: `${userInfo.name} requested codenumber!` });

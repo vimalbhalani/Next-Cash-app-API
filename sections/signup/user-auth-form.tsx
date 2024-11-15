@@ -32,7 +32,6 @@ type UserFormValue = z.infer<typeof formSchema>;
 
 export default function UserAuthForm() {
   const router = useRouter();
-  const {dismiss} = useToast();
   const [loading, startTransition] = useTransition();
   const form = useForm<UserFormValue>({
     resolver: zodResolver(formSchema),

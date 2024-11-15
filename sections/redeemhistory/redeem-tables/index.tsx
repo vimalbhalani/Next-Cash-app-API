@@ -87,7 +87,7 @@ export default function AdminredeemHistoryTable() {
           onChange={(e) => setSearchParam(e.target.value)}
         />
       </div>
-      <AdminredeemHistoryTableView columns={columns} data={filteredData} totalItems={totalData} />
+      <AdminredeemHistoryTableView columns={columns} data={filteredData} totalItems={filteredData.length} />
     </div>
   );
 }

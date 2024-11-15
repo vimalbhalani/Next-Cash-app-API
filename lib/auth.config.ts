@@ -48,6 +48,14 @@ const authConfig = {
           let existingUser = await User.findOne({ email: user.email });
           
           if (!existingUser) {
+
+            const lastUser = await User.find({}).sort({ tag: -1 }).limit(1);
+            let newCode = 1000; // Start from 1000
+      
+            if (lastUser.length > 0 && lastUser[0].tag >= 1000) {
+              newCode = lastUser[0].tag + 1; // Increment from the last code
+            }
+            
             existingUser = await User.create({
               firstname: user.name,
               email: user.email,

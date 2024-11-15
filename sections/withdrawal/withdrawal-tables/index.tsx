@@ -53,7 +53,7 @@ export default function AdminWithdrawalTable() {
 
   return (
     <div className="space-y-4">
-      <AdminWithdrawalTableView columns={columns} data={data} totalItems={totalData} />
+      <AdminWithdrawalTableView columns={columns} data={data} totalItems={data.length} />
     </div>
   );
 }

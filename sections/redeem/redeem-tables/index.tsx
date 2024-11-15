@@ -51,7 +51,7 @@ export default function AdminRedeemTable() {
 
   return (
     <div className="space-y-4 ">
-      <AdminRedeemTableView columns={columns} data={data} totalItems={totalData} />
+      <AdminRedeemTableView columns={columns} data={data} totalItems={data.length} />
     </div>
   );
 }

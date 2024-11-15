@@ -47,7 +47,7 @@ export default function AdminMainTablePage() {
 
   return (
     <div className="space-y-4 ">
-      <AdminMainTableView columns={columns} data={data} totalItems={totalData} />
+      <AdminMainTableView columns={columns} data={data} totalItems={data.length} />
     </div>
   );
 }

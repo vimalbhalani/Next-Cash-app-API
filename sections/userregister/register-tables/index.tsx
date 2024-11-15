@@ -70,7 +70,7 @@ export default function UserRegisterTable() {
         Check Your Register Info
       </Button>
       <p className='py-5 text-medium font-bold text-center'>Register History</p>
-      <UserRegisterTableView columns={columns} data={data} totalItems={totalData} />
+      <UserRegisterTableView columns={columns} data={data} totalItems={data.length} />
       <GameLink />
     </div>
   );

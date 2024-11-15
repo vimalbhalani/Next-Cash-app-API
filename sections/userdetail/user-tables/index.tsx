@@ -62,7 +62,7 @@ export default function UserdetailTable() {
       <UserdetailInfo />
       </div>
       <div className='w-full ml-2 mt-5 lg:mt-0'>
-      <UserdetailTablePage columns={columns} data={data} totalItems={totalData} />
+      <UserdetailTablePage columns={columns} data={data} totalItems={data.length} />
       </div>
     </div>
   );

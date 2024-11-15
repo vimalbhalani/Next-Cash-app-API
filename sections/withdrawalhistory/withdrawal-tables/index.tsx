@@ -93,7 +93,7 @@ export default function AdminWithdrawalHistoryTable() {
           onChange={(e) => setSearchParam(e.target.value)}
         />
       </div>
-      <AdminWithdrawalHistoryTableView columns={columns} data={filteredData} totalItems={totalData} />
+      <AdminWithdrawalHistoryTableView columns={columns} data={filteredData} totalItems={filteredData.length} />
     </div>
   );
 }

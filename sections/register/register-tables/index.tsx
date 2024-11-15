@@ -50,7 +50,7 @@ export default function RegisterTable() {
 
   return (
     <div className="space-y-4 ">
-      <RegisterTablePage columns={columns} data={data} totalItems={totalData} />
+      <RegisterTablePage columns={columns} data={data} totalItems={data.length} />
     </div>
   );
 }

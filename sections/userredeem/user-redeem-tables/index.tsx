@@ -61,7 +61,7 @@ export default function UserredeemTable() {
 
   return (
     <div className="space-y-4 ">
-      <UserredeemTableView columns={columns} data={data} totalItems={totalData} />
+      <UserredeemTableView columns={columns} data={data} totalItems={data.length} />
     </div>
   );
 }
