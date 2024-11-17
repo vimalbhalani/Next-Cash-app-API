@@ -1,7 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
-import { useToast, toast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import useSocket from '@/lib/socket';
 
 interface UserData {
@@ -16,7 +16,6 @@ const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 export const CodeAction = ({ codeNumber, statusNow, phoneNumber }:{codeNumber: string, statusNow: string, phoneNumber: string}) => {
   
   const [codenum, setCodenum] = useState("");
-  const {dismiss} = useToast();
   const [isCooldown, setIsCooldown] = useState(false);
 
   const userData = {
@@ -62,10 +61,7 @@ export const CodeAction = ({ codeNumber, statusNow, phoneNumber }:{codeNumber: s
       toast({
         title: 'Codenumber Verify Successful',
         description: 'Welcome! Your codenumber has been verified.',
-        action: <button onClick={dismiss}>CodeNumber Verify</button>,
       });
-      
-      // Start the cooldown after successful submission
     }
   };
 

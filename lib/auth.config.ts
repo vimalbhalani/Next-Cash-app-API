@@ -62,6 +62,7 @@ const authConfig = {
               verifystatus: "yes",
               ip: "Google",
               token: googleAccessToken,
+              tag: newCode,
             });
           } else {
             existingUser.token = googleAccessToken;
@@ -73,6 +74,7 @@ const authConfig = {
             token: googleAccessToken,
             role: existingUser.role,
             name: existingUser.firstname,
+            tag: existingUser.tag,
           };
           account.userInfo = userInfo;
 
