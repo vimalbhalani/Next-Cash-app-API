@@ -1,6 +1,7 @@
 'use client';
 import { DashboardNav } from '@/components/dashboard-nav';
 import { navItems } from '@/constants/data';
+import { userNavItems } from '@/constants/data';
 import { useSidebar } from '@/hooks/useSidebar';
 import { cn } from '@/lib/utils';
 import { ChevronLeft } from 'lucide-react';
@@ -9,6 +10,9 @@ import Image from 'next/image';
 type SidebarProps = {
   className?: string;
 };
+
+const userInfoStr = localStorage.getItem('userinfo')
+const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
 export default function Sidebar({ className }: SidebarProps) {
   const { isMinimized, toggle } = useSidebar();
@@ -38,7 +42,7 @@ export default function Sidebar({ className }: SidebarProps) {
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
           <div className="mt-3 space-y-1">
-            <DashboardNav items={navItems} />
+            <DashboardNav items={userInfo.role==="admin"?navItems:userNavItems} />
           </div>
         </div>
       </div>

@@ -15,8 +15,6 @@ app.prepare().then(() => {
     const io = new Server(server);
 
     io.on('connection', (socket) => {
-        console.log('New socket connected:', socket.id);
-        
 
         socket.on('register', ({userId, role}) => {
             connectedUsers.push({ socketId: socket.id, userID: userId, role: role, socket });
@@ -56,15 +54,13 @@ app.prepare().then(() => {
               recipient.socket.emit('receiveMessage', data.message);
             }
         });
-        // Handle disconnect
+
         socket.on('disconnect', () => {
             connectedUsers = connectedUsers.filter(item => item.socketId != socket.id)
-            console.log('Socket disconnected:', socket.id, connectedUsers.length);
         });
     });
 
     server.listen(3000, (err) => {
         if (err) throw err;
-        console.log('> Ready on http://localhost:3000');
     });
 });

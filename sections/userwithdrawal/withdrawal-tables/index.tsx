@@ -48,8 +48,6 @@ export default function UserWithdrawalTable() {
     fetchData();
   }, [userInfo]);
   
-console.log(totalData);
-
   if (category !== "complete") {
     return<div className='text-xl text-center font-bold text-red-500'>First at all, You must register!</div>;
   }

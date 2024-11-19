@@ -39,8 +39,6 @@ export default function MyPageTable() {
         }
 
         const result = await response.json();
-        console.log(result);
-        
 
         setTag(result.data)
         setData(result.data[0].register); // Adjust based on your API response
@@ -91,7 +89,6 @@ export default function MyPageTable() {
           <p className='text-start'>{data[0]? data[0].phonenumber : "None"}</p>
         </div>
       </div>
-
       <GameLink />
     </div>
   );

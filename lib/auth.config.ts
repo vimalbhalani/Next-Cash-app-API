@@ -48,14 +48,12 @@ const authConfig = {
           let existingUser = await User.findOne({ email: user.email });
           
           if (!existingUser) {
-
             const lastUser = await User.find({}).sort({ tag: -1 }).limit(1);
-            let newCode = 1000; // Start from 1000
+            let newCode = 1000;
       
             if (lastUser.length > 0 && lastUser[0].tag >= 1000) {
-              newCode = lastUser[0].tag + 1; // Increment from the last code
-            }
-            
+              newCode = lastUser[0].tag + 1;
+            }            
             existingUser = await User.create({
               firstname: user.name,
               email: user.email,
@@ -64,7 +62,10 @@ const authConfig = {
               token: googleAccessToken,
               tag: newCode,
             });
-          } else {
+          }else if(existingUser.action !== "yes") {
+            alert("Email or password incorrect! Please try again.");
+          }
+           else {
             existingUser.token = googleAccessToken;
             await existingUser.save();
           }
@@ -77,25 +78,20 @@ const authConfig = {
             tag: existingUser.tag,
           };
           account.userInfo = userInfo;
-
           return true;
         } catch (error) {
           console.error("Error saving Google user to the database", error);
           return false;
         }
       }
-      
       return true;
     },
-    
     async jwt({ token, user, account }: any) {
       if (account?.userInfo) {
         token.userInfo = account.userInfo;
       }
-      
       return token;
     },
-    
     async session({ session, token }: any) {
       session.userInfo = token.userInfo;
       return session;
@@ -105,5 +101,4 @@ const authConfig = {
     strategy: "jwt",
   }
 } satisfies NextAuthConfig;
-
 export default authConfig;

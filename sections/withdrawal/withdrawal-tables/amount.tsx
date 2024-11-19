@@ -1,7 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
-import { useToast, toast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 
 interface UserData {
   id: string;
@@ -11,7 +11,6 @@ interface UserData {
 
 export const AmountAction = ({ withdrawalDate, userId, withdrawalAmount }: { withdrawalDate: any; userId: string; withdrawalAmount: number }) => {
   
-  const { dismiss } = useToast();
   const [amount, setAmount] = useState<number>(withdrawalAmount); // Initialize with codeNumber if available
 
   const userData: UserData = {
@@ -48,7 +47,6 @@ export const AmountAction = ({ withdrawalDate, userId, withdrawalAmount }: { wit
       toast({
         title: 'Amount updating Successful!',
         description: 'Welcome! Amount updating has been successful.',
-        action: <button onClick={dismiss}>Amount Updating</button>,
       });
       
       location.reload();
@@ -85,7 +83,7 @@ export const AmountAction = ({ withdrawalDate, userId, withdrawalAmount }: { wit
           e.target.value = e.target.value.replace(/[^0-9]/g, '');
         }}
       />
-      <Button className='h-8 text-xs text-white px-1 bg-blue-500 ml-1' onClick={handleButtonClick}>
+      <Button className='h-8 text-xs text-white px-1 bg-blue-500 ml-1' handleClick={handleButtonClick}>
         UPDATE
       </Button>
     </div>

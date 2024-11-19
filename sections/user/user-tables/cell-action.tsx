@@ -133,10 +133,6 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
     }
   };
 
-  const userhistory = () => {
-
-  }
-
   const ok = () => {};
 
   return (
@@ -165,11 +161,6 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
             onClick={ban}
           >
             <FileWarning className="mr-2 h-4 w-4" /> Ban
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={userhistory}
-          >
-            <History className="mr-2 h-4 w-4" /> History
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash2 className="mr-2 h-4 w-4" /> Delete

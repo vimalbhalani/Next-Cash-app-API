@@ -88,8 +88,6 @@ export default function UserRegistrationForm() {
           id: userInfo.userId,
         });
 
-        console.log(response, "response");
-
         if (response.error) {
           console.error('UserRegister error:', response.error);
           return;

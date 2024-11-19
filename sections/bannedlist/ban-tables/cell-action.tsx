@@ -43,7 +43,6 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
         toast({
           title: 'Delete successful!',
           description: 'You have verified customer redeem',
-          action: <button onClick={dismiss}>redeem</button>,
         });
 
         location.reload();
@@ -134,10 +133,8 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
       throw error;
     }
   };
-
-  const userhistory = () => {
-
-  }
+  
+  const ok = () => {};
 
   return (
     <>
@@ -149,7 +146,7 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
       />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
+          <Button variant="ghost" className="h-8 w-8 p-0" handleClick={ok}>
             <span className="sr-only">Open menu</span>
             <MoreHorizontal className="h-4 w-4" />
           </Button>
@@ -165,11 +162,6 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
             onClick={restore}
           >
             <ArchiveRestore className="mr-2 h-4 w-4" />Restore
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={userhistory}
-          >
-            <History className="mr-2 h-4 w-4" /> History
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash2 className="mr-2 h-4 w-4" /> Delete

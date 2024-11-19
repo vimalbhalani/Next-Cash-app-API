@@ -110,7 +110,7 @@ export default function UserdetailInfo() {
     return (
         <div className="p-4 mt-5">
             <input className="border-none outline-none text-xl font-bold mt-3 text-center"
-                defaultValue={"#"+data[0].tag}
+                defaultValue={data[0].tag}
                 onChange={(e)=>setTag(e.target.value)}
                 onKeyDown={handleKeyDown} 
             />

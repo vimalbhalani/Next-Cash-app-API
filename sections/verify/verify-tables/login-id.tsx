@@ -58,7 +58,6 @@ export const LoginIdAction = ({loginIdV, passwordCodeV, userName, dateV }: { pho
         },
         body: JSON.stringify(userData),
       });
-      console.log(userData);
       if (!response.ok) {
         const errorData = await response.json();
         return { error: errorData.message || 'loginid sending failed' }; // Handle response error

@@ -49,7 +49,6 @@ export default function UserredeemTable() {
 
     fetchData();
   }, [userInfo]);
-  console.log(category);
   
   if(category !== "complete"){
     return<div className='text-xl text-center font-bold text-red-500'>First at all, You must register!</div>;

@@ -80,9 +80,6 @@ export default function UserPromotionTable() {
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) // Sort by date
     .slice(0, 5); // Get the top 5 latest records
 
-    console.log(latestData);
-    
-
   return (
     <div className="space-y-4 ">
       <UserPromotionTableView columns={columns} data={latestData} totalItems={totalData} />

@@ -8,9 +8,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { MoreHorizontal, Trash2 } from 'lucide-react';
+import { ArchiveRestore, MoreHorizontal, Trash2 } from 'lucide-react';
 import { useState, useTransition } from 'react';
-import { useToast, toast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { AdminRegisterUsers } from '@/constants/data';
 
 interface CellActionProps {
@@ -19,7 +19,6 @@ interface CellActionProps {
 
 export const CellAction: React.FC<CellActionProps> = ({ userId, redeemDate }: any) => {
   
-  const { dismiss } = useToast();
   const [loading, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
 
@@ -78,6 +77,56 @@ export const CellAction: React.FC<CellActionProps> = ({ userId, redeemDate }: an
     return <div>Loading...</div>; // Replace with a spinner or loading message if needed
   }
 
+  const restore = async () => {
+    startTransition(async () => {
+      try {
+        const response = await userList({
+          id: userId,
+          paymentstatus: "Processing",
+          date: redeemDate,
+        });
+
+        if (response.error) {
+          return;
+        }
+
+        toast({
+          title: 'User Restored Successful!',
+          description: 'User have restored successful!',
+        });
+
+        location.reload();
+
+      } catch (error) {
+        toast({
+          title: 'User Restored Failed!',
+          description: 'Your action has been failed. Please try again!',
+        });
+      }
+    });
+  };
+
+  const userList = async (userData: { paymentstatus: string, id: string; date: any}) => {
+    try {
+      const response = await fetch('/api/admin/redeem', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return { error: errorData.message || 'redeem failed' };
+      }
+
+      return await response.json();
+    } catch (error) {
+      throw error;
+    }
+  };
+
   const ok = () => {};
 
   return (
@@ -97,6 +146,11 @@ export const CellAction: React.FC<CellActionProps> = ({ userId, redeemDate }: an
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Action</DropdownMenuLabel>
+          <DropdownMenuItem
+            onClick={restore}
+          >
+            <ArchiveRestore className="mr-2 h-4 w-4" /> Restore
+          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={()=>setOpen(true)}
           >

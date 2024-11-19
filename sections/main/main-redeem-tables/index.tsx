@@ -18,8 +18,6 @@ export default function AdminMainTablePage() {
         const response = await fetch('/api/admin/totalredeem'); // Your API for redeems
         const result = await response.json();
 
-        console.log(result);
-
         // Transform the result using map
         const transformedData = result.data.map((item: any) => ({
           // Assuming each item has properties that resemble Paymentredeems and AdminRegisterUsers

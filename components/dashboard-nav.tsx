@@ -54,7 +54,7 @@ const NavItemContent = React.memo(
       >
         <Icon className="size-5 flex-none" />
         {!isMinimized && <span className="mr-2 truncate">{item.title}</span>}
-        {(item.alarm !== "0" || !item.alarm) && (
+        {(item.alarm !== "0" || item.alarm != undefined) && (
           <p className='rounded-full bg-red-500 text-white w-5 text-center'>
             {item.alarm}
           </p>

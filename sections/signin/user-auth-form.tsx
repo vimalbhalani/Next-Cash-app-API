@@ -44,16 +44,11 @@ export default function UserAuthForm() {
           password: data.password,
         });
 
-        if (response.error) {
-          // Handle error (e.g. show error message)
-          toast({
-            title: 'SignIn Failed!',
-            description: 'Your email or password is incorrect! Or your email did not verify. Please try again.',
-          });
-          console.error('Signup error:', response.error);
-          return;
+        if(response.user.role==="admin"){
+         router.push("/main")
+        }else{
+          router.push("/mypage");
         }
-
         //LocalStroge
         localStorage.setItem('userinfo', JSON.stringify(response.user));
         socket.emit("register", {userId:response.user.userId, role:response.user.role})
@@ -63,20 +58,9 @@ export default function UserAuthForm() {
           description: 'Welcome! Your signin has been success.',
         });
 
-        // Redirect user after successful signup
-        if(response.user.role==="admin"){
-         router.push("/main")
-        }else{
-          router.push("/mypage");
-        }
-
       } catch (error) {
         // Handle errors that do not come from the response
         console.error('Signup error:', error);
-        toast({
-          title: 'SignIn Failed!',
-          description: 'Your email or password is incorrect! Please try again.',
-        });
       }
     });
   };

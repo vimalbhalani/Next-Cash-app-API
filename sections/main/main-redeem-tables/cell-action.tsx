@@ -32,7 +32,6 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, Amount}:any
                 amount: Amount,
             });
 
-            console.log(response);
             if (response.error) {
                 console.error('redeem error:', response.error);
                 return;

@@ -83,7 +83,6 @@ export default function UserWithdrawalForm() {
                     paymenttype: selectedWithdrawal,
                 });
 
-                console.log(response);
                 if (response.error) {
                     console.error('Withdrawal error:', response.error);
                     return;

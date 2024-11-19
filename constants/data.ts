@@ -1,8 +1,5 @@
 import { NavItem } from '@/types';
 
-const userInfoStr = localStorage.getItem('userinfo')
-const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
-
 const requestStr = localStorage.getItem('adminRequest')
 const request = requestStr ? JSON.parse(requestStr) : {};
 
@@ -58,7 +55,7 @@ export type AdminRegisterUsers = {
   withdrawal: PaymentWithdrawals[];
 };
 
-export const navItems: NavItem[] = userInfo.role === "admin" ? [
+export const navItems: NavItem[] = [
   {
     title: 'Main',
     href: '/main',
@@ -145,7 +142,9 @@ export const navItems: NavItem[] = userInfo.role === "admin" ? [
     label: 'banned list',
     alarm: ''
   },
-] : [
+]; 
+
+export const userNavItems: NavItem[] = [
   {
     title: 'Promotion',
     href: '/mypage',

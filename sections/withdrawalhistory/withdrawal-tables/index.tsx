@@ -19,12 +19,10 @@ export default function AdminWithdrawalHistoryTable() {
         // Fetch Payment redeems
         const withdrawalsResponse = await fetch('/api/admin/getuser'); // Your API for redeems
         const withdrawalsResult = await withdrawalsResponse.json();
-        // console.log(withdrawalResult);
         
         // Fetch Admin Register Users
         const usersResponse = await fetch('/api/admin/getuser'); // Your API for users
         const usersResult = await usersResponse.json();
-        // console.log(usersResult);
         
         // Combine datasets and filter withdrawals by paymentStatus
         const combinedData = withdrawalsResult.data.flatMap((withdrawalEntry:any) => 
@@ -37,7 +35,6 @@ export default function AdminWithdrawalHistoryTable() {
               return { ...withdrawal, user }; 
             })
         );
-        // console.log(combinedData);
         
         // Set data and total counts, adjust based on your API response
         setData(combinedData);

@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { CheckCircle, MoreHorizontal, Send, Trash, X } from 'lucide-react';
 import { useTransition} from 'react';
-import { useToast, toast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { AdminRegisterUsers } from '@/constants/data';
 
 interface CellActionProps {
@@ -19,7 +19,6 @@ interface CellActionProps {
 
 export const CellAction: React.FC<CellActionProps> = ({ withdrawalDate, userId}:any) => {
 
-  const {dismiss} = useToast();
   const [loading, startTransition] = useTransition();
 
   const withdrawal = async () => {
@@ -31,7 +30,6 @@ export const CellAction: React.FC<CellActionProps> = ({ withdrawalDate, userId}:
                 id: userId,
             });
 
-            console.log(response);
             if (response.error) {
                 console.error('Withdrawal error:', response.error);
                 return;
@@ -40,7 +38,6 @@ export const CellAction: React.FC<CellActionProps> = ({ withdrawalDate, userId}:
             toast({
                 title: 'Withdrawal Verify Successful!',
                 description: 'You have verified customer redeem',
-                action: <button onClick={dismiss}>Withdrawal</button>,
               });
 
               location.reload();
@@ -85,7 +82,6 @@ const unwithdrawal = async () => {
               id: userId,
           });
 
-          console.log(response);
           if (response.error) {
               console.error('Decline error:', response.error);
               return;
@@ -94,7 +90,6 @@ const unwithdrawal = async () => {
           toast({
               title: 'Decline Successful!',
               description: 'You have declined successful!',
-              action: <button onClick={dismiss}>Decline</button>,
             });
 
             location.reload();
@@ -133,12 +128,14 @@ const userUnwithdrawalCheck = async (userData: { paymentstatus: string, date: an
   if (loading) {
     return <div>Loading...</div>; // Replace with a spinner or loading message if needed
   }
+
+  const ok = () => {};
   
   return (
     <>
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
+          <Button variant="ghost" className="h-8 w-8 p-0" handleClick={ok}>
             <span className="sr-only">Open menu</span>
             <MoreHorizontal className="h-4 w-4" />
           </Button>

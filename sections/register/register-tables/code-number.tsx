@@ -53,7 +53,6 @@ export const CodeAction = ({ phoneNumber, codeNumber, userName, regiStatus }: { 
       toast({
         title: 'Code Sending Successful!',
         description: 'Welcome! Your code sending has been successful.',
-        action: <button onClick={dismiss}>Code Sending</button>,
       });
       
       socket.emit("adminRegister", {receiveuserId: userName, message:"Client sent codenumber to you!"} );
@@ -102,7 +101,7 @@ export const CodeAction = ({ phoneNumber, codeNumber, userName, regiStatus }: { 
           e.target.value = e.target.value.replace(/[^0-9]/g, '');
         }}
       />
-      <Button className='h-8 w-10 text-xs bg-blue-500 text-white ml-1' onClick={handleButtonClick} disabled={regiStatus !== "preparing" || codeNumber !== "none"} >
+      <Button className='h-8 w-10 text-xs bg-blue-500 text-white ml-1' handleClick={handleButtonClick} disabled={regiStatus !== "preparing" || codeNumber !== "none"} >
         SEND
       </Button>
     </div>

@@ -8,7 +8,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { MoreHorizontal, Trash2 } from 'lucide-react';
+import { ArchiveRestore, MoreHorizontal, Trash2 } from 'lucide-react';
 import { useState, useTransition} from 'react';
 import { useToast, toast } from '@/components/ui/use-toast';
 import { AdminRegisterUsers } from '@/constants/data';
@@ -19,7 +19,6 @@ interface CellActionProps {
 
 export const CellAction: React.FC<CellActionProps> = ({ withdrawalDate, userId}:any) => {
 
-  const {dismiss} = useToast();
   const [loading, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
 
@@ -40,7 +39,6 @@ export const CellAction: React.FC<CellActionProps> = ({ withdrawalDate, userId}:
         toast({
           title: 'Delete successful!',
           description: 'You have verified customer redeem',
-          action: <button onClick={dismiss}>redeem</button>,
         });
 
         location.reload();
@@ -79,6 +77,58 @@ export const CellAction: React.FC<CellActionProps> = ({ withdrawalDate, userId}:
     return <div>Loading...</div>; // Replace with a spinner or loading message if needed
   }
 
+  const restore = async () => {
+    startTransition(async () => {
+      try {
+        const response = await userList({
+          id: userId,
+          paymentstatus: "Processing",
+          date: withdrawalDate
+        });
+
+        if (response.error) {
+          return;
+        }
+
+        toast({
+          title: 'User Restored Successful!',
+          description: 'User have restored successful!',
+        });
+
+        location.reload();
+
+      } catch (error) {
+        toast({
+          title: 'User Restored Failed!',
+          description: 'Your action has been failed. Please try again!',
+        });
+      }
+    });
+  };
+
+  const userList = async (userData: { paymentstatus: string, id: string; date: any}) => {
+    try {
+      const response = await fetch('/api/admin/withdrawal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return { error: errorData.message || 'redeem failed' };
+      }
+
+      return await response.json();
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const ok = () => {};
+
   return (
     <>
       <AlertModal
@@ -89,13 +139,16 @@ export const CellAction: React.FC<CellActionProps> = ({ withdrawalDate, userId}:
       />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
+          <Button variant="ghost" className="h-8 w-8 p-0" handleClick={ok}>
             <span className="sr-only">Open menu</span>
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Action</DropdownMenuLabel>
+          <DropdownMenuItem onClick={restore}>
+            <ArchiveRestore className="mr-2 h-4 w-4" /> Restore
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash2 className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>

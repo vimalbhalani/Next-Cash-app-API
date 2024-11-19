@@ -36,7 +36,6 @@ export default function UserWithdrawalMiddle() {
                 token: userInfo.token,
             });
 
-            console.log(response);
             if (response.error) {
                 console.error('Signup error:', response.error);
                 return;
