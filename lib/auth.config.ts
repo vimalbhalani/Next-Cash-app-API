@@ -64,6 +64,7 @@ const authConfig = {
             });
           }else if(existingUser.action !== "yes") {
             alert("Email or password incorrect! Please try again.");
+            return true;
           }
            else {
             existingUser.token = googleAccessToken;
