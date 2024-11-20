@@ -1,8 +1,5 @@
 import { NavItem } from '@/types';
 
-const requestStr = localStorage.getItem('adminRequest')
-const request = requestStr ? JSON.parse(requestStr) : {};
-
 export type UserRegister = {
   id: string,
   phonenumber:string;
@@ -61,41 +58,35 @@ export const navItems: NavItem[] = [
     href: '/main',
     icon: 'dashboard',
     label: 'main',
-    alarm: ''
   },
   {
     title: 'Register',
     href: '/main/register',
     icon: 'user',
     label: 'register',
-    alarm: `${request.registerR}`
   },
   {
     title: 'Code Verify',
     href: '/main/verify',
     icon: 'verify',
     label: 'verify',
-    alarm: `${request.verifyR}`
   },
   {
     title: 'Deposit',
     icon: 'wallet',
     label: 'redeem',
-    alarm: `${request.redeemR}`,
     children: [
       {
         title: "Request",
         href: '/main/redeem',
         icon: 'wallet',
         label: 'redeemRequest',
-        alarm: `${request.redeemR}`
       },
       {
         title: "History",
         href: '/main/redeemhistory',
         icon: 'notebookpen',
         label: 'redeemHistory',
-        alarm: ''
       }
     ]
   },
@@ -103,21 +94,18 @@ export const navItems: NavItem[] = [
     title: 'Withdrawal',
     icon: 'wallet2',
     label: 'withdrawal',
-    alarm: `${request.withdrawalR}`,
     children: [
       {
         title: "Request",
         href: '/main/withdrawal',
         icon: 'wallet2',
         label: 'withdrawalRequest',
-        alarm: `${request.withdrawalR}`
       },
       {
         title: "History",
         href: '/main/withdrawalhistory',
         icon: 'notebookpen',
         label: 'withdrawalHistory',
-        alarm: ''
       }
     ]
   },
@@ -126,21 +114,18 @@ export const navItems: NavItem[] = [
     href: '/main/cashappinfo',
     icon: 'settings',
     label: 'setting',
-    alarm: ''
   },
   {
     title: 'User',
     href: '/main/user',
     icon: 'user2',
     label: 'user',
-    alarm: ''
   },
   {
     title: 'Banned List',
     href: '/main/bannedlist',
     icon: 'warning',
     label: 'banned list',
-    alarm: ''
   },
 ]; 
 
@@ -150,34 +135,29 @@ export const userNavItems: NavItem[] = [
     href: '/mypage',
     icon: 'product',
     label: 'mypage',
-    alarm: ''
   },
   {
     title: 'Mypage',
     href: '/mypage/promotion',
     icon: 'userPen',
     label: 'promotion',
-    alarm: ''
   },
   {
     title: 'Register',
     href: '/mypage/register',
     icon: 'user',
     label: 'register',
-    alarm: ''
   },
   {
     title: 'Deposit',
     href: '/mypage/deposit',
     icon: 'wallet',
     label: 'redeem',
-    alarm: ''
   },
   {
     title: 'Withdrawal',
     href: '/mypage/withdrawal',
     icon: 'wallet2',
     label: 'withdrawal',
-    alarm: ''
   },
 ];

@@ -55,6 +55,22 @@ app.prepare().then(() => {
             }
         });
 
+        socket.on("registerRequest", (data)=>{
+            socket.emit("registerRecieve", data);
+        })
+
+        socket.on("verifyRequest", (data)=>{
+            socket.emit("verifyRecieve", data);
+        })
+        
+        socket.on("depositRequest", (data)=>{
+            socket.emit("depositRecieve", data);
+        })
+
+        socket.on("withdrawalRequest", (data)=>{
+            socket.emit("withdrawalRecieve", data);
+        })
+
         socket.on('disconnect', () => {
             connectedUsers = connectedUsers.filter(item => item.socketId != socket.id)
         });

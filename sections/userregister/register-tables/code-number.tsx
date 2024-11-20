@@ -5,7 +5,7 @@ import { toast } from '@/components/ui/use-toast';
 import useSocket from '@/lib/socket';
 
 interface UserData {
-  phonenumber: string;
+  date: any;
   codenumber: string;
 }
 
@@ -13,14 +13,14 @@ const {socket} = useSocket();
 const userInfoStr = localStorage.getItem('userinfo');
 const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
-export const CodeAction = ({ codeNumber, statusNow, phoneNumber }:{codeNumber: string, statusNow: string, phoneNumber: string}) => {
+export const CodeAction = ({ codeNumber, statusNow, registerDate }:{codeNumber: string, statusNow: string, registerDate: any}) => {
   
   const [codenum, setCodenum] = useState("");
   const [isCooldown, setIsCooldown] = useState(false);
 
   const userData = {
     token: userInfo.token,
-    phonenumber: phoneNumber,
+    date: registerDate,
     codenumber: codenum,
     status: "complete",
   }

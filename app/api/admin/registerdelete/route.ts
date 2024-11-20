@@ -11,11 +11,11 @@ export const DELETE = async (request: NextRequest) => {
         return NextResponse.json({ error: 'Failed to parse JSON' }, { status: 400 });
     }
 
-    const { id, phonenumber } = requestData;
+    const { id, date } = requestData;
 
     // Ensure required fields are present
-    if (!id || !phonenumber) {
-        return NextResponse.json({ error: 'Missing required fields: id or phonenumber' }, { status: 400 });
+    if (!id || !date) {
+        return NextResponse.json({ error: 'Missing required fields: id or date' }, { status: 400 });
     }
     
     await dbConnect();
@@ -28,12 +28,16 @@ export const DELETE = async (request: NextRequest) => {
             return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
 
-        // Find the register using the provided phonenumber
-        const registerIndex = user.register.findIndex(regi => regi.phonenumber === phonenumber);
+        // Try to find the register using the provided date
+        const registerIndex = user.register.findIndex((dep: any) => {
+            const depDate = new Date(dep.date).getTime(); // Convert the register date to timestamp
+            const requestDate = new Date(date).getTime(); // Convert the requested date to timestamp
+            return depDate === requestDate;
+        });
 
         // Check if the register was found
         if (registerIndex === -1) {
-            return NextResponse.json({ error: 'No register found with the given phonenumber' }, { status: 404 });
+            return NextResponse.json({ error: 'No register found with the given date' }, { status: 404 });
         }
 
         // Delete the found register entry
@@ -43,7 +47,7 @@ export const DELETE = async (request: NextRequest) => {
         const updatedUser = await user.save();
 
         return NextResponse.json({
-            ok: 'Register deleted successfully',
+            ok: 'register deleted successfully',
             user: updatedUser // Include the updated user if needed
         }, { status: 200 });
 

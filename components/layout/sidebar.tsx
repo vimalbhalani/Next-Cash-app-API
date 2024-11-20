@@ -11,12 +11,12 @@ type SidebarProps = {
   className?: string;
 };
 
-const userInfoStr = localStorage.getItem('userinfo')
-const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
-
 export default function Sidebar({ className }: SidebarProps) {
   const { isMinimized, toggle } = useSidebar();
-
+  
+  const userInfoStr = localStorage.getItem('userinfo')
+  const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
+  
   const handleToggle = () => {
     toggle();
   };

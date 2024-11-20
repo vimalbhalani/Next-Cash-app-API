@@ -1,45 +1,56 @@
-import User from "@/models/User"; // Import your User model
-import dbConnect from "@/lib/dbConnect"; // Import your DB connection function
+import User from "@/models/User";
+import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-  const { phonenumber, codenumber, id } = await request.json();
-  
-  // Ensure our incoming data is valid
-  if (!phonenumber || !codenumber || !id) {
-    return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-  }
-  
-  // Connect to the database
-  await dbConnect();
-  
-  try {
-    // Find the existing user document by id
-    const existingUser = await User.findById(id);
-
-    if (!existingUser) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    // Attempt to parse the JSON body
+    let requestData;
+    try {
+        requestData = await request.json();
+    } catch (err) {
+        return NextResponse.json({ error: 'Failed to parse JSON' }, { status: 400 });
     }
 
-    // Update the user's codenumber and status in the "register" array
-    const updatedUser = await User.findOneAndUpdate(
-      { _id: id, 'register.phonenumber': phonenumber }, // search condition includes phonenumber in register array
-      { 
-        $set: {
-          'register.$.codenumber': codenumber, // Update the codenumber of the found index
-        }
-      }, // update operation
-      { new: true } // options: return the updated document
-    );
+    const { id, codenumber, date } = requestData;
 
-    if (!updatedUser) {
-      return NextResponse.json({ error: 'Phone number not found in register' }, { status: 404 });
+    // Ensure required fields are present
+    if (!id || !codenumber || !date) {
+        return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
-
-    return NextResponse.json({ ok: 'User updated', user: updatedUser }, { status: 200 });
     
-  } catch (err: any) {
-    // Handle errors during DB operations
-    return NextResponse.json({ error: err.message }, { status: 500 });
-  }
+    await dbConnect();
+
+    try {
+        // Find the user by ID
+        const user = await User.findById(id);
+
+        if (!user) {
+            return NextResponse.json({ error: 'User not found' }, { status: 404 });
+        }
+
+        // Log the registers for debugging
+        const registerIndex = user.register.findIndex((dep: any) => {
+            const depDate = new Date(dep.date).getTime();
+            const requestDate = new Date(date).getTime();
+            return depDate === requestDate;
+        });
+
+        if (registerIndex === -1) {
+            return NextResponse.json({ error: 'No register found with the given date' }, { status: 404 });
+        }
+
+        // Update the payment status of the found register entry
+        user.register[registerIndex].codenumber = codenumber;
+
+        // Save the user document
+        const updatedUser = await user.save();
+
+        return NextResponse.json({
+            ok: 'register updated successfully',
+            user: updatedUser  // Include the updated user if needed
+        }, { status: 200 });
+
+    } catch (err: any) {
+        return NextResponse.json({ error: 'Internal server error', details: err.message }, { status: 500 });
+    }
 };

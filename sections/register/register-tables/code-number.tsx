@@ -11,24 +11,26 @@ const {socket} = useSocket();
 interface UserData {
   id: string;
   codenumber: string;
-  phonenumber: string;
+  date: any;
 }
 
-export const CodeAction = ({ phoneNumber, codeNumber, userName, regiStatus }: { phoneNumber: string; codeNumber?: string; userName: string; regiStatus: string }) => {
+export const CodeAction = ({ registerDate, codeNumber, userName, regiStatus }: { registerDate: any; codeNumber?: string; userName: string; regiStatus: string }) => {
   
-  const { dismiss } = useToast();
   const [codenum, setCodenum] = useState(codeNumber || ""); // Initialize with codeNumber if available
+
+  console.log(registerDate);
+  
 
   const userData: UserData = {
     id: userName,
     codenumber: codenum,
-    phonenumber: phoneNumber,
+    date: registerDate,
   }
 
   // Example signUp function
   const onSubmit = async (userData: UserData) => {
 
-    if(codenum===""){
+    if(codenum === "" || codenum === "none"){
       toast({
         title: 'Code Number  empty!',
         description: 'Please input code number!',

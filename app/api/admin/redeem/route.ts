@@ -13,9 +13,6 @@ export const POST = async (request: NextRequest) => {
 
     const { id, paymentstatus, date } = requestData;
 
-    console.log("?????????????", id, paymentstatus, date);
-    
-
     // Ensure required fields are present
     if (!id || !paymentstatus || !date) {
         return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });

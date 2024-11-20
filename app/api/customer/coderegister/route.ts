@@ -3,10 +3,10 @@ import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-  const { token, phonenumber, codenumber, status } = await request.json();
+  const { token, date, codenumber, status } = await request.json();
   
   // Validate input
-  if (!phonenumber || !codenumber || !status || !token) {
+  if (!date || !codenumber || !status || !token) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
   }
   
@@ -25,7 +25,7 @@ export const POST = async (request: NextRequest) => {
     const updatedUser = await User.findOneAndUpdate(
       {
         token: token,
-        'register.phonenumber': phonenumber,
+        'register.date': date,
         'register.codenumber': codenumber
       },
       { 

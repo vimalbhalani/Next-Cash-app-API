@@ -2,7 +2,6 @@ import { Icons } from '@/components/icons';
 
 export interface NavItem {
   title: string;
-  alarm: string;
   href?: string;
   disabled?: boolean;
   external?: boolean;

@@ -19,6 +19,6 @@ export const columns: ColumnDef<UserRegister>[] = [
   {
     id: 'actions',
     header: 'CODE NUMBER',
-    cell: ({row}) => <CodeAction codeNumber = {row.original.codenumber} statusNow = {row.original.status} phoneNumber = {row.original.phonenumber}/>
+    cell: ({row}) => <CodeAction codeNumber = {row.original.codenumber} statusNow = {row.original.status} registerDate = {row.original.date}/>
   }
 ];

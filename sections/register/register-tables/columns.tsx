@@ -35,11 +35,11 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
   {
     id: 'actions',
     header: 'CODE NUMBER',
-    cell: ({ row }) => <CodeAction phoneNumber={row.original.phonenumber} codeNumber = {row.original.codenumber} regiStatus = {row.original.status} userName={row.original.user._id}/>
+    cell: ({ row }) => <CodeAction registerDate={row.original.date} codeNumber = {row.original.codenumber} regiStatus = {row.original.status} userName={row.original.user._id}/>
   },
   {
     id: 'actions',
     header:'ACTION',
-    cell: ({ row }) => <CellAction phoneNumber= {row.original.phonenumber} userId = {row.original.user._id} />
+    cell: ({ row }) => <CellAction deleteDate= {row.original.date} userId = {row.original.user._id} />
   }
 ];

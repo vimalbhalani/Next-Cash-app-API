@@ -10,28 +10,27 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { AdminRegisterUsers, Paymentredeems, PaymentWithdrawals, UserRegister } from '@/constants/data';
+import useSocket from '@/lib/socket';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-interface Request {
-  registerR: number,
-  verifyR: number,
-  redeemR: number,
-  withdrawalR: number
-}
+// interface Request {
+//   registerR: number,
+//   verifyR: number,
+//   redeemR: number,
+//   withdrawalR: number
+// }
 
 export function UserNav() {
 
   const router = useRouter();
+  const {socket} = useSocket();
   const userInfoStr = localStorage.getItem('userinfo')
   const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
   const { data: session, status } = useSession();
-  const [registerRequest, setPreparingCount] = useState<number>(0);
-  const [verifyRequest, setProcessingCount] = useState<number>(0);
-  const [redeemRequest, setCombinedDataCount1] = useState<number>(0);
-  const [withdrawalRequest, setCombinedDataCount2] = useState<number>(0);
+
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -61,7 +60,8 @@ export function UserNav() {
           })
         );
         const preparingItemsCount = combinedData.filter((item) => item.status === 'preparing').length;
-        setPreparingCount(preparingItemsCount);
+        socket.emit("registerRequest", preparingItemsCount)
+        // setPreparingCount(preparingItemsCount);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -84,8 +84,9 @@ export function UserNav() {
             return { ...register, user };
           })
         );
+
         const processingItemsCount = combinedData.filter((item) => item.status === 'Processing').length;
-        setProcessingCount(processingItemsCount);
+        socket.emit("verifyRequest", processingItemsCount)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -110,7 +111,8 @@ export function UserNav() {
               return { ...redeem, user };
             })
         );
-        setCombinedDataCount1(combinedData.length);
+
+        socket.emit("depositRequest", combinedData.length)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -136,22 +138,13 @@ export function UserNav() {
           return { ...withdrawal, user };
         });
 
-        setCombinedDataCount2(combinedData.length);
+        socket.emit("withdrawalRequest", combinedData.length);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     }
     fetchData();
   }, []);
-
-  const request: Request = {
-    registerR: registerRequest,
-    verifyR: verifyRequest,
-    redeemR: redeemRequest,
-    withdrawalR: withdrawalRequest
-  }
-
-  localStorage.setItem('adminRequest', JSON.stringify(request));
 
   return (
     <DropdownMenu>
