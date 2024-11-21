@@ -9,33 +9,34 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { MoreHorizontal, Trash2, UserPen } from 'lucide-react';
-import { useState, useTransition} from 'react';
-import { useToast, toast } from '@/components/ui/use-toast';
+import { useState, useTransition } from 'react';
+import { toast } from '@/components/ui/use-toast';
 import { AdminRegisterUsers } from '@/constants/data';
+import { ModifyModal } from '@/components/modal/modify-modal';
 
 interface CellActionProps {
   data: AdminRegisterUsers;
-  codeRegister ?: (event: React.MouseEvent<HTMLButtonElement>) => void
+  codeRegister?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ registerDate, userId }: any) => {
 
-  const {dismiss} = useToast();
   const [loading, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
+  const [openM, setOpenM] = useState(false);
 
-  const onConfirm= async () => {
+  const onConfirm = async () => {
     startTransition(async () => {
       try {
         const response = await deleteRegister({
           id: userId,
           date: registerDate,
         });
-        
+
         if (response.error) {
           return;
         }
-        
+
         setOpen(false);
 
         toast({
@@ -44,7 +45,7 @@ export const CellAction: React.FC<CellActionProps> = ({ registerDate, userId }: 
         });
 
         location.reload();
-        
+
       } catch (error) {
         toast({
           title: 'Delete Failed!',
@@ -53,7 +54,7 @@ export const CellAction: React.FC<CellActionProps> = ({ registerDate, userId }: 
       }
     });
   };
-  
+
   const deleteRegister = async (userData: { id: string; date: any }) => {
     try {
       const response = await fetch("/api/admin/registerdelete", {
@@ -63,12 +64,12 @@ export const CellAction: React.FC<CellActionProps> = ({ registerDate, userId }: 
         },
         body: JSON.stringify(userData),
       });
-            
+
       if (!response.ok) {
         const errorData = await response.json();
         return { error: errorData.message || 'Delete failed' };
       }
-      
+
       return await response.json();
     } catch (error) {
       throw error;
@@ -76,14 +77,14 @@ export const CellAction: React.FC<CellActionProps> = ({ registerDate, userId }: 
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Replace with a spinner or loading message if needed
+    return <div>Loading...</div>;
   }
 
   const modify = () => {
 
   }
 
-  const ok = () => {};
+  const ok = () => { };
 
   return (
     <>
@@ -91,6 +92,13 @@ export const CellAction: React.FC<CellActionProps> = ({ registerDate, userId }: 
         isOpen={open}
         onClose={() => setOpen(false)}
         onConfirm={onConfirm}
+        loading={loading}
+      />
+      <ModifyModal
+        isOpen={openM}
+        onClose={() => setOpenM(false)}
+        date = {registerDate}
+        id = {userId}
         loading={loading}
       />
       <DropdownMenu modal={false}>
@@ -103,7 +111,7 @@ export const CellAction: React.FC<CellActionProps> = ({ registerDate, userId }: 
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Action</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={modify}
+            onClick={()=> setOpenM(true)}
           >
             <UserPen className="mr-2 h-4 w-4" /> Modify
           </DropdownMenuItem>
