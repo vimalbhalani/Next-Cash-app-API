@@ -18,7 +18,7 @@ interface CellActionProps {
   codeRegister ?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: any) => {
+export const CellAction: React.FC<CellActionProps> = ({ registerDate, userId }: any) => {
 
   const {dismiss} = useToast();
   const [loading, startTransition] = useTransition();
@@ -29,7 +29,7 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
       try {
         const response = await deleteRegister({
           id: userId,
-          phonenumber: phoneNumber,
+          date: registerDate,
         });
         
         if (response.error) {
@@ -54,7 +54,7 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
     });
   };
   
-  const deleteRegister = async (userData: { id: string; phonenumber: string }) => {
+  const deleteRegister = async (userData: { id: string; date: any }) => {
     try {
       const response = await fetch("/api/admin/registerdelete", {
         method: 'DELETE',

@@ -1,3 +1,4 @@
+import RoleMiddleware from '@/components/rolemiddleware';
 import { searchParamsCache } from '@/lib/searchparams';
 import { MyPageListingPage } from '@/sections/mypage/views';
 import { SearchParams } from 'nuqs/parsers';
@@ -15,5 +16,9 @@ export default async function Page({ searchParams }: pageProps) {
   // Allow nested RSCs to access the search params (in a type-safe way)
   searchParamsCache.parse(searchParams);
 
-  return <MyPageListingPage />;
+  return (
+    <RoleMiddleware accessRight="user">
+      <MyPageListingPage />
+    </RoleMiddleware>
+  );
 }

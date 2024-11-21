@@ -1,3 +1,4 @@
+import RoleMiddleware from '@/components/rolemiddleware';
 import { CashAppInfoPage } from '@/sections/cashappinfo/view';
 import { SearchParams } from 'nuqs/parsers';
 
@@ -10,5 +11,9 @@ export const metadata = {
 };
 
 export default async function Page({ searchParams }: pageProps) {
-  return <CashAppInfoPage />;
+  return (
+    <RoleMiddleware accessRight='admin'>
+      <CashAppInfoPage />
+    </RoleMiddleware>
+  );
 }

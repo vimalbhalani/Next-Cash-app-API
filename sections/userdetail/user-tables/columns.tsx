@@ -22,6 +22,6 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
   {
     id: 'actions',
     header:'ACTION',
-    cell: ({ row }) => <CellAction phoneNumber= {row.original.phonenumber} userId = {row.original._id} />
+    cell: ({ row }) => <CellAction registerDate= {row.original.date} userId = {row.original._id} />
   }
 ];

@@ -8,7 +8,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { FileWarning, History, MoreHorizontal, Trash2, UserPen } from 'lucide-react';
+import { FileWarning, History, InfoIcon, MoreHorizontal, Trash2, UserPen } from 'lucide-react';
 import { useState, useTransition} from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { AdminRegisterUsers } from '@/constants/data';
@@ -155,7 +155,7 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
           <DropdownMenuItem
             onClick={userdetail}
           >
-            <UserPen className="mr-2 h-4 w-4" /> User Detail
+            <InfoIcon className="mr-2 h-4 w-4" /> User Detail
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={ban}

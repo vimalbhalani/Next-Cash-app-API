@@ -1,3 +1,4 @@
+import RoleMiddleware from '@/components/rolemiddleware';
 import { searchParamsCache } from '@/lib/searchparams';
 import { UserWithdrawalMiddlePage } from '@/sections/userwithdrawalmiddle/views';
 import { SearchParams } from 'nuqs/parsers';
@@ -15,5 +16,9 @@ export default async function Page({ searchParams }: pageProps) {
   // Allow nested RSCs to access the search params (in a type-safe way)
   searchParamsCache.parse(searchParams);
 
-  return <UserWithdrawalMiddlePage/>;
+  return (
+    <RoleMiddleware accessRight="user">
+      <UserWithdrawalMiddlePage/>
+    </RoleMiddleware>
+  );
 }

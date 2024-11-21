@@ -1,3 +1,4 @@
+import RoleMiddleware from "@/components/rolemiddleware";
 import { MainListingPage } from "@/sections/main/views";
 
 export const metadata = {
@@ -5,5 +6,9 @@ export const metadata = {
 };
 
 export default function page() {
-  return <MainListingPage/>;
+  return (
+    <RoleMiddleware accessRight="admin">
+      <MainListingPage />
+    </RoleMiddleware>
+  )
 }

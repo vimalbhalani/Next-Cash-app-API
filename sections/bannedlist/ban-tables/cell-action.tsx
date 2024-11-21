@@ -8,9 +8,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { ArchiveRestore, History, MoreHorizontal, Trash2, UserPen } from 'lucide-react';
+import { ArchiveRestore, InfoIcon, MoreHorizontal, Trash2 } from 'lucide-react';
 import { useState, useTransition} from 'react';
-import { useToast, toast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { AdminRegisterUsers } from '@/constants/data';
 import { useRouter } from 'next/navigation';
 
@@ -22,7 +22,6 @@ interface CellActionProps {
 export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: any) => {
 
   const router = useRouter();
-  const {dismiss} = useToast();
   const [loading, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
 
@@ -78,7 +77,7 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Replace with a spinner or loading message if needed
+    return <div>Loading...</div>;
   }
 
   const userdetail = () => {
@@ -156,7 +155,7 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
           <DropdownMenuItem
             onClick={userdetail}
           >
-            <UserPen className="mr-2 h-4 w-4" /> User Detail
+            <InfoIcon className="mr-2 h-4 w-4" /> User Detail
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={restore}

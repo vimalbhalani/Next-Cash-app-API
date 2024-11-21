@@ -1,3 +1,4 @@
+import RoleMiddleware from "@/components/rolemiddleware";
 import { Promotion } from "@/sections/promotion/views";
 
 export const metadata = {
@@ -5,5 +6,9 @@ export const metadata = {
 };
 
 export default function page() {
-  return <Promotion />;
+  return (
+    <RoleMiddleware accessRight="user">
+      <Promotion />
+    </RoleMiddleware>
+  );
 }
