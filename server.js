@@ -71,6 +71,38 @@ app.prepare().then(() => {
             socket.emit("withdrawalRecieve", data);
         })
 
+        socket.on("selectAllIds", (data)=>{
+            socket.emit("selectMultiIds", data);
+        })
+
+        socket.on("selectIds", (data)=>{
+            socket.emit("selectMultiId", data);
+        })
+        
+        socket.on("selectHistoryAllIds", (data)=>{
+            socket.emit("selectHistoryMultiIds", data);
+        })
+
+        socket.on("selectHistoryIds", (data)=>{
+            socket.emit("selectHistoryMultiId", data);
+        })
+
+        socket.on("selectWithdrawalAllIds", (data)=>{
+            socket.emit("selectWithdrawalMultiIds", data);
+        })
+
+        socket.on("selectWithdrawalIds", (data)=>{
+            socket.emit("selectWithdrawalMultiId", data);
+        })
+
+        socket.on("selectWithdrawalHistoryAllIds", (data)=>{
+            socket.emit("selectWithdrawalHistoryMultiIds", data);
+        })
+
+        socket.on("selectWithdrawalHistoryIds", (data)=>{
+            socket.emit("selectWithdrawalHistoryMultiId", data);
+        })
+
         socket.on('disconnect', () => {
             connectedUsers = connectedUsers.filter(item => item.socketId != socket.id)
         });

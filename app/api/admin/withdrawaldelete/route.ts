@@ -29,7 +29,7 @@ export const DELETE = async (request: NextRequest) => {
         }
 
         // Try to find the withdrawal using the provided date
-        const withdrawalIndex = user.withdrawal.findIndex(dep => {
+        const withdrawalIndex = user.withdrawal.findIndex((dep:any) => {
             const depDate = new Date(dep.date).getTime(); // Convert the withdrawal date to timestamp
             const requestDate = new Date(date).getTime(); // Convert the requested date to timestamp
             return depDate === requestDate;

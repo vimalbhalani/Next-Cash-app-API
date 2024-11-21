@@ -1,4 +1,5 @@
 'use client';
+
 import { DashboardNav } from '@/components/dashboard-nav';
 import { navItems } from '@/constants/data';
 import { userNavItems } from '@/constants/data';
@@ -42,7 +43,7 @@ export default function Sidebar({ className }: SidebarProps) {
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
           <div className="mt-3 space-y-1">
-            <DashboardNav items={userInfo.role==="admin"?navItems:userNavItems} />
+            <DashboardNav items={userInfo.role === "admin"? navItems:userNavItems} />
           </div>
         </div>
       </div>

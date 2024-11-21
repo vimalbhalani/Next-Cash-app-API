@@ -20,7 +20,7 @@ export const CellAction: React.FC<CellActionProps> = ({ redeemDate, userId }: an
 
   const [loading, startTransition] = useTransition();
 
-  const redeem = async () => {
+  const accept = async () => {
     startTransition(async () => {
       try {
         const response = await userredeemCheck({
@@ -139,7 +139,7 @@ export const CellAction: React.FC<CellActionProps> = ({ redeemDate, userId }: an
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Action</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={redeem}
+            onClick={accept}
           >
             <CheckCircle className="mr-2 h-4 w-4" /> Accept
           </DropdownMenuItem>

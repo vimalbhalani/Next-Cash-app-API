@@ -5,6 +5,9 @@ import { CellAction } from './cell-action';
 import { CheckboxDaily } from './checkboxdaily';
 import { CheckboxBonus } from './checkboxbonus';
 import { Checkbox } from '@/components/ui/checkbox';
+import useSocket from '@/lib/socket';
+
+const {socket} = useSocket();
 
 export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
   {
@@ -12,19 +15,47 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
     header: ({ table }) => (
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        onCheckedChange={(value) => {
+          table.toggleAllPageRowsSelected(!!value);
+          setTimeout(() => {
+            if (value) {
+              const selectedRows = table.getRowModel().rows.filter(row => row.getIsSelected());
+              const idsAndDates = selectedRows.map(row => ({
+                id: row.original.user?._id,
+                date: row.original.date
+              }));
+              socket.emit("selectHistoryAllIds", idsAndDates);
+            }else{
+              socket.emit("selectHistoryAllIds", "");
+            }
+          }, 0);
+        }}
         aria-label="Select all"
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        onCheckedChange={(value) => {
+          row.toggleSelected(!!value);
+          if (value) {
+            const idsAndDate = {
+              id: row.original.user?._id,
+              date: row.original.date
+            };
+            socket.emit("selectHistoryIds", idsAndDate);
+          }else{
+            const deleteId = {
+              date: row.original.date,
+            }
+            socket.emit("selectHistoryIds", deleteId);
+          }
+        }}
         aria-label="Select row"
       />
     ),
     enableSorting: false,
-    enableHiding: false
+    enableHiding: false,
   },
   {
     accessorKey: 'id',

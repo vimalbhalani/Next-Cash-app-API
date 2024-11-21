@@ -12,17 +12,15 @@ export default function UserdetailTable() {
   const [totalData, setTotalData] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const searchParams = useSearchParams();
-  
   const id = searchParams.get("id");
   
   useEffect(() => {
-    if (!id) return;  // Return early if 'id' is not available
+    if (!id) return;
     
     async function fetchData() {
       try {
         setLoading(true);
 
-        // Send the 'id' as a query parameter in the GET request
         const response = await fetch('/api/admin/getuserInfo', {
           method: 'GET',
           headers: {
@@ -37,7 +35,7 @@ export default function UserdetailTable() {
         const result = await response.json();
 
         if (result.data && result.data.length > 0) {
-          setData(result.data || []); // Use an empty array if no register is found
+          setData(result.data || []);
           setTotalData(result.totalCount || 0);
         } else {
           console.error('No data found in the result:', result);
@@ -53,7 +51,7 @@ export default function UserdetailTable() {
   }, [id]);
 
   if (loading) {
-    return <div>Loading...</div>; // Replace with a spinner or loading message if needed
+    return <div>Loading...</div>;
   }
 
   return (

@@ -29,7 +29,7 @@ export const DELETE = async (request: NextRequest) => {
         }
 
         // Try to find the redeem using the provided date
-        const redeemIndex = user.redeem.findIndex(dep => {
+        const redeemIndex = user.redeem.findIndex((dep: any) => {
             const depDate = new Date(dep.date).getTime(); // Convert the redeem date to timestamp
             const requestDate = new Date(date).getTime(); // Convert the requested date to timestamp
             return depDate === requestDate;
