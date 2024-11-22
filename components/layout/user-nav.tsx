@@ -16,13 +16,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-// interface Request {
-//   registerR: number,
-//   verifyR: number,
-//   redeemR: number,
-//   withdrawalR: number
-// }
-
 export function UserNav() {
 
   const router = useRouter();
@@ -40,6 +33,7 @@ export function UserNav() {
 
   const signOut = () => {
     localStorage.clear();
+    sessionStorage.clear();
     router.push("/");
   }
   const ok = () => { }
@@ -61,7 +55,6 @@ export function UserNav() {
         );
         const preparingItemsCount = combinedData.filter((item) => item.status === 'preparing').length;
         socket.emit("registerRequest", preparingItemsCount)
-        // setPreparingCount(preparingItemsCount);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
