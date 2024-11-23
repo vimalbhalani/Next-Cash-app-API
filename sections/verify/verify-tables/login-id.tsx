@@ -1,7 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
-import { useToast, toast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import useSocket from '@/lib/socket';
 
 interface UserData {
@@ -12,11 +12,10 @@ interface UserData {
   status: string;
 }
 
-const {socket} = useSocket();
 
-export const LoginIdAction = ({loginIdV, passwordCodeV, userName, dateV }: { phoneNumber: string; loginIdV?: string; passwordCodeV:string; userName: string; dateV: any }) => {
-
-  const { dismiss } = useToast();
+export const LoginIdAction = ({loginIdV, passwordCodeV, userName, dateV }: { loginIdV?: string; passwordCodeV:string; userName: string; dateV: any }) => {
+  
+  const {socket} = useSocket();
   const [loginId, setLoginId] = useState(loginIdV|| "");
   const [passwordCode, setPasswordCode] = useState(passwordCodeV || "");
 

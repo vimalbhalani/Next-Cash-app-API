@@ -103,6 +103,22 @@ app.prepare().then(() => {
             socket.emit("selectWithdrawalHistoryMultiId", data);
         })
 
+        socket.on("selectCodeVerifyAllIds", (data)=>{
+            socket.emit("selectCodeVerifyMultiIds", data);
+        })
+
+        socket.on("selectCodeVerifyIds", (data)=>{
+            socket.emit("selectCodeVerifyMultiId", data);
+        })
+
+        socket.on("selectRegisterAllIds", (data)=>{
+            socket.emit("selectRegisterMultiIds", data);
+        })
+
+        socket.on("selectRegisterIds", (data)=>{
+            socket.emit("selectRegisterMultiId", data);
+        })
+
         socket.on('disconnect', () => {
             connectedUsers = connectedUsers.filter(item => item.socketId != socket.id)
         });
