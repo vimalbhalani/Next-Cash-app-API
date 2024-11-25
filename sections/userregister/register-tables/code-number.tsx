@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import useSocket from '@/lib/socket';
+import { useRouter } from 'next/navigation';
 
 interface UserData {
   date: any;
@@ -15,6 +16,7 @@ const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
 export const CodeAction = ({ codeNumber, statusNow, registerDate }:{codeNumber: string, statusNow: string, registerDate: any}) => {
   
+  const router = useRouter();
   const [codenum, setCodenum] = useState("");
   const [isCooldown, setIsCooldown] = useState(false);
 
@@ -42,7 +44,7 @@ export const CodeAction = ({ codeNumber, statusNow, registerDate }:{codeNumber: 
 
       socket.emit("userVerify", {userId: userInfo.userId, message:`${userInfo.name} received login id and password code!`});
 
-      location.reload();
+      router.push("/mypage/promotion");
       
       return await response.json();
     } catch (error) {
@@ -53,15 +55,19 @@ export const CodeAction = ({ codeNumber, statusNow, registerDate }:{codeNumber: 
   const onVerify = async () => {
     const response = await onSubmit(userData);
     if (response && response.error) {
+
       toast({
         title: 'Codenumber Verify Failed',
         description: 'Please try again.'
       });
+
     } else {
+
       toast({
         title: 'Codenumber Verify Successful',
         description: 'Welcome! Your codenumber has been verified.',
       });
+
     }
   };
 

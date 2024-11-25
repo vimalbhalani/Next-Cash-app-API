@@ -96,7 +96,7 @@ export default function UserWithdrawalTableView<TData, TValue>({
   return (
     <>
       <ScrollArea className="h-[calc(60vh-220px)] w-[92vw] sm:w-[95vw] lg:w-full rounded-md border">
-        <Table className="w-[700px] md:w-full">
+        <Table className="w-[500px] sm:w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

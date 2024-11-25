@@ -9,10 +9,6 @@ export const columns: ColumnDef<UserRegister>[] = [
     header: 'GAME'
   },
   {
-    accessorKey: 'phonenumber',
-    header: 'PHONE NUMBER'
-  },
-  {
     accessorKey: 'status',
     header: 'STATUS'
   },
@@ -20,5 +16,9 @@ export const columns: ColumnDef<UserRegister>[] = [
     id: 'actions',
     header: 'CODE NUMBER',
     cell: ({row}) => <CodeAction codeNumber = {row.original.codenumber} statusNow = {row.original.status} registerDate = {row.original.date}/>
+  },
+  {
+    accessorKey: 'phonenumber',
+    header: 'PHONE NUMBER'
   }
 ];

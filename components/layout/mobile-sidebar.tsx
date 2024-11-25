@@ -20,7 +20,7 @@ export function MobileSidebar({ className }: SidebarProps) {
     <>
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild className="focus:outline-none">
-          <MenuIcon />
+          <button className='border border-gray-500 p-1 rounded-lg font-bold'>MENU</button>
         </SheetTrigger>
         <SheetContent side="left" className="!px-0">
           <div className="space-y-4 py-4">
