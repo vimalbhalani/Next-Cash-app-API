@@ -95,7 +95,6 @@ export default function UserWithdrawalTableView<TData, TValue>({
 
   return (
     <>
-      <h1 className='text-lg text-center font-bold'>Total Deposit</h1>
       <ScrollArea className="h-[calc(80vh-220px)] rounded-md border">
         <Table className="relative">
           <TableHeader>

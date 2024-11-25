@@ -11,10 +11,10 @@ export const DELETE = async (request: NextRequest) => {
         return NextResponse.json({ error: 'Failed to parse JSON' }, { status: 400 });
     }
 
-    const { id, date } = requestData;
+    const { id } = requestData;
 
-    if (!id || !date) {
-        return NextResponse.json({ error: 'Missing required fields: id or date' }, { status: 400 });
+    if (!id) {
+        return NextResponse.json({ error: 'Missing required fields: id' }, { status: 400 });
     }
     
     await dbConnect();
@@ -26,23 +26,11 @@ export const DELETE = async (request: NextRequest) => {
             return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
 
-        const registerIndex = user.register.findIndex((dep: any) => {
-            const depDate = new Date(dep.date).getTime(); 
-            const requestDate = new Date(date).getTime(); 
-            return depDate === requestDate;
-        });
-
-        if (registerIndex === -1) {
-            return NextResponse.json({ error: 'No register found with the given date' }, { status: 404 });
-        }
-
-        user.register.splice(registerIndex, 1);
-
-        const updatedUser = await user.save();
+        // Delete the user
+        await User.deleteOne({ _id: id });
 
         return NextResponse.json({
-            ok: 'register deleted successfully',
-            user: updatedUser
+            ok: 'User deleted successfully',
         }, { status: 200 });
 
     } catch (err: any) {

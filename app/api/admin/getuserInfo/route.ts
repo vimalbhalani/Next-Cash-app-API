@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export const GET = async (request: NextRequest) => {
   await dbConnect();
 
-  const frtoken = request.headers.get("Authorization")?.split(" ")[1]; // Assuming the header is in the format "Bearer <token>"
+  const frtoken = request.headers.get("Authorization")?.split(" ")[1];
   
   if (!frtoken) {
     return NextResponse.json({ error: 'Authorization token is required' }, { status: 401 });
@@ -13,10 +13,8 @@ export const GET = async (request: NextRequest) => {
 
   try {
     
-    // If token is valid, fetch the users
     const users = await User.find({_id: frtoken});     
 
-    // Convert mongoose documents to plain JS objects
     const usersInfo = users.map(user => user.toObject());
 
     return NextResponse.json({ ok: 'Fetch successful', data: usersInfo }, { status: 200 });

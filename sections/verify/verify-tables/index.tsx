@@ -36,8 +36,9 @@ export default function VerifyTable() {
           })
         );
 
-        // Set data, total counts, and processing count
-        setData(combinedData);
+        const sortedData = combinedData.sort((a: any, b: any) => new Date(b.date) - new Date(a.date));
+
+        setData(sortedData);
         setTotalData(registerResult.totalCount); // Adjust if necessary
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -48,6 +49,9 @@ export default function VerifyTable() {
 
     fetchData();
   }, []);
+
+  console.log(data);
+  
 
   useEffect(() => {
     socket.on("selectCodeVerifyMultiIds", (data: any) => {

@@ -3,7 +3,6 @@ import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-    // Attempt to parse the JSON body
     let requestData;
     try {
         requestData = await request.json();
@@ -13,35 +12,28 @@ export const POST = async (request: NextRequest) => {
 
     const { paymentstatus, data } = requestData;
     
-    // Ensure required fields are present
     if (!paymentstatus || !Array.isArray(data)) {
         return NextResponse.json({ error: 'Missing required fields or data is not an array' }, { status: 400 });
     }
 
-    // Connect to the database
     await dbConnect();
 
     try {
-        // Initialize a response array for results
         const results = [];
 
-        // Iterate over the data array
         for (const item of data) {
             const { id, date } = item;            
             
-            // Ensure id and date are present
             if (!id || !date) {
                 return NextResponse.json({ error: 'Missing id or date in data' }, { status: 400 });
             }
 
-            // Find the user by ID
             const user = await User.findById(id);
             if (!user) {
                 results.push({ id, status: 'User not found' });
-                continue; // Move on to the next item
+                continue;
             }
 
-            // Log the redeems for debugging
             const redeemIndex = user.redeem.findIndex((dep: any) => {
                 const depDate = new Date(dep.date).getTime();
                 const requestDate = new Date(date).getTime();
@@ -50,16 +42,13 @@ export const POST = async (request: NextRequest) => {
 
             if (redeemIndex === -1) {
                 results.push({ id, status: 'No redeem found with the given date' });
-                continue; // Move on to the next item
+                continue; 
             }
 
-            // Update the payment status of the found redeem entry
             user.redeem[redeemIndex].paymentstatus = paymentstatus;
 
-            // Add the current date and time to the 'comdate' field
-            user.redeem[redeemIndex].comdate = new Date(); // Captures the current date and time
+            user.redeem[redeemIndex].comdate = new Date(); 
 
-            // Save the user document
             await user.save();
 
             results.push({ id, status: 'Redeem updated successfully' });

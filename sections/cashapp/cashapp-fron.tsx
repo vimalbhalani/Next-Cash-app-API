@@ -19,7 +19,6 @@ export default function UserCashApp() {
       toast({
         title: "Cashtag Copied Successful!",
         description: "Welcome! Cashtag have copied successfully.",
-        action: <button onClick={dismiss}>BTC Address</button>,
       })
     } else {
       toast({

@@ -7,7 +7,6 @@ import UserTablePage from './user-table';
 
 export default function UserTable() {
   const [data, setData] = useState<AdminRegisterUsers[]>([]);
-  const [totalData, setTotalData] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchParam, setSearchParam] = useState("");
   const [selectCategory, setSelectCategory] = useState("tag");
@@ -17,21 +16,10 @@ export default function UserTable() {
       try {
         setLoading(true);
         
-        const UserResponse = await fetch('/api/admin/getregisteruser');
+        const UserResponse = await fetch('/api/admin/getuser');
         const UserResult = await UserResponse.json();
 
-        const usersResponse = await fetch('/api/admin/getregisteruser');
-        const usersResult = await usersResponse.json();
-
-        const combinedData = UserResult.data.flatMap((registerEntry: any) =>
-          registerEntry.register.map((register: UserRegister) => {
-            const user = usersResult.data.find((user: AdminRegisterUsers) => user._id === register.id);
-            return { ...register, user };
-          })
-        );
-
-        setData(combinedData);
-        setTotalData(UserResult.totalCount);
+        setData(UserResult.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -45,13 +33,13 @@ export default function UserTable() {
     const param = searchParam.toLowerCase();
     switch (selectCategory) {
       case 'tag':
-        return item.user?.tag?.toString().includes(param);
+        return item.tag?.toString().includes(param);
       case 'firstname':
-        return item.user?.firstname?.toLowerCase().includes(param);
+        return item.firstname?.toLowerCase().includes(param);
       case 'email':
-        return item.user?.email?.toLowerCase().includes(param);
+        return item.email?.toLowerCase().includes(param);
       case 'ip':
-        return item.user?.ip?.toLowerCase().includes(param);
+        return item.ip?.toLowerCase().includes(param);
       case 'phonenumber':
         return item.phonenumber?.toLowerCase().includes(param);
       default:

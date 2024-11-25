@@ -3,7 +3,6 @@ import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-    // Attempt to parse the JSON body
     let requestData;
     try {
         requestData = await request.json();
@@ -13,7 +12,6 @@ export const POST = async (request: NextRequest) => {
 
     const { id, codenumber, date } = requestData;
 
-    // Ensure required fields are present
     if (!id || !codenumber || !date) {
         return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
@@ -21,14 +19,12 @@ export const POST = async (request: NextRequest) => {
     await dbConnect();
 
     try {
-        // Find the user by ID
         const user = await User.findById(id);
 
         if (!user) {
             return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
 
-        // Log the registers for debugging
         const registerIndex = user.register.findIndex((dep: any) => {
             const depDate = new Date(dep.date).getTime();
             const requestDate = new Date(date).getTime();
@@ -39,15 +35,13 @@ export const POST = async (request: NextRequest) => {
             return NextResponse.json({ error: 'No register found with the given date' }, { status: 404 });
         }
 
-        // Update the payment status of the found register entry
         user.register[registerIndex].codenumber = codenumber;
 
-        // Save the user document
         const updatedUser = await user.save();
 
         return NextResponse.json({
             ok: 'register updated successfully',
-            user: updatedUser  // Include the updated user if needed
+            user: updatedUser 
         }, { status: 200 });
 
     } catch (err: any) {

@@ -20,10 +20,10 @@ export default function UserdetailTable() {
       try {
         setLoading(true);
         
-        const UserResponse = await fetch('/api/admin/getregisteruser');
+        const UserResponse = await fetch('/api/admin/getregister');
         const UserResult = await UserResponse.json();
   
-        const usersResponse = await fetch('/api/admin/getregisteruser');
+        const usersResponse = await fetch('/api/admin/getregister');
         const usersResult = await usersResponse.json();
   
         const combinedData = UserResult.data.flatMap((registerEntry: any) =>
@@ -33,10 +33,9 @@ export default function UserdetailTable() {
           })
         );
   
-        // Filter the combinedData to find the user with the specified id
         const filteredUserData = combinedData.filter((item: any) => item.user && item.user._id === id);
   
-        setData(filteredUserData); // This will set data only for the user with the specified id
+        setData(filteredUserData);
         setTotalData(UserResult.totalCount);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -46,7 +45,7 @@ export default function UserdetailTable() {
     }
     
     fetchData();
-  }, [id]); // Add id to the dependency array so the effect runs when it changes
+  }, [id]);
   
 
   if (loading) {

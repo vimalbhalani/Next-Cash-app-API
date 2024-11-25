@@ -2,7 +2,7 @@
 "use client"; // Ensures this is recognized as a client component
 import { Button } from '@/components/ui/button';
 import { useState, useRef, useTransition, useEffect } from 'react';
-import { useToast, toast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { AdminRegisterUsers } from '@/constants/data';
 
 
@@ -12,7 +12,6 @@ export default function CashAppInfoPageView() {
     const [venmoV, setVenmo] = useState<AdminRegisterUsers[]>([]);
     const [zelleV, setZelle] = useState<AdminRegisterUsers[]>([]);
     const [bitcoinV, setBitcoin] = useState<AdminRegisterUsers[]>([]);
-    const { dismiss } = useToast();
     const [loading, startTransition] = useTransition();
     const [cashapptag, setCashapptag] = useState(cashtag);
     const [paypalvalue, setPaypalValue] = useState(paypalV);
@@ -33,14 +32,13 @@ export default function CashAppInfoPageView() {
                 });
 
                 if (response.error) {
-                    console.error('Cashtag updated error:', response.error);
+                    console.error('Cashapptag updated error:', response.error);
                     return;
                 }
 
                 toast({
-                    title: "Cashtag update successful!",
+                    title: "Cashapptag update successful!",
                     description: "Welcome! Your cashtag have updated successfully.",
-                    action: <button onClick={dismiss}>Cashapptag</button>,
                 })
 
                 location.reload();
@@ -93,7 +91,6 @@ export default function CashAppInfoPageView() {
                 toast({
                     title: "Paypal update successful!",
                     description: "Welcome! Your paypal have updated successfully.",
-                    action: <button onClick={dismiss}>Paypal</button>,
                 })
 
                 location.reload();
@@ -145,7 +142,6 @@ export default function CashAppInfoPageView() {
                 toast({
                     title: "Venmo update successful!",
                     description: "Welcome! Your Venmo have updated successfully.",
-                    action: <button onClick={dismiss}>Venmo</button>,
                 })
 
                 location.reload();
@@ -199,7 +195,6 @@ export default function CashAppInfoPageView() {
                 toast({
                     title: "Zelle update successful!",
                     description: "Welcome! Your zelle have updated successfully.",
-                    action: <button onClick={dismiss}>Zelle</button>,
                 })
 
                 location.reload();
@@ -250,7 +245,6 @@ export default function CashAppInfoPageView() {
                 toast({
                     title: "Bitcoin update successful!",
                     description: "Welcome! Your bidcoin address have updated successfully.",
-                    action: <button onClick={dismiss}>Cashapptag</button>,
                 })
 
                 location.reload();

@@ -80,10 +80,6 @@ export const CellAction: React.FC<CellActionProps> = ({ registerDate, userId }: 
     return <div>Loading...</div>;
   }
 
-  const modify = () => {
-
-  }
-
   const ok = () => { };
 
   return (

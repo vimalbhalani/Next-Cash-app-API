@@ -6,7 +6,6 @@ export const GET = async (request: NextRequest) => {
   await dbConnect();
 
   try {
-    // Aggregate to calculate the total amount from the redeem array where paymentstatus is complete
     const users = await User.aggregate([
       {
         $project: {
@@ -19,18 +18,18 @@ export const GET = async (request: NextRequest) => {
                   $filter: {
                     input: "$redeem",
                     as: "item",
-                    cond: { $eq: ["$$item.paymentstatus", "complete"] } // Filter for paymentstatus === "complete"
+                    cond: { $eq: ["$$item.paymentstatus", "complete"] }
                   },
                 },
                 as: "filteredredeem",
-                in: "$$filteredredeem.amount" // Map to get the amount from the filtered redeems
+                in: "$$filteredredeem.amount"
               },
             },
           },
         },
       },
       {
-        $sort: { totalAmount: -1 }, // Sort by the total amount in descending order
+        $sort: { totalAmount: -1 },
       },
     ]);
 

@@ -21,34 +21,34 @@ export default function RegisterTable() {
     async function fetchData() {
       try {
         setLoading(true);
-
-        // Fetch Payment redeems
-        const registerResponse = await fetch('/api/admin/getregister'); // Your API for redeems
+  
+        const registerResponse = await fetch('/api/admin/getregister');
         const registerResult = await registerResponse.json();
-
-        // Fetch Admin Register Users
-        const usersResponse = await fetch('/api/admin/getregister'); // Your API for users
+  
+        const usersResponse = await fetch('/api/admin/getregister'); 
         const usersResult = await usersResponse.json();
-
+  
         const combinedData = registerResult.data.flatMap((registerEntry: any) =>
           registerEntry.register.map((register: UserRegister) => {
             const user = usersResult.data.find((user: AdminRegisterUsers) => user._id === register.id);
             return { ...register, user };
           })
         );
-
-        // Set data, total counts, and preparing count
-        setData(combinedData);
-        setTotalData(registerResult.totalCount); // Adjust if necessary
+  
+        const sortedData = combinedData.sort((a: any, b: any) => new Date(b.date) - new Date(a.date));
+  
+        setData(sortedData);
+        setTotalData(registerResult.totalCount);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }
     }
-
+  
     fetchData();
   }, []);
+  
 
   useEffect(() => {
     socket.on("selectRegisterMultiIds", (data: any) => {

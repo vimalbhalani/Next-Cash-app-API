@@ -6,25 +6,24 @@ export const GET = async (request: NextRequest) => {
     await dbConnect();
 
     try {
-        // Find users with at least one object in the 'register' array having 'status' as 'complete'
         const users = await User.find({
             register: { $elemMatch: { phonenumber: { $ne: "none" } } },
         });
 
-        // Map users to extract 'register' arrays containing only 'complete' statuses
         const usersInfo = users.map(user => {
-            const completeRegisters = user.register.filter(entry => entry.phonenumber !== "none");
+            const completeRegisters = user.register.filter((entry: any) => entry.phonenumber !== "none");
             return {
                 firstname:user.firstname,
                 lastname:user.lastname,
                 _id: user._id,
+                tag: user.tag,
                 completeRegisters,
             };
         });
 
         return NextResponse.json({ ok: 'Fetch successful', data: usersInfo }, { status: 200 });
     } catch (err) {
-        console.error(err); // Log the error for debugging purposes
+        console.error(err);
         return NextResponse.json({ error: 'An error occurred while fetching users' }, { status: 500 });
     }
 };

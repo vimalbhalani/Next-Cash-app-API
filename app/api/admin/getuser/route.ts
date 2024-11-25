@@ -6,9 +6,8 @@ export const GET = async (request: NextRequest) => {
   await dbConnect();
 
   try {
-    const users = await User.find({ phonenumber: { $ne: "none" } }); // Use 'users' since you are fetching multiple
+    const users = await User.find({ action: "yes", role: "user" });
 
-    // Convert mongoose documents to plain JS objects
     const usersInfo = users.map(user => user.toObject());
 
     return NextResponse.json({ ok: 'Fetch successful', data: usersInfo }, { status: 200 });

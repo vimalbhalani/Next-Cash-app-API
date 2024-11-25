@@ -1,33 +1,34 @@
 'use client';
 import { columns } from './columns';
 import { useState, useEffect } from 'react';
-import { Paymentredeems, AdminRegisterUsers } from '@/constants/data'; // Make sure this path is correct
+import { Paymentredeems, AdminRegisterUsers } from '@/constants/data';
 import AdminMainTableView from './main-redeem-table';
 
 export default function AdminMainTablePage() {
   const [data, setData] = useState<(Paymentredeems & AdminRegisterUsers)[]>([]);
-  const [totalData, setTotalData] = useState<number>(0); // Store total items for pagination
+  const [totalData, setTotalData] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
+  const [completeAmount, setCompleteAmount] = useState<number>(0);
 
   useEffect(() => {
     async function fetchData() {
       try {
         setLoading(true);
-
-        // Fetch Payment redeems
-        const response = await fetch('/api/admin/totalredeem'); // Your API for redeems
+        
+        const response = await fetch('/api/admin/totalredeem');
         const result = await response.json();
 
-        // Transform the result using map
-        const transformedData = result.data.map((item: any) => ({
-          // Assuming each item has properties that resemble Paymentredeems and AdminRegisterUsers
-          ...item, // Spread existing data
-          // Add any additional transformations needed
+        const transformedData = result.data
+        .filter((item: any) => item.totalAmount !== 0)
+        .map((item: any) => ({
+          ...item,
         }));
 
-        // Set data and total counts, adjust based on your API response
         setData(transformedData);
-        setTotalData(result.totalCount); // Adjust if necessary
+        setTotalData(result.totalCount);
+        
+        const sum = transformedData.reduce((acc: any, curr: any) => acc + (curr.totalAmount || 0), 0);
+        setCompleteAmount(sum);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -40,11 +41,12 @@ export default function AdminMainTablePage() {
 
 
   if (loading) {
-    return <div>Loading...</div>; // Replace with a spinner or loading message if needed
+    return <div>Loading...</div>;
   }
 
   return (
     <div className="space-y-4 ">
+      <h1 className='text-lg text-center font-bold'>Player Deposit: {""} ${`${completeAmount}`}</h1>
       <AdminMainTableView columns={columns} data={data} totalItems={data.length} />
     </div>
   );

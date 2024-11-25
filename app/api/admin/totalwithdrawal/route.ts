@@ -18,18 +18,18 @@ export const GET = async (request: NextRequest) => {
                   $filter: {
                     input: "$withdrawal",
                     as: "withdrawalItem",
-                    cond: { $eq: ["$$withdrawalItem.paymentstatus", "complete"] } // Filter by paymentstatus
+                    cond: { $eq: ["$$withdrawalItem.paymentstatus", "complete"] }
                   }
                 },
                 as: "filteredWithdrawal",
-                in: "$$filteredWithdrawal.amount" // Sum the amounts of filtered withdrawal items
+                in: "$$filteredWithdrawal.amount"
               }
             }
           }
         }
       },
       {
-        $sort: { totalAmount: -1 } // Sort by the total amount in descending order
+        $sort: { totalAmount: -1 }
       }
     ]);
 

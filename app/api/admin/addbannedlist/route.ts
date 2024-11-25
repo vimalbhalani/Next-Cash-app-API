@@ -3,7 +3,6 @@ import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-    // Attempt to parse the JSON body
     let requestData;
     try {
         requestData = await request.json();
@@ -13,7 +12,6 @@ export const POST = async (request: NextRequest) => {
 
     const { id, action } = requestData;
 
-    // Ensure required fields are present
     if (!id || !action) {
         return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
@@ -21,7 +19,6 @@ export const POST = async (request: NextRequest) => {
     await dbConnect();
 
     try {
-        // Find the user by ID
         const user = await User.findById(id);
 
         if (!user) {
@@ -30,12 +27,11 @@ export const POST = async (request: NextRequest) => {
 
         user.action = action;
 
-        // Save the user document
         const updatedUser = await user.save();
 
         return NextResponse.json({
             ok: 'BannedList added successfully',
-            user: updatedUser  // Include the updated user if needed
+            user: updatedUser
         }, { status: 200 });
 
     } catch (err: any) {
