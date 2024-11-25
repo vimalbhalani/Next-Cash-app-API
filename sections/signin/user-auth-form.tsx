@@ -10,15 +10,15 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { useToast, toast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import useSocket from '@/lib/socket';
 import { useRouter } from 'next/navigation';
 import GoogleSignInButton from './google-auth-button';
 
-const {socket} = useSocket()
+const { socket } = useSocket()
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Enter a valid email address' }),
@@ -29,8 +29,9 @@ type UserFormValue = z.infer<typeof formSchema>;
 
 export default function UserAuthForm() {
   const router = useRouter();
-  const {dismiss} = useToast();
   const [loading, startTransition] = useTransition();
+  const [pop, setPop] = useState<boolean>(false);
+
   const form = useForm<UserFormValue>({
     resolver: zodResolver(formSchema),
   });
@@ -38,20 +39,18 @@ export default function UserAuthForm() {
   const onSubmit = async (data: UserFormValue) => {
     startTransition(async () => {
       try {
-        // Replace signIn with your signUp function or API call
         const response = await signIn({
           email: data.email,
           password: data.password,
         });
 
-        if(response.user.role==="admin"){
-         router.push("/main")
-        }else{
+        if (response.user.role === "admin") {
+          router.push("/main")
+        } else {
           router.push("/mypage");
         }
-        //LocalStroge
         localStorage.setItem('userinfo', JSON.stringify(response.user));
-        socket.emit("register", {userId:response.user.userId, role:response.user.role})
+        socket.emit("register", { userId: response.user.userId, role: response.user.role })
 
         toast({
           title: 'SignIn Successful!',
@@ -59,13 +58,11 @@ export default function UserAuthForm() {
         });
 
       } catch (error) {
-        // Handle errors that do not come from the response
         console.error('Signup error:', error);
       }
     });
   };
 
-  // Example signUp function
   const signIn = async (userData: { email: string; password: string; }) => {
     try {
       const response = await fetch('/api/signin', {
@@ -76,19 +73,25 @@ export default function UserAuthForm() {
         body: JSON.stringify(userData),
       });
 
+      if (response.status === 402) {
+        setPop(true);
+        return;
+      }
+
+
       if (!response.ok) {
         const errorData = await response.json();
         toast({
           title: 'SignIn Failed!',
           description: 'Your email or password is incorrect! Please try again.',
         });
-        return { error: errorData.message || 'Signin failed' }; // Handle response error
+        return { error: errorData.message || 'Signin failed' };
       }
 
-      return await response.json(); // Assume successful response returns user data or a success message
+      return await response.json();
     } catch (error) {
       console.error('Error during fetch:', error);
-      throw error; // Rethrow or return an error response
+      throw error;
     }
   };
 
@@ -136,6 +139,10 @@ export default function UserAuthForm() {
           <Button disabled={loading} className="ml-auto w-full" type="submit">
             LOG IN
           </Button>
+          {pop ? <div className='border border-red-500 p-1 text-red-500 rounded-lg text-center'>
+
+            Sorry, your action has been benned!
+          </div> : ""}
         </form>
       </Form>
       <div className="relative">
