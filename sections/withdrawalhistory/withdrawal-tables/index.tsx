@@ -40,7 +40,9 @@ export default function AdminWithdrawalHistoryTable() {
             })
         );
 
-        setData(combinedData);
+        const sortedData = combinedData.sort((a: any, b: any) => new Date(b.date) - new Date(a.date));
+
+        setData(sortedData);
         setTotalData(withdrawalsResult.totalCount);
       } catch (error) {
         console.error('Error fetching data:', error);

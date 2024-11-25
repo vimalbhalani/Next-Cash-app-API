@@ -36,7 +36,9 @@ export default function AdminRedeemTable() {
             })
         );
 
-        setData(combinedData);
+        const sortedData = combinedData.sort((a: any, b: any) => new Date(b.date) - new Date(a.date));
+
+        setData(sortedData);
         setTotalData(redeemsResult.totalCount);
       } catch (error) {
         console.error('Error fetching data:', error);

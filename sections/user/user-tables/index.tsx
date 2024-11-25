@@ -19,7 +19,9 @@ export default function UserTable() {
         const UserResponse = await fetch('/api/admin/getuser');
         const UserResult = await UserResponse.json();
 
-        setData(UserResult.data);
+        const sortedData = UserResult.data.sort((a: any, b: any) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        setData(sortedData);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {

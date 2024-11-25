@@ -16,11 +16,12 @@ export default function BanTable() {
     async function fetchData() {
       try {
         setLoading(true);
-        
+
         const UserResponse = await fetch('/api/admin/getbannedlist');
         const UserResult = await UserResponse.json();
+        const sortedData = UserResult.data.sort((a: any, b: any) => new Date(b.createdAt) - new Date(a.createdAt));
 
-        setData(UserResult.data);
+        setData(sortedData);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -54,7 +55,7 @@ export default function BanTable() {
 
   return (
     <div className="space-y-4 ">
-            <div className='flex justify-end'>
+      <div className='flex justify-end'>
         <select
           onChange={(e) => setSelectCategory(e.target.value)}
           className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-3 bg-background'
