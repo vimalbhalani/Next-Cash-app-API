@@ -164,7 +164,7 @@ export default function UserWithdrawalForm() {
 
     return (
         <div >
-            <div className='border border-solid border-4 border-gray-200 p-3 bg-blue-400 rounded-xl w-full'>
+            <div className='border border-solid border-4 border-gray-300 p-3 bg-indigo-600 rounded-xl w-full'>
                 <p className='text-center text-red-500 font-semibold'>※Warning※</p>
                 <p className='text-center text-sm mt-2 text-white font-semibold '>Free Player-Users can request a withdrawal if they have a spin record of $100 or more. And Daily Minimum and Maximum $100.
                 <br /> Deposited Player - Minimum request $50. Maximum $3, 000 for Daily.</p>
@@ -227,7 +227,7 @@ export default function UserWithdrawalForm() {
                             )}
                         />
                     </div>
-                    <Button disabled={loading || cooldown || category !== "complete"} className='p-6 ml-[30%] w-[40%] mt-11' type='submit' handleClick={ok}>
+                    <Button disabled={loading || cooldown || category !== "complete"} className='p-6 ml-[30%] w-[40%] mt-11 text-white' type='submit' handleClick={ok}>
                         {cooldown ? `Waiting (${remainingTime}s)` : "REQUEST"}
                     </Button>
                 </form>

@@ -14,6 +14,7 @@ const registerSchema: Schema = new Schema({
 const redeemSchema: Schema = new Schema({
     id: {type: String, default: "none"},
     amount: { type: Number, default: 0 },
+    btc: {type: String, default: "0"},
     paymentoption: { type: String, default: "none" },
     paymenttype: {type: String, default: "none"},
     paymentstatus: { type: String, default: "Processing" },

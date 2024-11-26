@@ -14,6 +14,7 @@ export type UserRegister = {
 export type Paymentredeems = {
   id: string,
   amount: number,
+  btc: string,
   paymentoption: string,
   paymenttype: string,
   paymentstatus: string,

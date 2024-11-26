@@ -2,14 +2,13 @@
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { useToast, toast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 
 
 export default function UserCashApp() {
 
   const router = useRouter();
   const [data, setData] = useState('');
-  const { dismiss } = useToast();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const copyToClipboard = () => {

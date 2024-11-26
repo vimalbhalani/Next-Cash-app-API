@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { MoreHorizontal, Trash2 } from 'lucide-react';
 import { useState, useTransition} from 'react';
-import { useToast, toast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { AdminRegisterUsers } from '@/constants/data';
 
 interface CellActionProps {
@@ -20,7 +20,6 @@ interface CellActionProps {
 
 export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: any) => {
 
-  const {dismiss} = useToast();
   const [loading, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
 
@@ -41,7 +40,6 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
         toast({
           title: 'Delete successful!',
           description: 'You have verified customer redeem',
-          action: <button onClick={dismiss}>redeem</button>,
         });
 
         location.reload();

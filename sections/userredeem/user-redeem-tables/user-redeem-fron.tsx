@@ -34,6 +34,7 @@ export default function UserredeemForm() {
     const [cooldown, setCooldown] = useState(false);
     const [remainingTime, setRemainingTime] = useState(30);
     const [category, setCategory] = useState<string>("");
+    const [bitcoin, setBitcoin] = useState('0.00000000');
 
     useEffect(() => {
         const cooldownData = localStorage.getItem(COOLDOWN_KEY);
@@ -68,6 +69,36 @@ export default function UserredeemForm() {
         }
     }, [cooldown, remainingTime]);
 
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                if (!userInfo.token) {
+                    throw new Error("User not authenticated.");
+                }
+
+                const response = await fetch('/api/customer/getuserInfo', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${userInfo.token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const result = await response.json();
+                setCategory(result.data[0].register[0].status);
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        fetchData();
+    }, [userInfo]);
+
     const onSubmit = async (data: UserFormValue) => {
         startTransition(async () => {
             try {
@@ -75,6 +106,7 @@ export default function UserredeemForm() {
                     paymentoption: selectedPayment,
                     paymenttype: selectedredeem,
                     amount: data.amount,
+                    btc: bitcoin,
                     token: userInfo.token,
                     id: userInfo.userId
                 });
@@ -85,7 +117,7 @@ export default function UserredeemForm() {
                 }
 
                 router.push("/mypage/deposit/depositmiddle");
-                
+
                 toast({
                     title: 'Deposit Request Successful!',
                     description: 'Welcome! Your deposit request has been request.',
@@ -108,7 +140,7 @@ export default function UserredeemForm() {
         });
     };
 
-    const userredeem = async (userData: { paymentoption: string; paymenttype: string; amount: number; token: string; }) => {
+    const userredeem = async (userData: { paymentoption: string; paymenttype: string; amount: number; token: string; btc: string }) => {
         try {
             const response = await fetch('/api/redeem', {
                 method: 'POST',
@@ -130,39 +162,25 @@ export default function UserredeemForm() {
         }
     };
 
-    useEffect(() => {
-        async function fetchData() {
-          try {
-            if (!userInfo.token) {
-              throw new Error("User not authenticated.");
-            }
-    
-            const response = await fetch('/api/customer/getuserInfo', {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${userInfo.token}`
-              }
-            });
-    
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-    
-            const result = await response.json();
-            setCategory(result.data[0].register[0].status);
-    
-          } catch (error) {
-            console.error('Error fetching data:', error);
-          } 
+
+    const handleChange = (e: any) => {
+        const newValue = e.target.value.replace(/[^0-9]/g, '');
+        const existingValue = bitcoin.replace(/[^0-9]/g, '');
+
+        const lastCharacter = existingValue.charAt(existingValue.length - 1);
+
+        const newBTCValue = existingValue.slice(0, -1) + newValue;
+
+        if (newBTCValue === '') {
+            setBitcoin('0.00000000');
+        } else {
+            setBitcoin(newBTCValue || lastCharacter);
         }
-    
-        fetchData();
-      }, [userInfo]);
+    };
 
     return (
         <div >
-            <div className='border border-solid border-4 border-gray-200 p-3 bg-blue-400 rounded-xl w-full'>
+            <div className='border border-solid border-4 border-gray-300 p-3 bg-indigo-600 rounded-xl w-full'>
                 <p className='text-center text-red-500 font-semibold'>※Warning※</p>
                 <p className='text-center text-sm mt-2 text-white font-semibold '>When you Deposit, please make sure to enter your 'Tag Number' in the 'Note'
                     if you do not enter the correct information, loading may be very slow.<br /> Thank you🙂</p>
@@ -177,7 +195,7 @@ export default function UserredeemForm() {
                                 id='FireKirin'
                                 value={selectedPayment}
                                 onChange={(e) => setSelectedPayment(e.target.value)}
-                                className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-3 bg-background w-[150px]'
+                                className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-3 bg-background w-[200px]'
                             >
                                 <option value="FireKirin">FireKirin</option>
                                 <option value="MilkyWay">MilkyWay</option>
@@ -196,7 +214,7 @@ export default function UserredeemForm() {
                                 id='CashApp'
                                 value={selectedredeem}
                                 onChange={(e) => setSelectedredeem(e.target.value)}
-                                className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-3 bg-background w-[150px]'
+                                className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-3 bg-background w-[200px]'
                             >
                                 <option value="CashApp">CashApp</option>
                                 <option value="Bitcoin">Bitcoin</option>
@@ -205,25 +223,57 @@ export default function UserredeemForm() {
                                 <option value="Zelle">Zelle</option>
                             </select>
                         </div>
-                        <FormField
-                            control={form.control}
-                            name="amount"
-                            render={({ field }) => (
-                                <FormItem className='flex justify-center'>
-                                    <FormLabel className='w-28 mt-4'>Amount</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            className='w-[150px]'
-                                            disabled={loading || cooldown}
-                                            {...field}
-                                            onInput={(e) => {
-                                                e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                                            }} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        {selectedredeem === "Bitcoin" ?
+                            <div className='flex justify-center'>
+                                <FormField
+                                    control={form.control}
+                                    name="amount"
+                                    render={({ field }) => (
+                                        <FormItem className='flex justify-center'>
+                                            <FormLabel className='w-28 mt-4'>Amount</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    className='w-[70px]'
+                                                    disabled={loading || cooldown}
+                                                    onInput={(e) => {
+                                                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                                                    }}
+                                                    placeholder='USD'
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <input
+                                    className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none bg-background mt-2 w-[120px] ml-[10px]'
+                                    value={bitcoin}
+                                    onChange={handleChange}
+                                    onFocus={(e) => e.target.select()}
+                                    placeholder='BTC'
+                                />
+                            </div> :
+                            <FormField
+                                control={form.control}
+                                name="amount"
+                                render={({ field }) => (
+                                    <FormItem className='flex justify-center'>
+                                        <FormLabel className='w-28 mt-4'>Amount</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                className='w-[200px]'
+                                                disabled={loading || cooldown}
+                                                {...field}
+                                                onInput={(e) => {
+                                                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                                                }} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        }
                     </div>
                     <Button disabled={loading || cooldown || category !== "complete"} className='p-6 ml-[30%] w-[40%] mt-11 text-white' type='submit'>
                         {cooldown ? `Waiting (${remainingTime}s)` : "REQUEST"}

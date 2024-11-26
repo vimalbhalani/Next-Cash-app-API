@@ -8,12 +8,11 @@ import * as z from 'zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { useToast, toast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 
-// Extend schema to include password confirmation
 const formSchema = z.object({
-    paymentgateway: z.string()// Ensure it's a number
+    paymentgateway: z.string()
 });
 
 const userInfoStr = localStorage.getItem('userinfo')
@@ -23,7 +22,6 @@ type UserFormValue = z.infer<typeof formSchema>;
 export default function UserWithdrawalMiddle() {
 
     const router = useRouter();
-    const { dismiss } = useToast();
     const [loading, startTransition] = useTransition();
     const form = useForm<UserFormValue>({
         resolver: zodResolver(formSchema),

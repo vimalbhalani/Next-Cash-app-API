@@ -1,13 +1,12 @@
 "use client";
 import { Button } from '@/components/ui/button';
 import { useState, useRef } from 'react';
-import { useToast, toast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 export default function UserBitcoin() {
     const router = useRouter();
-    const {dismiss} = useToast();
     const [bitcoinAddress] = useState("bc1q9fsmlxu6rgjatnt75qccj9v7kq7jjja38ca9p4"); // Example Bitcoin address
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -22,7 +21,6 @@ export default function UserBitcoin() {
             toast({
                 title: "BTC Address Copied Successful!",
                 description:"Welcome! Bidcoin address have copied successfully.",
-                action: <button onClick={dismiss}>BTC Address</button>,                
             })
         } else {
             toast({
@@ -35,7 +33,7 @@ export default function UserBitcoin() {
     return (
         <div>
             <div className='grid justify-items-center'>
-                <Image src='/admin-btcaddress.png' className='border mt-20 self-auto' alt='Bitcoin Address'/>
+                <Image src='/admin-btcaddress.png' width={200} height={200} className='border mt-20 self-auto' alt='Bitcoin Address'/>
             </div>
             <div className='flex items-center justify-center mt-5'>
                 <input

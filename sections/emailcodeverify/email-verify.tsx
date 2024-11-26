@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useToast, toast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 
 
 interface UserData {
@@ -18,7 +18,6 @@ const userEmail = verifyEmail ? JSON.parse(verifyEmail) : {};
 export default function EmailCodeVerifyPage() {
 
     const router = useRouter();
-    const dismiss = useToast();
     const [emailcode, setEmailCode] = useState("");
 
     const userData: UserData = {
@@ -45,7 +44,6 @@ export default function EmailCodeVerifyPage() {
             toast({
                 title: 'EmailCode verify Successful!',
                 description: 'Welcome! Your code sending has been successful.',
-                action: <button onClick={dismiss}>EmailCode Verify</button>,
             });
 
             router.push("/");

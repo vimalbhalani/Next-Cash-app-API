@@ -1,12 +1,11 @@
 "use client";
 import { Button } from '@/components/ui/button';
 import { useState, useRef, useEffect } from 'react';
-import { useToast, toast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 
 export default function UserPaypal() {
     const router = useRouter();
-    const {dismiss} = useToast();
     const [data, setData] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
 
