@@ -25,7 +25,6 @@ const COOLDOWN_KEY = 'cooldown_data';
 export default function UserWithdrawalForm() {
 
     const router = useRouter();
-    const { dismiss } = useToast();
     const [loading, startTransition] = useTransition();
     const form = useForm<UserFormValue>({
         resolver: zodResolver(formSchema),
@@ -53,21 +52,19 @@ export default function UserWithdrawalForm() {
                     if (prev <= 1) {
                         clearInterval(intervalId);
                         setCooldown(false);
-                        localStorage.removeItem(COOLDOWN_KEY); // Clean up when cooldown ends
+                        localStorage.removeItem(COOLDOWN_KEY);
                         return 30;
                     }
                     return prev - 1;
                 });
             }, 1000);
 
-            // Save cooldown state to localStorage
             localStorage.setItem(COOLDOWN_KEY, JSON.stringify({ cooldown, remainingTime }));
 
             return () => {
                 clearInterval(intervalId);
             };
         } else {
-            // Remove cooldown data from localStorage when not in cooldown
             localStorage.removeItem(COOLDOWN_KEY);
         }
     }, [cooldown, remainingTime]);
@@ -87,6 +84,8 @@ export default function UserWithdrawalForm() {
                     console.error('Withdrawal error:', response.error);
                     return;
                 }
+                
+                router.push("/mypage/withdrawal/withdrawalmiddle");
 
                 toast({
                     title: 'Withdrawal Successful!',
@@ -100,10 +99,6 @@ export default function UserWithdrawalForm() {
                     setCooldown(false);
                     localStorage.removeItem(COOLDOWN_KEY);
                 }, 30000);
-
-                router.push("/mypage/withdrawal/withdrawalmiddle");
-
-
 
             } catch (error) {
                 toast({

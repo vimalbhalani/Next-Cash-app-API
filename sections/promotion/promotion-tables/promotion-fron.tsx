@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { GameLink } from './game-link';
 import { useRouter } from 'next/navigation';
 
-export default function PromotionPage() {
+export default function PromotionPage({tag}: any) {
 
     const router = useRouter();
 
@@ -29,8 +29,9 @@ export default function PromotionPage() {
     return (
         <>
             <div className='w-full'>
-                <p className='text-center text-sm font-bold'>Welcome to ISLAND HOUSE!</p>
-                <p className='text-center text-sm font-bold'>Click image to download link</p>
+                <p className='text-left text-lg font-bold'>Your tag number: {""} #{`${tag}`}</p>
+                <p className='text-center text-md font-bold mt-5'>Welcome to ISLAND HOUSE!</p>
+                <p className='text-center text-md font-bold'>Click image to download link</p>
             </div>
             <GameLink />
             <div className='grid justify-items-center' >

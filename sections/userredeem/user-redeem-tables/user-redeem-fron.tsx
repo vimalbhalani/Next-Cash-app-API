@@ -25,7 +25,6 @@ const COOLDOWN_KEY = 'cooldown_data';
 export default function UserredeemForm() {
 
     const router = useRouter();
-    const { dismiss } = useToast();
     const [loading, startTransition] = useTransition();
     const form = useForm<UserFormValue>({
         resolver: zodResolver(formSchema),
@@ -88,10 +87,11 @@ export default function UserredeemForm() {
                     return;
                 }
 
+                router.push("/mypage/deposit/depositmiddle");
+                
                 toast({
                     title: 'Deposit Request Successful!',
                     description: 'Welcome! Your deposit request has been request.',
-                    action: <button onClick={dismiss}>Deposit Request</button>,
                 });
 
                 setCooldown(true);
@@ -125,8 +125,6 @@ export default function UserredeemForm() {
                 const errorData = await response.json();
                 return { error: errorData.message || 'redeem failed' };
             }
-
-            router.push("/mypage/deposit/depositmiddle");
 
             return await response.json();
         } catch (error) {

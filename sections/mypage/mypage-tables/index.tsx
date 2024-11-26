@@ -67,11 +67,11 @@ export default function MyPageTable() {
 
   return (
     <div className="space-y-4">
-      <p className='text-xl font-semibold ml-10'>Your Tag Number</p>
-      <p className='text-lg font-medium ml-10'>#{tag[0].tag}</p>
+      <p className='text-md font-medium ml-10'>Your Tag Number</p>
+      <p className='text-xl font-bold ml-14'>#{tag[0].tag}</p>
       <p className='py-5 text-medium font-bold text-center'>Login Info</p>
       <MyPageTableView columns={columns} data={filteredData} totalItems={filteredData.length} />
-      <div className='flex justify-center py-10'>
+      <div className='flex justify-center py-8'>
         <Button variant='default' handleClick={requestSuccess} className='text-white'>Request Game Register</Button>
       </div>
       <div>
