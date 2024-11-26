@@ -7,10 +7,9 @@ import * as z from 'zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { useToast, toast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 
-// Extend schema to include password confirmation
 const formSchema = z.object({
     amount: z.string(),
 });
@@ -84,7 +83,7 @@ export default function UserWithdrawalForm() {
                     console.error('Withdrawal error:', response.error);
                     return;
                 }
-                
+
                 router.push("/mypage/withdrawal/withdrawalmiddle");
 
                 toast({
@@ -133,38 +132,44 @@ export default function UserWithdrawalForm() {
 
     useEffect(() => {
         async function fetchData() {
-          try {
-            if (!userInfo.token) {
-              throw new Error("User not authenticated.");
-            }
-    
-            const response = await fetch('/api/customer/getuserInfo', {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${userInfo.token}`
-              }
-            });
-    
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-    
-            const result = await response.json();
-            setCategory(result.data[0].register[0].status);
-    
-          } catch (error) {
-            console.error('Error fetching data:', error);
-          } 
-        }
-    
-        fetchData();
-      }, [userInfo]);
+            try {
+                if (!userInfo.token) {
+                    throw new Error("User not authenticated.");
+                }
 
-    const ok = () => {};
+                const response = await fetch('/api/customer/getuserInfo', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${userInfo.token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const result = await response.json();
+                setCategory(result.data[0].register[0].status);
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        fetchData();
+    }, [userInfo]);
+
+    const ok = () => { };
 
     return (
         <div >
+            <div className='border border-solid border-4 border-gray-200 p-3 bg-blue-400 rounded-xl w-full'>
+                <p className='text-center text-red-500 font-semibold'>※Warning※</p>
+                <p className='text-center text-sm mt-2 text-white font-semibold '>Free Player-Users can request a withdrawal if they have a spin record of $100 or more. And Daily Minimum and Maximum $100.
+                <br /> Deposited Player - Minimum request $50. Maximum $3, 000 for Daily.</p>
+            </div>
+            <br />
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2">
                     <div>

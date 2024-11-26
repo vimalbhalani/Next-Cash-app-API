@@ -7,12 +7,11 @@ import * as z from 'zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { useToast, toast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 
-// Extend schema to include password confirmation
 const formSchema = z.object({
-    amount: z.string()// Ensure it's a number
+    amount: z.string()
 });
 
 const userInfoStr = localStorage.getItem('userinfo')
@@ -52,21 +51,19 @@ export default function UserredeemForm() {
                     if (prev <= 1) {
                         clearInterval(intervalId);
                         setCooldown(false);
-                        localStorage.removeItem(COOLDOWN_KEY); // Clean up when cooldown ends
+                        localStorage.removeItem(COOLDOWN_KEY);
                         return 30;
                     }
                     return prev - 1;
                 });
             }, 1000);
 
-            // Save cooldown state to localStorage
             localStorage.setItem(COOLDOWN_KEY, JSON.stringify({ cooldown, remainingTime }));
 
             return () => {
                 clearInterval(intervalId);
             };
         } else {
-            // Remove cooldown data from localStorage when not in cooldown
             localStorage.removeItem(COOLDOWN_KEY);
         }
     }, [cooldown, remainingTime]);
@@ -165,10 +162,10 @@ export default function UserredeemForm() {
 
     return (
         <div >
-            <div className='border border-solid border-4 border-gray-500 p-3 bg-white rounded-xl'>
+            <div className='border border-solid border-4 border-gray-200 p-3 bg-blue-400 rounded-xl w-full'>
                 <p className='text-center text-red-500 font-semibold'>※Warning※</p>
-                <p className='text-center text-sm mt-2 text-black font-semibold'>When you Deposit, please make sure to enter your 'Tag Number' in the 'Note'
-                    if you do not enter the correct information, loading may be very slow. Thank you🙂</p>
+                <p className='text-center text-sm mt-2 text-white font-semibold '>When you Deposit, please make sure to enter your 'Tag Number' in the 'Note'
+                    if you do not enter the correct information, loading may be very slow.<br /> Thank you🙂</p>
             </div>
             <br />
             <Form {...form}>
@@ -228,7 +225,7 @@ export default function UserredeemForm() {
                             )}
                         />
                     </div>
-                    <Button disabled={loading || cooldown || category !== "complete"} className='p-6 ml-[30%] w-[40%] mt-11' type='submit'>
+                    <Button disabled={loading || cooldown || category !== "complete"} className='p-6 ml-[30%] w-[40%] mt-11 text-white' type='submit'>
                         {cooldown ? `Waiting (${remainingTime}s)` : "REQUEST"}
                     </Button>
                 </form>

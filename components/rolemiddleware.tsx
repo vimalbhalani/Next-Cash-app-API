@@ -1,7 +1,7 @@
 'use client'
 
 import NotFound from '@/app/not-found';
-import React, {ReactNode} from 'react';
+import React from 'react';
 
 export default function RoleMiddleware({ children, accessRight }: { children: React.ReactNode; accessRight: string;}){
 

@@ -1,7 +1,10 @@
 'use client';
+
 import React from 'react';
 import ThemeProvider from './ThemeToggle/theme-provider';
 import { SessionProvider, SessionProviderProps } from 'next-auth/react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 export default function Providers({
   session,
   children
@@ -10,10 +13,22 @@ export default function Providers({
   children: React.ReactNode;
 }) {
 
+  const router = useRouter();
+
+  const chatting = () => {
+    router.push("/mypage/chat");
+  }
+
   return (
     <>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <SessionProvider session={session}>{children}</SessionProvider>
+        <SessionProvider session={session}>
+          <Image src='/chat.png' width={60} height={60} alt='logo'
+           className='absolute right-5 sm:right-10 top-[87vh] sm:top-[90vh] z-50 cursor-pointer hover:scale-105'
+           onClick={chatting}
+           />
+          {children}
+        </SessionProvider>
       </ThemeProvider>
     </>
   );

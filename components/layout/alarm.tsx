@@ -17,28 +17,25 @@ const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 export function UserAlarm() {
   const [messages, setMessages] = useState<string[]>([]);
   const [hasNewMessage, setHasNewMessage] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false); // State to track if dropdown is open
+  const [dropdownOpen, setDropdownOpen] = useState(false); 
   
-  // Handle receiving messages
   useEffect(() => {
     const handleMessage = (content: string) => {
       setMessages((prev) => [...prev, content]);
-      if (!dropdownOpen) { // Set badge to visible only if dropdown is closed
+      if (!dropdownOpen) {
         setHasNewMessage(true);
       }
     };
     socket.emit('register', { userId: userInfo.userId, role: userInfo.role });
     socket.on('receiveMessage', handleMessage);
 
-    // Clean up the event listener on component unmount
     return () => {
       socket.off('receiveMessage', handleMessage);
     };
-  }, [dropdownOpen]); // add dropdownOpen as dependency
+  }, [dropdownOpen]);
 
   const handleToggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
-    // Clear the new message state only if the dropdown is opened
     if (!dropdownOpen) {
       setHasNewMessage(false);
     }
