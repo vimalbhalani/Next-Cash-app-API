@@ -36,7 +36,10 @@ export default function UserredeemTable() {
         }
 
         const result = await response.json();
-        setData(result.data[0].redeem); 
+
+        const sortedData = result.data[0].redeem.sort((a: any, b: any) => new Date(b.date) - new Date(a.date));
+
+        setData(sortedData); 
         setCategory(result.data[0].register[0].status);
         setTotalData(result.totalCount); 
 

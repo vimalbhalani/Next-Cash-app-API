@@ -43,7 +43,7 @@ export default function MyPageTable() {
         setTag(result.data)
         setData(result.data[0].register); // Adjust based on your API response
         setTotalData(result.totalCount); // Adjust based on your API response
-        
+
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -76,17 +76,19 @@ export default function MyPageTable() {
       </div>
       <div>
         <p className='text-center text-xl font-semibold'>User Info</p>
-        <div className='grid grid-cols-2 gap-5 mt-10'>
-          <p className='text-end'>Name:</p>
-          <p className='text-start'>{tag[0].firstname}{" "}{tag[0].lastname}</p>
-        </div>
-        <div className='grid grid-cols-2 gap-5 mt-3'>
-          <p className='text-end'>Username:</p>
-          <p className='w-[170px] sm:w-full text-start break-words'>{tag[0].email}</p>
-        </div>
-        <div className='grid grid-cols-2 gap-5 mt-3'>
-          <p className='text-end'>Phone Number:</p>
-          <p className='text-start'>{data[0]? data[0].phonenumber : "None"}</p>
+        <div className='border py-8 mt-3'>
+          <div className='flex justify-center'>
+            <p>Name:</p>
+            <p className='ml-2'>{tag[0].firstname}{" "}{tag[0].lastname}</p>
+          </div>
+          <div className='flex justify-center'>
+            <p>Email:</p>
+            <p className='ml-2'>{tag[0].email}</p>
+          </div>
+          <div className='flex justify-center'>
+            <p>Phone Number:</p>
+            <p className='ml-2'>{data[0] ? data[0].phonenumber : "None"}</p>
+          </div>
         </div>
       </div>
       <GameLink />

@@ -10,7 +10,7 @@ const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 export default function UserWithdrawalTable() {
 
   const [data, setData] = useState<PaymentWithdrawals[]>([]);  
-  const [totalData, setTotalData] = useState<number>(0); // Store total items for pagination
+  const [totalData, setTotalData] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [category, setCategory] = useState<string>("");
 
@@ -27,7 +27,7 @@ export default function UserWithdrawalTable() {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${userInfo.token}` // Assuming the token is sent this way
+            'Authorization': `Bearer ${userInfo.token}`
           }
         });
 
@@ -36,7 +36,9 @@ export default function UserWithdrawalTable() {
         }
 
         const result = await response.json();
-        setData(result.data[0].withdrawal);
+
+        const sortedData = result.data[0].withdrawal.sort((a: any, b: any) => new Date(b.date) - new Date(a.date));
+        setData(sortedData);
         setCategory(result.data[0].register[0].status)
         setTotalData(result.totalCount);
       } catch (error) {
