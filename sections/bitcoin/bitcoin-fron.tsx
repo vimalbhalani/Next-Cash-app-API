@@ -1,14 +1,16 @@
 "use client";
 import { Button } from '@/components/ui/button';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { QRCodeSVG } from 'qrcode.react';
 
 export default function UserBitcoin() {
     const router = useRouter();
     const [bitcoinAddress] = useState("bc1q9fsmlxu6rgjatnt75qccj9v7kq7jjja38ca9p4"); // Example Bitcoin address
     const inputRef = useRef<HTMLInputElement>(null);
+    const [data, setData] = useState("");
 
     const bitcoin = () => {
         router.push("/mypage/deposit");
@@ -20,22 +22,41 @@ export default function UserBitcoin() {
             document.execCommand("copy");
             toast({
                 title: "BTC Address Copied Successful!",
-                description:"Welcome! Bidcoin address have copied successfully.",
+                description: "Welcome! Bidcoin address have copied successfully.",
             })
         } else {
             toast({
                 title: "BTC Address Copied Failed!",
-                description:"Bidcoin address have copied failed. Please try again!",
+                description: "Bidcoin address have copied failed. Please try again!",
             })
         }
     }
 
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await fetch('/api/admin/getadmin');
+                const result = await response.json();
+                setData(result.data[0].bitcoin);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            } finally {
+            }
+        }
+
+        fetchData();
+    }, []);
+
     return (
         <div>
-            <div className='grid justify-items-center'>
-                <Image src='/admin-btcaddress.png' width={200} height={200} className='border mt-20 self-auto' alt='Bitcoin Address'/>
+            <div className='flex justify-center mt-20'>
+                {data !== "none" ?
+                    <div className='border p-2'>
+                        <QRCodeSVG value={data} size={180} level={"H"}/>
+                    </div> : ""
+                }
             </div>
-            <div className='flex items-center justify-center mt-5'>
+            <div className='flex items-center justify-center mt-10'>
                 <input
                     type='text'
                     value={bitcoinAddress}

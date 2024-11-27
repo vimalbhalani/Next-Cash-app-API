@@ -1,8 +1,11 @@
 "use client";
+
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useState, useRef, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
+import {QRCodeSVG}  from 'qrcode.react';
 
 export default function UserZelle() {
     const router = useRouter();
@@ -13,40 +16,49 @@ export default function UserZelle() {
         router.push("/mypage/deposit");
     }
 
+    const zelleUri = `zelle:${data}`;
+
     const copyToClipboard = () => {
         if (inputRef.current) {
             inputRef.current.select();
             document.execCommand("copy");
             toast({
                 title: "Zelle Copied Successful!",
-                description:"Welcome! Zelle have copied successfully.",
+                description: "Welcome! Zelle have copied successfully.",
             })
         } else {
             toast({
                 title: "Zelle Copied Failed!",
-                description:"Zelle have copied failed. Please try again!",
+                description: "Zelle have copied failed. Please try again!",
             })
         }
     }
 
     useEffect(() => {
         async function fetchData() {
-          try {
-            const response = await fetch('/api/admin/getadmin');
-            const result = await response.json();
-            setData(result.data[0].zelle);
-          } catch (error) {
-            console.error('Error fetching data:', error);
-          } finally {
-          }
+            try {
+                const response = await fetch('/api/admin/getadmin');
+                const result = await response.json();
+                setData(result.data[0].zelle);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            } finally {
+            }
         }
-    
+
         fetchData();
-      }, []);
+    }, []);
 
     return (
         <div>
-            <div className='flex items-center justify-center mt-32'>
+            <div className='flex justify-center mt-20'>
+                {data !== "none"?
+                <div className='border p-2'>
+                    <QRCodeSVG value={zelleUri} size={180} level={"H"} />
+                </div>:""
+                }
+            </div>
+            <div className='flex items-center justify-center mt-10'>
                 <input
                     type='text'
                     value={data}

@@ -29,7 +29,8 @@ export default function UserWithdrawalForm() {
         resolver: zodResolver(formSchema),
     });
 
-    const [selectedPayment, setSelectedPayment] = useState('FireKirin');
+    const [game, setGame] = useState([]);
+    const [selectedPayment, setSelectedPayment] = useState("");
     const [selectedWithdrawal, setSelectedWithdrawal] = useState('CashApp');
     const [cooldown, setCooldown] = useState(false);
     const [remainingTime, setRemainingTime] = useState(30);
@@ -59,7 +60,7 @@ export default function UserWithdrawalForm() {
             }, 1000);
 
             localStorage.setItem(COOLDOWN_KEY, JSON.stringify({ cooldown, remainingTime }));
-
+            
             return () => {
                 clearInterval(intervalId);
             };
@@ -67,6 +68,44 @@ export default function UserWithdrawalForm() {
             localStorage.removeItem(COOLDOWN_KEY);
         }
     }, [cooldown, remainingTime]);
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                if (!userInfo.token) {
+                    throw new Error("User not authenticated.");
+                }
+
+                const response = await fetch('/api/customer/getuserInfo', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${userInfo.token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const result = await response.json();
+                const registerArray = result.data[0].register;
+
+                if (registerArray.length > 0) {
+                    setCategory(registerArray[0].status);
+                }
+
+                const categories = registerArray.map((item: any) => item.category);
+                setGame(categories);
+                setSelectedPayment(categories[0]);
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        fetchData();
+    }, [userInfo]);
 
     const onSubmit = async (data: UserFormValue) => {
         startTransition(async () => {
@@ -130,35 +169,14 @@ export default function UserWithdrawalForm() {
         }
     };
 
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                if (!userInfo.token) {
-                    throw new Error("User not authenticated.");
-                }
 
-                const response = await fetch('/api/customer/getuserInfo', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${userInfo.token}`
-                    }
-                });
+    const uniqueGames = [...new Set(game)];
 
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const result = await response.json();
-                setCategory(result.data[0].register[0].status);
-
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        }
-
-        fetchData();
-    }, [userInfo]);
+    const options = uniqueGames.map(game => (
+        <option key={game} value={game}>
+            {game}
+        </option>
+    ));
 
     const ok = () => { };
 
@@ -173,23 +191,15 @@ export default function UserWithdrawalForm() {
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2">
                     <div>
-                        <div className='flex justify-center'>
+                    <div className='flex justify-center'>
                             <label className='text-sm font-medium w-28 mt-4'>Category</label>
                             <select
-                                id='FireKirin'
+                                id='gameSelect'
                                 value={selectedPayment}
                                 onChange={(e) => setSelectedPayment(e.target.value)}
-                                className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-3 bg-background w-[150px]'
+                                className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-3 bg-background w-[200px]'
                             >
-                                <option value="FireKirin">FireKirin</option>
-                                <option value="MilkyWay">MilkyWay</option>
-                                <option value="OrionStars">OrionStars</option>
-                                <option value="Juwa">Juwa</option>
-                                <option value="GameVault">GameVault</option>
-                                <option value="VegasSweep">VegasSweep</option>
-                                <option value="YOLO">YOLO</option>
-                                <option value="UltraPanda">UltraPanda</option>
-                                <option value="VBlink">VBlink</option>
+                                {options}
                             </select>
                         </div>
                         <div className='flex justify-center'>
@@ -198,7 +208,7 @@ export default function UserWithdrawalForm() {
                                 id='CashApp'
                                 value={selectedWithdrawal}
                                 onChange={(e) => setSelectedWithdrawal(e.target.value)}
-                                className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-3 bg-background w-[150px]'
+                                className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-3 bg-background w-[200px]'
                             >
                                 <option value="CashApp">CashApp</option>
                                 <option value="Bitcoin">Bitcoin</option>
@@ -217,7 +227,7 @@ export default function UserWithdrawalForm() {
                                         <Input
                                             disabled={loading || cooldown}
                                             {...field}
-                                            className='w-[150px]'
+                                            className='w-[200px]'
                                             onInput={(e) => {
                                                 e.target.value = e.target.value.replace(/[^0-9]/g, ''); // Allow only digits
                                             }} />

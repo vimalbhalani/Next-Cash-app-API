@@ -23,7 +23,7 @@ export default function Providers({
     <>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <SessionProvider session={session}>
-          <Image src='/chat.png' width={60} height={60} alt='logo'
+          <Image src='/chat-image.png' width={60} height={60} alt='chatting'
            className='absolute right-5 sm:right-10 top-[87vh] sm:top-[90vh] z-50 cursor-pointer hover:scale-105'
            onClick={chatting}
            />

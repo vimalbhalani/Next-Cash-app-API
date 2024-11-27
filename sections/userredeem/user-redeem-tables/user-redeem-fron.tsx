@@ -29,12 +29,13 @@ export default function UserredeemForm() {
         resolver: zodResolver(formSchema),
     });
 
-    const [selectedPayment, setSelectedPayment] = useState('FireKirin');
-    const [selectedredeem, setSelectedredeem] = useState('CashApp');
     const [cooldown, setCooldown] = useState(false);
     const [remainingTime, setRemainingTime] = useState(30);
     const [category, setCategory] = useState<string>("");
     const [bitcoin, setBitcoin] = useState('0.00000000');
+    const [game, setGame] = useState([]);
+    const [selectedredeem, setSelectedredeem] = useState('CashApp');
+    const [selectedPayment, setSelectedPayment] = useState("");
 
     useEffect(() => {
         const cooldownData = localStorage.getItem(COOLDOWN_KEY);
@@ -89,7 +90,15 @@ export default function UserredeemForm() {
                 }
 
                 const result = await response.json();
-                setCategory(result.data[0].register[0].status);
+                const registerArray = result.data[0].register;
+
+                if (registerArray.length > 0) {
+                    setCategory(registerArray[0].status);
+                }
+
+                const categories = registerArray.map((item: any) => item.category);
+                setGame(categories);
+                setSelectedPayment(categories[0]);
 
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -98,6 +107,7 @@ export default function UserredeemForm() {
 
         fetchData();
     }, [userInfo]);
+
 
     const onSubmit = async (data: UserFormValue) => {
         startTransition(async () => {
@@ -163,20 +173,31 @@ export default function UserredeemForm() {
     };
 
 
-    const handleChange = (e: any) => {
+    const handleInputChange = (e: any) => {
         const newValue = e.target.value.replace(/[^0-9]/g, '');
-        const existingValue = bitcoin.replace(/[^0-9]/g, '');
+        if (newValue.length > 0) {
+            e.target.value = newValue;
+            setBitcoin(newValue);
 
-        const lastCharacter = existingValue.charAt(existingValue.length - 1);
-
-        const newBTCValue = existingValue.slice(0, -1) + newValue;
-
-        if (newBTCValue === '') {
-            setBitcoin('0.00000000');
-        } else {
-            setBitcoin(newBTCValue || lastCharacter);
+            if (bitcoin !== "0.00000000" && newValue.length > 0) {
+                e.target.value = newValue.slice(-8);
+                setBitcoin(e.target.value);
+            }
         }
     };
+
+    const uniqueGames = [...new Set(game)];
+
+    const options = uniqueGames.map(game => (
+        <option key={game} value={game}>
+            {game}
+        </option>
+    ));
+
+    console.log(selectedPayment);
+    
+
+    const ok = () => {};
 
     return (
         <div >
@@ -192,20 +213,12 @@ export default function UserredeemForm() {
                         <div className='flex justify-center'>
                             <label className='text-sm font-medium w-28 mt-4'>Category</label>
                             <select
-                                id='FireKirin'
+                                id='gameSelect'
                                 value={selectedPayment}
                                 onChange={(e) => setSelectedPayment(e.target.value)}
                                 className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-3 bg-background w-[200px]'
                             >
-                                <option value="FireKirin">FireKirin</option>
-                                <option value="MilkyWay">MilkyWay</option>
-                                <option value="OrionStars">OrionStars</option>
-                                <option value="Juwa">Juwa</option>
-                                <option value="GameVault">GameVault</option>
-                                <option value="VegasSweep">VegasSweep</option>
-                                <option value="YOLO">YOLO</option>
-                                <option value="UltraPanda">UltraPanda</option>
-                                <option value="VBlink">VBlink</option>
+                                {options}
                             </select>
                         </div>
                         <div className='flex justify-center'>
@@ -249,8 +262,7 @@ export default function UserredeemForm() {
                                 <input
                                     className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none bg-background mt-2 w-[120px] ml-[10px]'
                                     value={bitcoin}
-                                    onChange={handleChange}
-                                    onFocus={(e) => e.target.select()}
+                                    onChange={handleInputChange}
                                     placeholder='BTC'
                                 />
                             </div> :
@@ -275,7 +287,7 @@ export default function UserredeemForm() {
                             />
                         }
                     </div>
-                    <Button disabled={loading || cooldown || category !== "complete"} className='p-6 ml-[30%] w-[40%] mt-11 text-white' type='submit'>
+                    <Button disabled={loading || cooldown || category !== "complete"} className='p-6 ml-[30%] w-[40%] mt-11 text-white' type='submit' handleClick={ok}>
                         {cooldown ? `Waiting (${remainingTime}s)` : "REQUEST"}
                     </Button>
                 </form>

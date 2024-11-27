@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from '@/components/ui/use-toast';
+import { QRCodeSVG } from 'qrcode.react';
 
 
 export default function UserCashApp() {
@@ -10,6 +11,8 @@ export default function UserCashApp() {
   const router = useRouter();
   const [data, setData] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const cashAppUrl = `cash.app/qr/${data}`;
 
   const copyToClipboard = () => {
     if (inputRef.current) {
@@ -42,32 +45,31 @@ export default function UserCashApp() {
     fetchData();
   }, []);
 
-  const cashapp = () => {
-    window.location.href = `https://cash.app/qr/${data}`;
-  }
-
   const back = () => {
     router.push("/mypage/deposit");
   }
 
   return (
     <div>
-      <div className='grid justify-items-center' >
-        <div className='flex items-center text-center w-52 h-52 mt-20 self-auto '>If you click "QR Code", you can get admin's QR code.</div>
+      <div className='flex justify-center mt-20'>
+        {data !== "none" ?
+          <div className='border p-2'>
+            <QRCodeSVG value={cashAppUrl} size={180} level={"H"} />
+          </div> : ""
+        }
       </div>
-        <div className='flex items-center justify-center mt-5'>
-          <input
-            type='text'
-            value={data}
-            readOnly
-            className='border p-2 w-1/2 text-center outline-none rounded-md'
-            ref={inputRef}
-          />
-          <Button className='border py-5' handleClick={copyToClipboard}>
-            Copy
-          </Button>
-        </div>
-      <Button className='border p-6 ml-[30%] w-[40%] mt-11' handleClick={cashapp}>QR Code</Button>
+      <div className='flex items-center justify-center mt-10'>
+        <input
+          type='text'
+          value={data}
+          readOnly
+          className='border p-2 w-1/2 text-center outline-none rounded-md'
+          ref={inputRef}
+        />
+        <Button className='border py-5' handleClick={copyToClipboard}>
+          Copy
+        </Button>
+      </div>
       <Button className='border p-6 ml-[30%] w-[40%] mt-11' handleClick={back}>OK</Button>
     </div>
   );
