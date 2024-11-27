@@ -35,7 +35,8 @@ export default function PromotionPage({tag}: any) {
             </div>
             <GameLink />
             <div className='grid justify-items-center' >
-                <Image src="/WEB-POSTER.png" width={1000} height={1000} alt='ad' />
+                <Image src="/promo/promo1.png" width={1000} height={1000} alt='ad' />
+                <Image src="/promo/promo2.png" width={1000} height={1000} alt='ad' className='mt-5' />
             </div>
             <div className='w-full grid grid-cols-1 place-items-center'>
                 <div className='lg:flex lg:justify-center justify-items-center' >

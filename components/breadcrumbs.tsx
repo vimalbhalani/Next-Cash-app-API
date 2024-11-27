@@ -17,6 +17,7 @@ type BreadcrumbItemProps = {
 export function Breadcrumbs({ items }: { items: BreadcrumbItemProps[] }) {
   return (
     <Breadcrumb>
+    <img src="/promo/web-cover.png" className='w-full mb-10' alt='cover' />
       <BreadcrumbList>
         {items.map((item, index) => (
           <Fragment key={item.title}>
