@@ -49,7 +49,7 @@ export const CodeAction = ({ registerDate, codeNumber, userName, regiStatus }: {
 
       if (!response.ok) {
         const errorData = await response.json();
-        return { error: errorData.message || 'Code sending failed' }; // Handle response error
+        return { error: errorData.message || 'Code sending failed' };
       }
 
       toast({
@@ -61,13 +61,13 @@ export const CodeAction = ({ registerDate, codeNumber, userName, regiStatus }: {
 
       location.reload();
 
-      return await response.json(); // Assume successful response returns user data or a success message
+      return await response.json();
     } catch (error) {
       toast({
         title: 'Code Sending Failed!',
         description: 'Your code sending has failed. Please try again.',
       });
-      throw error; // Rethrow or return an error response
+      throw error; 
     }
   };
 

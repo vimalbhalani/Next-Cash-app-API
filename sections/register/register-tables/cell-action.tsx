@@ -75,7 +75,7 @@ export const CellAction: React.FC<CellActionProps> = ({ deleteDate, userId }: an
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Replace with a spinner or loading message if needed
+    return <div>Loading...</div>;
   }
 
   const ok = () => {};

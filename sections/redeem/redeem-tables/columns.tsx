@@ -63,7 +63,7 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
     accessorKey: 'id', header: 'TAG NUMBER', cell: ({ row }) => (<span>{row.original.user.tag}</span>)
   },
   {
-    accessorKey: 'user.category', header: 'GAME', cell: ({ row }) => (<span>{row.original.user.register[0].category}</span>)
+    accessorKey: 'paymentoption', header: 'GAME'
   },
   {
     accessorKey: 'username', header: 'USERNAME', cell: ({ row }) => (
@@ -82,6 +82,7 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
         redeemDate={row.original.date}
         userId={row.original.user._id}
         redeemAmount={row.original.amount}
+        bitcoin = {row.original.btc}
       />
   },
   {

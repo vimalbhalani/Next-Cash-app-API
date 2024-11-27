@@ -69,7 +69,7 @@ export const ModifyModal: React.FC<AlertModalProps> = ({
 
       if (!response.ok) {
         const errorData = await response.json();
-        return { error: errorData.message || 'Code sending failed' }; // Handle response error
+        return { error: errorData.message || 'Code sending failed' };
       }
 
       toast({
@@ -79,21 +79,19 @@ export const ModifyModal: React.FC<AlertModalProps> = ({
       
       location.reload();
 
-      return await response.json(); // Assume successful response returns user data or a success message
+      return await response.json();
     } catch (error) {
       toast({
         title: 'Modify Failed!',
         description: 'User info modify has failed. Please try again.',
       });
-      throw error; // Rethrow or return an error response
+      throw error;
     }
   };
 
-  // Function to handle button click
   const onConfirm = async () => {
     const response = await onSubmit(userData);
 
-    // Handle the response or error here
     if (response && response.error) {
       console.error(response.error);
     } else {
