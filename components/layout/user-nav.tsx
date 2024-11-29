@@ -18,11 +18,9 @@ import {
 import useSocket from '@/lib/socket';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 export function UserNav() {
-  const router = useRouter();
   const { socket } = useSocket();
   const userInfoStr = localStorage.getItem('userinfo');
   const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
@@ -37,7 +35,7 @@ export function UserNav() {
   const signOut = () => {
     localStorage.clear();
     sessionStorage.clear();
-    router.push('/');
+    window.location.href = '/';
   };
   const ok = () => {};
 
