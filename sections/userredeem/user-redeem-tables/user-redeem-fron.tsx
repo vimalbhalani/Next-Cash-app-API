@@ -189,18 +189,19 @@ export default function UserredeemForm() {
     }
   };
 
-  const handleInputChange = (e: any) => {
-    const newValue = e.target.value.replace(/[^0-9]/g, '');
-    if (newValue.length > 0) {
-      e.target.value = newValue;
-      setBitcoin(newValue);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value.replace(/[^0-9]/g, '');
 
-      if (bitcoin !== '0.00000000' && newValue.length > 0) {
-        e.target.value = newValue.slice(-8);
-        setBitcoin(e.target.value);
-      }
+    let formattedValue = '0.00000000';
+
+    if (rawValue.length > 0) {
+        const valueAsNumber = parseInt(rawValue, 10);
+        formattedValue = (valueAsNumber / 100000000).toFixed(8);
     }
-  };
+
+    e.target.value = formattedValue;
+    setBitcoin(formattedValue);
+};
 
   const uniqueGames = Array.from(new Set(game));
 
