@@ -3,14 +3,10 @@ import { Button } from '@/components/ui/button';
 import { useState, useRef, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { QRCodeSVG } from 'qrcode.react';
 
 export default function UserBitcoin() {
   const router = useRouter();
-  const [bitcoinAddress] = useState(
-    'bc1q9fsmlxu6rgjatnt75qccj9v7kq7jjja38ca9p4'
-  ); // Example Bitcoin address
   const inputRef = useRef<HTMLInputElement>(null);
   const [data, setData] = useState('');
 
@@ -40,6 +36,7 @@ export default function UserBitcoin() {
         const response = await fetch('/api/admin/getadmin');
         const result = await response.json();
         setData(result.data[0].bitcoin);
+
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -48,6 +45,9 @@ export default function UserBitcoin() {
 
     fetchData();
   }, []);
+
+  console.log(data);
+  
 
   return (
     <div>
@@ -63,7 +63,7 @@ export default function UserBitcoin() {
       <div className="mt-10 flex items-center justify-center">
         <input
           type="text"
-          value={bitcoinAddress}
+          value={data}
           readOnly
           className="w-1/2 rounded-md border p-2 text-center outline-none"
           ref={inputRef}

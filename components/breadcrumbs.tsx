@@ -1,3 +1,4 @@
+'use client'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,10 +16,16 @@ type BreadcrumbItemProps = {
   link: string;
 };
 
+const userInfoStr = localStorage.getItem('userinfo');
+const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
+
 export function Breadcrumbs({ items }: { items: BreadcrumbItemProps[] }) {
   return (
     <Breadcrumb>
+    {userInfo.role === "user"? 
       <Image src="/promo/web-cover.png" width={1000} height={500} className="mb-10 w-full" alt="cover" />
+      : ""
+    }
       <BreadcrumbList>
         {items.map((item, index) => (
           <Fragment key={item.title}>

@@ -365,7 +365,6 @@ export default function CashAppInfoPageView() {
           onChange={(e) => {
             setBitcoinValue(e.target.value);
           }}
-          readOnly
         />
         <Button
           className="ml-[10px] w-[20%] border p-5 text-white"
