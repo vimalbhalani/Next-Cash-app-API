@@ -31,7 +31,7 @@ export default function Providers({
               width={60}
               height={60}
               alt="chatting"
-              className="absolute right-5 top-[87vh] z-50 cursor-pointer hover:scale-105 sm:right-10 sm:top-[90vh]"
+              className="absolute right-5 top-[87vh] z-50 cursor-pointer hover:scale-105 sm:right-14 sm:top-[85vh]"
               onClick={chatting}
             />
           ) : (
