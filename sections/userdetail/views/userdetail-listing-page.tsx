@@ -21,13 +21,10 @@ export default async function UserdetailListingPage({}: TEmployeeListingPage) {
         <Breadcrumbs items={breadcrumbItems} />
 
         <div className="flex items-start justify-between">
-          <Heading
-            title={`User Details`}
-            description=""
-          />
+          <Heading title={`User Details`} description="" />
         </div>
         <Separator />
-        <UserdetailTable/>
+        <UserdetailTable />
       </div>
     </PageContainer>
   );

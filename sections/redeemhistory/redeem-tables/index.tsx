@@ -2,22 +2,34 @@
 
 import { columns } from './columns';
 import { useState, useEffect, useTransition } from 'react';
-import { Paymentredeems, AdminRegisterUsers } from '@/constants/data'; 
+import { Paymentredeems, AdminRegisterUsers } from '@/constants/data';
 import AdminredeemHistoryTableView from './redeem-table';
 import useSocket from '@/lib/socket';
 import { toast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
+import { useSearchParams } from 'next/navigation';
+
+interface SelectMultiIdData {
+  id?: string;
+  date?: string; 
+}
 
 export default function AdminredeemHistoryTable() {
 
-  const {socket} = useSocket();
+  const { socket } = useSocket();
   const [data, setData] = useState<(Paymentredeems & AdminRegisterUsers)[]>([]);
-  const [totalData, setTotalData] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
-  const [searchParam, setSearchParam] = useState("");
-  const [selectCategory, setSelectCategory] = useState("tag");
-  const [multiIds, setMultiIds] = useState<string[]>([]);
+  const [searchParam, setSearchParam] = useState('');
+  const [selectCategory, setSelectCategory] = useState('tag');
+  const [multiIds, setMultiIds] = useState<SelectMultiIdData[]>([]);
   const [load, startTransition] = useTransition();
+
+  const searchParams = useSearchParams();
+  const pageParam = searchParams.get('page');
+  const limitParam = searchParams.get('limit');
+  
+  const page = Number(pageParam? pageParam : 1);
+  const limit = Number(limitParam? limitParam : 10);
 
   useEffect(() => {
     async function fetchData() {
@@ -31,19 +43,32 @@ export default function AdminredeemHistoryTable() {
         const usersResult = await usersResponse.json();
         const combinedData = redeemsResult.data.flatMap((redeemEntry: any) =>
           redeemEntry.redeem
-            .filter((redeem: Paymentredeems) =>
-              redeem.paymentstatus === 'complete' || redeem.paymentstatus === 'decline'
+            .filter(
+              (redeem: Paymentredeems) =>
+                redeem.paymentstatus === 'complete' ||
+                redeem.paymentstatus === 'decline'
             )
             .map((redeem: Paymentredeems) => {
-              const user = usersResult.data.find((user: AdminRegisterUsers) => user._id === redeem.id);
+              const user = usersResult.data.find(
+                (user: AdminRegisterUsers) => user._id === redeem.id
+              );
               return { ...redeem, user };
             })
         );
 
-        const sortedData = combinedData.sort((a: any, b: any) => new Date(b.date) - new Date(a.date));
+        const sortedData = combinedData.sort((a: any, b: any) => {
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
+          
+          if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
+            console.error('Invalid date:', a.date, b.date);
+            return 0; 
+          }
+          
+          return dateB.getTime() - dateA.getTime();
+        });
 
         setData(sortedData);
-        setTotalData(redeemsResult.totalCount); 
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -54,7 +79,7 @@ export default function AdminredeemHistoryTable() {
     fetchData();
   }, []);
 
-  const filteredData = data.filter(item => {
+  const filteredData = data.filter((item) => {
     const param = searchParam.toLowerCase();
     switch (selectCategory) {
       case 'tag':
@@ -73,37 +98,43 @@ export default function AdminredeemHistoryTable() {
   });
 
   useEffect(() => {
-    socket.on("selectHistoryMultiIds", (data: any) => {
+    socket.on('selectHistoryMultiIds', (data: any) => {
       setMultiIds(data);
-    })
-  }, [])
-
-  useEffect(() => {
-    socket.on("selectHistoryMultiId", (data: any) => {
-      if (!data.id && data.date) {
-        setMultiIds((prevMultiIds) => prevMultiIds.filter(item => item.date !== data.date));
-      } else {
-        setMultiIds((prevMultiIds) => [...prevMultiIds, data]);
-      }
     });
   }, []);
 
-  
+  useEffect(() => {
+    const handleSelectMultiId = (data: SelectMultiIdData) => {
+      if (!data.id && data.date) {
+        setMultiIds((prevMultiIds) =>
+          prevMultiIds.filter((item) => item.date !== data.date)
+        );
+      } else {
+        setMultiIds((prevMultiIds) => [...prevMultiIds, data]);
+      }
+    };
+
+    socket.on('selectHistoryMultiId', handleSelectMultiId);
+
+    return () => {
+      socket.off('selectHistoryMultiId', handleSelectMultiId);
+    };
+  }, []);
+
   const multiRestore = async () => {
-    
     if (multiIds.length == 0) {
       toast({
         title: 'Restore Failed!',
-        description: 'Please check item!',
+        description: 'Please check item!'
       });
       return;
     }
 
-    startTransition(async () => {      
+    startTransition(async () => {
       try {
         const response = await userMultiCheck({
-          paymentstatus: "Processing",
-          data: multiIds,
+          paymentstatus: 'Processing',
+          data: multiIds
         });
 
         if (response.error) {
@@ -112,28 +143,30 @@ export default function AdminredeemHistoryTable() {
 
         toast({
           title: 'Restore Successful!',
-          description: 'You have restored successful!',
+          description: 'You have restored successful!'
         });
 
         location.reload();
-
       } catch (error) {
         toast({
           title: 'Restore Failed!',
-          description: 'Your action has been failed. Please try again!',
+          description: 'Your action has been failed. Please try again!'
         });
       }
     });
   };
 
-  const userMultiCheck = async (userData: { paymentstatus: string, data: any }) => {
+  const userMultiCheck = async (userData: {
+    paymentstatus: string;
+    data: any;
+  }) => {
     try {
       const response = await fetch('/api/admin/multiCheck', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
 
       if (!response.ok) {
@@ -148,19 +181,18 @@ export default function AdminredeemHistoryTable() {
   };
 
   const multiDelete = async () => {
-
     if (multiIds.length == 0) {
       toast({
         title: 'Delete Failed!',
-        description: 'Please check item!',
+        description: 'Please check item!'
       });
       return;
     }
-    
+
     startTransition(async () => {
       try {
         const response = await userDeleteMultiCheck({
-          data: multiIds,
+          data: multiIds
         });
 
         if (response.error) {
@@ -169,28 +201,27 @@ export default function AdminredeemHistoryTable() {
 
         toast({
           title: 'Delete Successful!',
-          description: 'You have deleted successful!',
+          description: 'You have deleted successful!'
         });
 
         location.reload();
-
       } catch (error) {
         toast({
           title: 'Delete Failed!',
-          description: 'Your action has been failed. Please try again!',
+          description: 'Your action has been failed. Please try again!'
         });
       }
     });
   };
 
-  const userDeleteMultiCheck = async (userData: {data: any }) => {
+  const userDeleteMultiCheck = async (userData: { data: any }) => {
     try {
       const response = await fetch('/api/admin/multiDelete', {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
 
       if (!response.ok) {
@@ -204,18 +235,34 @@ export default function AdminredeemHistoryTable() {
     }
   };
 
+  const offset = (page - 1) * limit;
+  const paginatedData = filteredData.slice(offset, offset + limit);
+
   if (loading) {
-    return <div>Loading...</div>; // Replace with a spinner or loading message if needed
+    return <div>Loading...</div>;
   }
+
 
   return (
     <div className="space-y-4 ">
-      <div className='flex justify-end'>
-      <Button variant="outline" handleClick={multiRestore} className='mr-3 mt-3'>Multi Restore</Button>
-      <Button variant="outline" handleClick={multiDelete} className='mr-3 mt-3'>Multi Delete</Button>
+      <div className="flex justify-end">
+        <Button
+          variant="outline"
+          handleClick={multiRestore}
+          className="mr-3 mt-3"
+        >
+          Multi Restore
+        </Button>
+        <Button
+          variant="outline"
+          handleClick={multiDelete}
+          className="mr-3 mt-3"
+        >
+          Multi Delete
+        </Button>
         <select
           onChange={(e) => setSelectCategory(e.target.value)}
-          className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-3 mr-3 bg-background'
+          className="mr-3 mt-3 h-9 rounded-md border bg-background p-2 text-sm outline-none focus:border-[#DAAC95]"
         >
           <option value="tag">Tag Number</option>
           <option value="firstname">Name</option>
@@ -224,12 +271,16 @@ export default function AdminredeemHistoryTable() {
           <option value="paymenttype">Type</option>
         </select>
         <input
-          className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-3 bg-background'
-          placeholder='Search...'
+          className="mt-3 h-9 rounded-md border bg-background p-2 text-sm outline-none focus:border-[#DAAC95]"
+          placeholder="Search..."
           onChange={(e) => setSearchParam(e.target.value)}
         />
       </div>
-      <AdminredeemHistoryTableView columns={columns} data={filteredData} totalItems={filteredData.length} />
+      <AdminredeemHistoryTableView
+        columns={columns}
+        data={paginatedData}
+        totalItems={filteredData.length}
+      />
     </div>
   );
 }

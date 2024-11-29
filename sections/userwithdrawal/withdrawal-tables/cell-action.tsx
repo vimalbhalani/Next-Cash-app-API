@@ -10,7 +10,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { AdminRegisterUsers } from '@/constants/data';
 import { MoreHorizontal, Send, Trash } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 interface CellActionProps {
@@ -20,7 +19,6 @@ interface CellActionProps {
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const router = useRouter();
 
   const onConfirm = async () => {};
 

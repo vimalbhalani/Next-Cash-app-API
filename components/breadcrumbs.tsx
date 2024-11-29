@@ -7,6 +7,7 @@ import {
   BreadcrumbSeparator
 } from '@/components/ui/breadcrumb';
 import { Slash } from 'lucide-react';
+import Image from 'next/image';
 import { Fragment } from 'react';
 
 type BreadcrumbItemProps = {
@@ -17,7 +18,7 @@ type BreadcrumbItemProps = {
 export function Breadcrumbs({ items }: { items: BreadcrumbItemProps[] }) {
   return (
     <Breadcrumb>
-    <img src="/promo/web-cover.png" className='w-full mb-10' alt='cover' />
+      <Image src="/promo/web-cover.png" width={1000} height={500} className="mb-10 w-full" alt="cover" />
       <BreadcrumbList>
         {items.map((item, index) => (
           <Fragment key={item.title}>

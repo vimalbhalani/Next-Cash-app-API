@@ -12,7 +12,7 @@ export const metadata = {
 
 export default async function Page({ searchParams }: pageProps) {
   return (
-    <RoleMiddleware accessRight='admin'>
+    <RoleMiddleware accessRight="admin">
       <CashAppInfoPage />
     </RoleMiddleware>
   );

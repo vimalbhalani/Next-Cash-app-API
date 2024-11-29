@@ -1,6 +1,6 @@
-import User from "@/models/User";
-import dbConnect from "@/lib/dbConnect";
-import { NextRequest, NextResponse } from "next/server";
+import User from '@/models/User';
+import dbConnect from '@/lib/dbConnect';
+import { NextRequest, NextResponse } from 'next/server';
 
 export const POST = async (request: NextRequest) => {
   const { email, code, verifystatus } = await request.json();
@@ -14,7 +14,7 @@ export const POST = async (request: NextRequest) => {
 
     // Check if the user exists
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     // Compare the provided code with the code in the database
@@ -24,13 +24,21 @@ export const POST = async (request: NextRequest) => {
       user.verifystatus = verifystatus;
       await user.save();
 
-      return NextResponse.json({ message: "Email verified successfully" }, { status: 200 });
+      return NextResponse.json(
+        { message: 'Email verified successfully' },
+        { status: 200 }
+      );
     } else {
       // If codes do not match, return an error
-      return NextResponse.json({ error: "Verification code does not match" }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Verification code does not match' },
+        { status: 400 }
+      );
     }
   } catch (err: any) {
-    console.error("Error verifying user:", err);
-    return NextResponse.json({ error: "An error occurred while verifying the code" }, { status: 500 });
+    return NextResponse.json(
+      { error: 'An error occurred while verifying the code' },
+      { status: 500 }
+    );
   }
 };

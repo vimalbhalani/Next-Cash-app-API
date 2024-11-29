@@ -93,7 +93,7 @@ export default function UserWithdrawalTableView<TData, TValue>({
 
   return (
     <>
-      <ScrollArea className="h-[calc(60vh-220px)] w-[92vw] sm:w-[95vw] lg:w-full rounded-md border">
+      <ScrollArea className="h-[calc(60vh-220px)] w-[92vw] rounded-md border sm:w-[95vw] lg:w-full">
         <Table className="w-[550px] sm:w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -104,9 +104,9 @@ export default function UserWithdrawalTableView<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   );
                 })}
@@ -145,7 +145,7 @@ export default function UserWithdrawalTableView<TData, TValue>({
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
 
-      <div className="md:flex items-center justify-center gap-2 space-x-2 py-4 sm:flex-row">
+      <div className="items-center justify-center gap-2 space-x-2 py-4 sm:flex-row md:flex">
         <div className="flex items-center justify-center gap-2 sm:justify-end">
           <Select
             value={`${paginationState.pageSize}`}

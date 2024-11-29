@@ -7,7 +7,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,16 +17,20 @@ import * as z from 'zod';
 import { useToast, toast } from '@/components/ui/use-toast';
 import GoogleSignUpButton from './google-auth-button';
 
-const formSchema = z.object({
-  email: z.string().email({ message: 'Enter a valid email address' }),
-  password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
-  confirmPassword: z.string(),
-  firstname: z.string(),
-  lastname: z.string()
-}).refine(data => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
+const formSchema = z
+  .object({
+    email: z.string().email({ message: 'Enter a valid email address' }),
+    password: z
+      .string()
+      .min(6, { message: 'Password must be at least 6 characters' }),
+    confirmPassword: z.string(),
+    firstname: z.string(),
+    lastname: z.string()
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword']
+  });
 
 type UserFormValue = z.infer<typeof formSchema>;
 
@@ -34,7 +38,7 @@ export default function UserAuthForm() {
   const router = useRouter();
   const [loading, startTransition] = useTransition();
   const form = useForm<UserFormValue>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema)
   });
 
   const onSubmit = async (data: UserFormValue) => {
@@ -45,70 +49,74 @@ export default function UserAuthForm() {
           firstname: data.firstname,
           lastname: data.lastname,
           email: data.email,
-          password: data.password,
+          password: data.password
         });
 
-        
         if (response.error) {
           // Handle error (e.g. show error message)
           console.error('Signup error:', response.error);
           return;
         }
-        
+
         localStorage.setItem('verifyemail', JSON.stringify(response.email));
-        router.push("/sendemail");
-        
+        router.push('/sendemail');
       } catch (error) {
         // Handle errors that do not come from the response
         console.error('Signup error:', error);
       }
     });
   };
-  
+
   // Example signUp function
-  const signUp = async (userData: { firstname: string; lastname: string; email: string; password: string; }) => {
+  const signUp = async (userData: {
+    firstname: string;
+    lastname: string;
+    email: string;
+    password: string;
+  }) => {
     try {
       const response = await fetch('api/signup', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
-      
+
       if (!response.ok) {
         const errorData = await response.json();
         toast({
           title: 'User already exists.',
-          description: 'Sorry! Your email already exists. Please try again',
-  
+          description: 'Sorry! Your email already exists. Please try again'
         });
-        
+
         return { error: errorData.message || 'Signup failed' }; // Handle response error
       }
-      
+
       toast({
         title: 'Successful!',
-        description: 'Welcome! Your request has been success.',
+        description: 'Welcome! Your request has been success.'
       });
 
       return await response.json(); // Assume successful response returns user data or a success message
-
     } catch (error) {
-      
       toast({
         title: 'Signup Failed',
-        description: 'Sorry! Your SignUp has been failed. Please try again',
-
+        description: 'Sorry! Your SignUp has been failed. Please try again'
       });
       throw error; // Rethrow or return an error response
     }
   };
 
+  const ok = () => {};
+  
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="w-full space-y-2"
+        >
           <FormField
             control={form.control}
             name="firstname"
@@ -162,7 +170,6 @@ export default function UserAuthForm() {
             )}
           />
 
-          {/* Confirm Password Field */}
           <FormField
             control={form.control}
             name="confirmPassword"
@@ -177,7 +184,7 @@ export default function UserAuthForm() {
             )}
           />
 
-          <Button disabled={loading} className="ml-auto w-full" type="submit">
+          <Button disabled={loading} className="ml-auto w-full" type="submit" handleClick={ok}>
             Sign Up
           </Button>
         </form>
@@ -192,7 +199,7 @@ export default function UserAuthForm() {
           </span>
         </div>
       </div>
-      <GoogleSignUpButton/>
+      <GoogleSignUpButton />
     </>
   );
 }

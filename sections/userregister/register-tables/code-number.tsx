@@ -10,31 +10,38 @@ interface UserData {
   codenumber: string;
 }
 
-const {socket} = useSocket();
+const { socket } = useSocket();
 const userInfoStr = localStorage.getItem('userinfo');
 const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
-export const CodeAction = ({ codeNumber, statusNow, registerDate }:{codeNumber: string, statusNow: string, registerDate: any}) => {
-  
+export const CodeAction = ({
+  codeNumber,
+  statusNow,
+  registerDate
+}: {
+  codeNumber: string;
+  statusNow: string;
+  registerDate: any;
+}) => {
   const router = useRouter();
-  const [codenum, setCodenum] = useState("");
+  const [codenum, setCodenum] = useState('');
   const [isCooldown, setIsCooldown] = useState(false);
 
   const userData = {
     token: userInfo.token,
     date: registerDate,
     codenumber: codenum,
-    status: "complete",
-  }
+    status: 'complete'
+  };
 
   const onSubmit = async (userData: UserData) => {
     try {
       const response = await fetch('/api/customer/coderegister', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
 
       if (!response.ok) {
@@ -42,10 +49,13 @@ export const CodeAction = ({ codeNumber, statusNow, registerDate }:{codeNumber: 
         return { error: errorData.message || 'UserRegister failed' };
       }
 
-      socket.emit("userVerify", {userId: userInfo.userId, message:`${userInfo.name} received login id and password code!`});
+      socket.emit('userVerify', {
+        userId: userInfo.userId,
+        message: `${userInfo.name} received login id and password code!`
+      });
 
-      router.push("/mypage/promotion");
-      
+      router.push('/mypage/promotion');
+
       return await response.json();
     } catch (error) {
       throw error;
@@ -55,42 +65,40 @@ export const CodeAction = ({ codeNumber, statusNow, registerDate }:{codeNumber: 
   const onVerify = async () => {
     const response = await onSubmit(userData);
     if (response && response.error) {
-
       toast({
         title: 'Codenumber Verify Failed',
         description: 'Please try again.'
       });
-
     } else {
-
       toast({
         title: 'Codenumber Verify Successful',
-        description: 'Welcome! Your codenumber has been verified.',
+        description: 'Welcome! Your codenumber has been verified.'
       });
-
     }
   };
 
   useEffect(() => {
-    if (statusNow === "complete" && codeNumber) {
+    if (statusNow === 'complete' && codeNumber) {
       setCodenum(codeNumber);
     } else {
-      setCodenum("");
+      setCodenum('');
     }
   }, [codeNumber, statusNow]);
-  
+
   return (
-    <div className='flex w-full justify-center'>
+    <div className="flex w-full justify-center">
       <input
         value={codenum}
-        className='w-32 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
+        className="w-32 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
         onChange={(e) => setCodenum(e.target.value)}
-        disabled={statusNow === "complete" || isCooldown} // Disable input during cooldown
+        disabled={statusNow === 'complete' || isCooldown} // Disable input during cooldown
       />
-      <Button 
-        className='h-8 w-12 ml-1 text-xs bg-green-500 text-white' 
-        handleClick={onVerify} 
-        disabled={codeNumber === "none" || statusNow === "complete" || isCooldown} // Disable button during cooldown
+      <Button
+        className="ml-1 h-8 w-12 bg-green-500 text-xs text-white"
+        handleClick={onVerify}
+        disabled={
+          codeNumber === 'none' || statusNow === 'complete' || isCooldown
+        } // Disable button during cooldown
       >
         Verify
       </Button>

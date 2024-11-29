@@ -1,6 +1,6 @@
-import User from "@/models/User";
-import dbConnect from "@/lib/dbConnect";
-import { NextRequest, NextResponse } from "next/server";
+import User from '@/models/User';
+import dbConnect from '@/lib/dbConnect';
+import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async (request: NextRequest) => {
   await dbConnect();
@@ -16,13 +16,15 @@ export const GET = async (request: NextRequest) => {
               $map: {
                 input: {
                   $filter: {
-                    input: "$withdrawal",
-                    as: "withdrawalItem",
-                    cond: { $eq: ["$$withdrawalItem.paymentstatus", "complete"] }
+                    input: '$withdrawal',
+                    as: 'withdrawalItem',
+                    cond: {
+                      $eq: ['$$withdrawalItem.paymentstatus', 'complete']
+                    }
                   }
                 },
-                as: "filteredWithdrawal",
-                in: "$$filteredWithdrawal.amount"
+                as: 'filteredWithdrawal',
+                in: '$$filteredWithdrawal.amount'
               }
             }
           }
@@ -33,8 +35,14 @@ export const GET = async (request: NextRequest) => {
       }
     ]);
 
-    return NextResponse.json({ ok: 'Fetch successful', data: users }, { status: 200 });
+    return NextResponse.json(
+      { ok: 'Fetch successful', data: users },
+      { status: 200 }
+    );
   } catch (err: any) {
-    return NextResponse.json({ error: 'An error occurred while fetching users' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'An error occurred while fetching users' },
+      { status: 500 }
+    );
   }
 };

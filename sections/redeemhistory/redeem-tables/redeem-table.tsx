@@ -1,16 +1,5 @@
-'use client';
-import {
-  ColumnDef,
-  PaginationState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  useReactTable
-} from '@tanstack/react-table';
-import React from 'react';
-
 import { Button } from '@/components/ui/button';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import {
   Select,
   SelectContent,
@@ -30,8 +19,15 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon
 } from '@radix-ui/react-icons';
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  PaginationState,
+  useReactTable
+} from '@tanstack/react-table';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { parseAsInteger, useQueryState } from 'nuqs';
 
 interface DataTableProps<TData, TValue> {
@@ -59,7 +55,7 @@ export default function UserWithdrawalTableView<TData, TValue>({
   );
 
   const paginationState = {
-    pageIndex: currentPage - 1, // zero-based index for React Table
+    pageIndex: currentPage - 1,
     pageSize: pageSize
   };
 
@@ -92,25 +88,24 @@ export default function UserWithdrawalTableView<TData, TValue>({
     manualPagination: true,
     manualFiltering: true
   });
+
   return (
-    <>
-      <ScrollArea className="h-[calc(90vh-220px)] w-[92vw] sm:w-[95vw] lg:w-full rounded-md border">
-        <Table className="w-[930px] lg:w-full">
+    <div className="space-y-4">
+      <ScrollArea className="h-[calc(80vh-220px)] rounded-md border md:h-[calc(80dvh-200px)]">
+        <Table className="relative">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -146,7 +141,7 @@ export default function UserWithdrawalTableView<TData, TValue>({
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
 
-      <div className="md:flex items-center justify-center gap-2 space-x-2 py-4 sm:flex-row">
+      <div className="items-center justify-center gap-2 space-x-2 py-4 sm:flex-row md:flex">
         <div className="flex items-center justify-center gap-2 sm:justify-end">
           <Select
             value={`${paginationState.pageSize}`}
@@ -214,6 +209,6 @@ export default function UserWithdrawalTableView<TData, TValue>({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

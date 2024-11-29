@@ -13,15 +13,20 @@ export const POST = async (request: NextRequest) => {
       from: process.env.EMAIL_USER as string, // sender email registered with SendGrid
       subject: 'Your Verification Code',
       text: 'Your verification code is below',
-      html: `<strong>Your verification code is: ${code}</strong>`, // Optional: HTML version of the message
+      html: `<strong>Your verification code is: ${code}</strong>` // Optional: HTML version of the message
     };
 
     // Send the email
     await sgMail.send(msg);
     // Send success response
-    return NextResponse.json({ message: 'Verification email sent successfully!' }, { status: 200 });
+    return NextResponse.json(
+      { message: 'Verification email sent successfully!' },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error('Error sending email:', error);
-    return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to send email' },
+      { status: 500 }
+    );
   }
 };

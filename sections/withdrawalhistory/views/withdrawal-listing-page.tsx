@@ -21,10 +21,7 @@ export default async function WithdrawalHistoryListingPage({}: TEmployeeListingP
         <Breadcrumbs items={breadcrumbItems} />
 
         <div className="flex items-start justify-between">
-          <Heading
-            title={`Withdrawal History`}
-            description=""
-          />
+          <Heading title={`Withdrawal History`} description="" />
         </div>
         <Separator />
         <AdminWithdrawalHistoryTable />

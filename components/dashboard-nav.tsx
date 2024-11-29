@@ -30,7 +30,6 @@ interface DashboardNavProps {
   isMobileNav?: boolean;
 }
 
-
 const NavItemContent = React.memo(
   ({
     item,
@@ -50,26 +49,25 @@ const NavItemContent = React.memo(
     const [verifyR, setVerifyR] = useState(0);
     const [redeemR, setDepositR] = useState(0);
     const [withdrawalR, setWithdrawalR] = useState(0);
-    
 
-    const {socket} = useSocket();
+    const { socket } = useSocket();
 
-    socket.on("registerRecieve", (data: any)=>{
+    socket.on('registerRecieve', (data: any) => {
       setRegisterR(data);
     });
 
-    socket.on("verifyRecieve", (data: any)=>{
+    socket.on('verifyRecieve', (data: any) => {
       setVerifyR(data);
     });
 
-    socket.on("depositRecieve", (data: any)=>{
+    socket.on('depositRecieve', (data: any) => {
       setDepositR(data);
     });
 
-    socket.on("withdrawalRecieve", (data: any)=>{
+    socket.on('withdrawalRecieve', (data: any) => {
       setWithdrawalR(data);
     });
-    
+
     return (
       <div
         className={cn(
@@ -80,24 +78,24 @@ const NavItemContent = React.memo(
       >
         <Icon className="size-5 flex-none" />
         {!isMinimized && <span className="mr-2 truncate">{item.title}</span>}
-        {(registerR !== 0) && (
-          <p className='rounded-full bg-red-500 text-white w-5 text-center'>
-            {item.title === "Register" ? registerR : ""}
+        {registerR !== 0 && (
+          <p className="w-5 rounded-full bg-red-500 text-center text-white">
+            {item.title === 'Register' ? registerR : ''}
           </p>
         )}
-        {(verifyR !== 0) && (
-          <p className='rounded-full bg-red-500 text-white w-5 text-center'>
-            {item.title === "Code Verify" ? verifyR : ""}
+        {verifyR !== 0 && (
+          <p className="w-5 rounded-full bg-red-500 text-center text-white">
+            {item.title === 'Code Verify' ? verifyR : ''}
           </p>
         )}
-        {(redeemR !== 0) && (
-          <p className='rounded-full bg-red-500 text-white w-5 text-center'>
-            {item.title === "Deposit" ?redeemR : ""}
+        {redeemR !== 0 && (
+          <p className="w-5 rounded-full bg-red-500 text-center text-white">
+            {item.title === 'Deposit' ? redeemR : ''}
           </p>
         )}
-        {(withdrawalR !== 0) && (
-          <p className='rounded-full bg-red-500 text-white w-5 text-center'>
-            {item.title === "Withdrawal" ?withdrawalR : ""}
+        {withdrawalR !== 0 && (
+          <p className="w-5 rounded-full bg-red-500 text-center text-white">
+            {item.title === 'Withdrawal' ? withdrawalR : ''}
           </p>
         )}
         {hasChildren && !isMinimized && (

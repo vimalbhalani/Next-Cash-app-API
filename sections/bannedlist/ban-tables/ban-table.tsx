@@ -4,7 +4,6 @@ import {
   PaginationState,
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
   getPaginationRowModel,
   useReactTable
 } from '@tanstack/react-table';
@@ -34,19 +33,19 @@ import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { parseAsInteger, useQueryState } from 'nuqs';
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+interface DataTableProps<AdminRegisterUsers, UserRegister> {
+  columns: ColumnDef<AdminRegisterUsers, UserRegister>[];
+  data: AdminRegisterUsers[];
   totalItems: number;
   pageSizeOptions?: number[];
 }
 
-export default function UserWithdrawalTableView<TData, TValue>({
+export default function UserWithdrawalTableView<AdminRegisterUsers, UserRegister>({
   columns,
   data,
   totalItems,
   pageSizeOptions = [10, 20, 30, 40, 50]
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<AdminRegisterUsers, UserRegister>) {
   const [currentPage, setCurrentPage] = useQueryState(
     'page',
     parseAsInteger.withOptions({ shallow: false }).withDefault(1)
@@ -95,7 +94,7 @@ export default function UserWithdrawalTableView<TData, TValue>({
 
   return (
     <>
-      <ScrollArea className=" h-[calc(90vh-220px)] w-[92vw] sm:w-[95vw] lg:w-full rounded-md border">
+      <ScrollArea className=" h-[calc(90vh-220px)] w-[92vw] rounded-md border sm:w-[95vw] lg:w-full">
         <Table className="w-[900px] lg:w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -147,7 +146,7 @@ export default function UserWithdrawalTableView<TData, TValue>({
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
 
-      <div className="md:flex items-center justify-center gap-2 space-x-2 py-4 sm:flex-row">
+      <div className="items-center justify-center gap-2 space-x-2 py-4 sm:flex-row md:flex">
         <div className="flex items-center justify-center gap-2 sm:justify-end">
           <Select
             value={`${paginationState.pageSize}`}

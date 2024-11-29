@@ -14,23 +14,21 @@ const breadcrumbItems = [
 type TEmployeeListingPage = {};
 
 export default async function UserWithdrawalListingPage({}: TEmployeeListingPage) {
-
   return (
     <PageContainer scrollable>
       <div className="space-y-4">
         <Breadcrumbs items={breadcrumbItems} />
 
         <div className="flex items-start justify-between">
-          <Heading
-            title={`Withdrawal`}
-            description=""
-          />
+          <Heading title={`Withdrawal`} description="" />
         </div>
         <Separator />
-        <UserWithdrawalForm/>
-        <p className='py-5 text-medium font-bold text-center'>Withdrawal History</p>
-        <UserWithdrawalTable/>
-        <GameLink/>
+        <UserWithdrawalForm />
+        <p className="text-medium py-5 text-center font-bold">
+          Withdrawal History
+        </p>
+        <UserWithdrawalTable />
+        <GameLink />
       </div>
     </PageContainer>
   );

@@ -12,39 +12,43 @@ interface UserData {
   status: string;
 }
 
-
-export const LoginIdAction = ({loginIdV, passwordCodeV, userName, dateV }: { loginIdV?: string; passwordCodeV:string; userName: string; dateV: any }) => {
-  
-  const {socket} = useSocket();
-  const [loginId, setLoginId] = useState(loginIdV|| "");
-  const [passwordCode, setPasswordCode] = useState(passwordCodeV || "");
+export const LoginIdAction = ({
+  loginIdV,
+  passwordCodeV,
+  userName,
+  dateV
+}: {
+  loginIdV?: string;
+  passwordCodeV: string;
+  userName: string;
+  dateV: any;
+}) => {
+  const { socket } = useSocket();
+  const [loginId, setLoginId] = useState(loginIdV || '');
+  const [passwordCode, setPasswordCode] = useState(passwordCodeV || '');
 
   const userData = {
     id: userName,
     date: dateV,
     loginid: loginId,
     passwordcode: passwordCode,
-    status: "preparing"
-  }
+    status: 'preparing'
+  };
 
-  
   // Example signUp function
   const onSubmit = async (userData: UserData) => {
-
-    if (loginId === ""){
-
+    if (loginId === '') {
       toast({
         title: 'LoginId empty!',
-        description: 'Please input loginid!',
+        description: 'Please input loginid!'
       });
       return;
     }
 
-    if(passwordCode === ""){
-
+    if (passwordCode === '') {
       toast({
         title: 'Passwordcode empty!',
-        description: 'Please input passwordcode!',
+        description: 'Please input passwordcode!'
       });
       return;
     }
@@ -53,9 +57,9 @@ export const LoginIdAction = ({loginIdV, passwordCodeV, userName, dateV }: { log
       const response = await fetch('/api/admin/loginid', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
       if (!response.ok) {
         const errorData = await response.json();
@@ -64,32 +68,35 @@ export const LoginIdAction = ({loginIdV, passwordCodeV, userName, dateV }: { log
 
       toast({
         title: 'LoginID and PasswordCode Sending Successful!',
-        description: 'Welcome! Your loginId and Password Code sending has been success.',
+        description:
+          'Welcome! Your loginId and Password Code sending has been success.'
       });
 
-      socket.emit("adminLoginId", {receiveuserId: userName, message:"Client sent login id and password code to you!"} );
+      socket.emit('adminLoginId', {
+        receiveuserId: userName,
+        message: 'Client sent login id and password code to you!'
+      });
 
       location.reload();
 
-      return await response.json(); // Assume successful response returns user data or a success message
+      return await response.json(); 
     } catch (error) {
       console.error('Error during fetch:', error);
       toast({
         title: 'Sending Failed!',
-        description: 'Your loginId and password code sending has been failed. Please try again.',
+        description:
+          'Your loginId and password code sending has been failed. Please try again.'
       });
-      throw error; // Rethrow or return an error response
+      throw error;
     }
   };
 
-  // Function to handle button click
   const handleButtonClick = async () => {
     const response = await onSubmit(userData);
-    // Handle the response or error here
     if (response && response.error) {
       console.error(response.error);
     } else {
-      console.log("Success:", response);
+      console.log('Success:', response);
     }
   };
 
@@ -97,36 +104,38 @@ export const LoginIdAction = ({loginIdV, passwordCodeV, userName, dateV }: { log
     if (loginIdV) {
       setLoginId(loginIdV);
     } else {
-      setLoginId("");
+      setLoginId('');
     }
 
     if (passwordCodeV) {
       setPasswordCode(passwordCodeV);
     } else {
-      setPasswordCode(""); 
+      setPasswordCode('');
     }
-
   }, [loginIdV, passwordCodeV]);
 
   return (
-    <div className='flex w-full justify-center'>
+    <div className="flex w-full justify-center">
       <input
-        className=' w-40 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
+        className=" w-40 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
         onChange={(e) => setLoginId(e.target.value)}
         value={loginId}
-        disabled={loginIdV && loginIdV !== "none"}
+        disabled={Boolean(loginIdV) && loginIdV !== 'none'}
       />
 
       <input
-        className=' w-40 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 ml-1'
+        className=" ml-1 w-40 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
         onChange={(e) => setPasswordCode(e.target.value)}
         value={passwordCode}
-        disabled={passwordCodeV && passwordCodeV !== "none"}
+        disabled={Boolean(loginIdV) && loginIdV !== 'none'}
       />
-      <Button className='h-8 w-10 ml-5 text-xs bg-blue-500 text-white' handleClick={handleButtonClick} disabled={loginIdV &&loginIdV !== "none"}>
+      <Button
+        className="ml-5 h-8 w-10 bg-blue-500 text-xs text-white"
+        handleClick={handleButtonClick}
+        disabled={Boolean(loginIdV) && loginIdV !== 'none'}
+      >
         SEND
       </Button>
     </div>
   );
 };
-

@@ -14,11 +14,17 @@ export default function GoogleSignUpButton() {
       className="w-full"
       variant="outline"
       type="button"
-      onClick={() =>
+      handleClick={() =>
         signIn('google', { callbackUrl: callbackUrl ?? '/mypage' })
       }
     >
-      <Image src='/google.png' width={20} height={20} alt='google icon' className='mr-3' />
+      <Image
+        src="/google.png"
+        width={20}
+        height={20}
+        alt="google icon"
+        className="mr-3"
+      />
       Continue with Google
     </Button>
   );

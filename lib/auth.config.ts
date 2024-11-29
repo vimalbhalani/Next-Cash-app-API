@@ -8,18 +8,18 @@ const authConfig = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_SECRET,
+      clientSecret: process.env.GOOGLE_SECRET
     }),
     CredentialProvider({
-      name: "Credentials",
-      id: "credentials",
+      name: 'Credentials',
+      id: 'credentials',
       credentials: {
         email: {
-          label: "Email",
-          type: "email",
-          placeholder: "email@example.com",
+          label: 'Email',
+          type: 'email',
+          placeholder: 'email@example.com'
         },
-        password: { label: "Password", type: "password" },
+        password: { label: 'Password', type: 'password' }
       },
       async authorize(credentials, req) {
         const user = {
@@ -36,36 +36,35 @@ const authConfig = {
     })
   ],
   pages: {
-    signIn: '/' // Sign-in page path
+    signIn: '/'
   },
   callbacks: {
-    async signIn({ user, account, profile }: any) {
+    async signIn({ user, account }: any) {
       await dbConnect();
-      
+
       if (account.provider === 'google') {
         try {
           const googleAccessToken = account.access_token;
           let existingUser = await User.findOne({ email: user.email });
-          
+
           if (!existingUser) {
             const lastUser = await User.find({}).sort({ tag: -1 }).limit(1);
             let newCode = 1000;
-      
+
             if (lastUser.length > 0 && lastUser[0].tag >= 1000) {
               newCode = lastUser[0].tag + 1;
-            }            
+            }
             existingUser = await User.create({
               firstname: user.name,
               email: user.email,
-              verifystatus: "yes",
-              ip: "Google",
+              verifystatus: 'yes',
+              ip: 'Google',
               token: googleAccessToken,
-              tag: newCode,
+              tag: newCode
             });
-          }else if(existingUser.action !== "yes") {
-            alert("Email or password incorrect! Please try again.");
-          }
-           else {
+          } else if (existingUser.action !== 'yes') {
+            alert('Email or password incorrect! Please try again.');
+          } else {
             existingUser.token = googleAccessToken;
             await existingUser.save();
           }
@@ -75,18 +74,17 @@ const authConfig = {
             token: googleAccessToken,
             role: existingUser.role,
             name: existingUser.firstname,
-            tag: existingUser.tag,
+            tag: existingUser.tag
           };
           account.userInfo = userInfo;
           return true;
         } catch (error) {
-          console.error("Error saving Google user to the database", error);
           return false;
         }
       }
       return true;
     },
-    async jwt({ token, user, account }: any) {
+    async jwt({ token, account }: any) {
       if (account?.userInfo) {
         token.userInfo = account.userInfo;
       }
@@ -98,7 +96,7 @@ const authConfig = {
     }
   },
   session: {
-    strategy: "jwt",
+    strategy: 'jwt'
   }
 } satisfies NextAuthConfig;
 export default authConfig;

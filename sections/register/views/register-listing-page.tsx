@@ -20,13 +20,10 @@ export default async function RegisterListingPage({}: TEmployeeListingPage) {
         <Breadcrumbs items={breadcrumbItems} />
 
         <div className="flex items-start justify-between">
-          <Heading
-            title={`Register`}
-            description=""
-          />
+          <Heading title={`Register`} description="" />
         </div>
         <Separator />
-        <RegisterTable/>
+        <RegisterTable />
       </div>
     </PageContainer>
   );

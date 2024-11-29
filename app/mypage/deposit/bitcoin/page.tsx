@@ -18,7 +18,7 @@ export default async function Page({ searchParams }: pageProps) {
 
   return (
     <RoleMiddleware accessRight="user">
-      <UserBitcoinPage/>
+      <UserBitcoinPage />
     </RoleMiddleware>
   );
 }

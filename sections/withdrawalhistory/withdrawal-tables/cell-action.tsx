@@ -9,64 +9,65 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { ArchiveRestore, MoreHorizontal, Trash2 } from 'lucide-react';
-import { useState, useTransition} from 'react';
-import { useToast, toast } from '@/components/ui/use-toast';
-import { AdminRegisterUsers } from '@/constants/data';
+import { useState, useTransition } from 'react';
+import { toast } from '@/components/ui/use-toast';
 
 interface CellActionProps {
-  data: AdminRegisterUsers;
+  withdrawalDate: Date,
+  userId: any
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ withdrawalDate, userId}:any) => {
-
+export const CellAction: React.FC<CellActionProps> = ({
+  withdrawalDate,
+  userId
+}: any) => {
   const [loading, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
 
-  const onConfirm= async () => {
+  const onConfirm = async () => {
     startTransition(async () => {
       try {
         const response = await deleteWithdrawalCheck({
           id: userId,
-          date: withdrawalDate,
+          date: withdrawalDate
         });
-        
+
         if (response.error) {
           return;
         }
-        
+
         setOpen(false);
 
         toast({
           title: 'Delete successful!',
-          description: 'You have verified customer redeem',
+          description: 'You have verified customer redeem'
         });
 
         location.reload();
-        
       } catch (error) {
         toast({
           title: 'Delete Failed!',
-          description: 'Your action has been failed. Please try again!',
+          description: 'Your action has been failed. Please try again!'
         });
       }
     });
   };
-  
+
   const deleteWithdrawalCheck = async (userData: { id: string; date: any }) => {
     try {
-      const response = await fetch("/api/admin/withdrawaldelete", {
+      const response = await fetch('/api/admin/withdrawaldelete', {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
-            
+
       if (!response.ok) {
         const errorData = await response.json();
         return { error: errorData.message || 'Delete failed' };
       }
-      
+
       return await response.json();
     } catch (error) {
       throw error;
@@ -82,7 +83,7 @@ export const CellAction: React.FC<CellActionProps> = ({ withdrawalDate, userId}:
       try {
         const response = await userList({
           id: userId,
-          paymentstatus: "Processing",
+          paymentstatus: 'Processing',
           date: withdrawalDate
         });
 
@@ -92,28 +93,31 @@ export const CellAction: React.FC<CellActionProps> = ({ withdrawalDate, userId}:
 
         toast({
           title: 'User Restored Successful!',
-          description: 'User have restored successful!',
+          description: 'User have restored successful!'
         });
 
         location.reload();
-
       } catch (error) {
         toast({
           title: 'User Restored Failed!',
-          description: 'Your action has been failed. Please try again!',
+          description: 'Your action has been failed. Please try again!'
         });
       }
     });
   };
 
-  const userList = async (userData: { paymentstatus: string, id: string; date: any}) => {
+  const userList = async (userData: {
+    paymentstatus: string;
+    id: string;
+    date: any;
+  }) => {
     try {
       const response = await fetch('/api/admin/withdrawal', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
 
       if (!response.ok) {

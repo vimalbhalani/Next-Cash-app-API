@@ -12,17 +12,13 @@ const breadcrumbItems = [
 type TEmployeeListingPage = {};
 
 export default async function VerifyListingPage({}: TEmployeeListingPage) {
-
   return (
     <PageContainer scrollable>
       <div className="space-y-4">
         <Breadcrumbs items={breadcrumbItems} />
 
         <div className="flex items-start justify-between">
-          <Heading
-            title={`Code Verify`}
-            description=""
-          />
+          <Heading title={`Code Verify`} description="" />
         </div>
         <Separator />
         <VerifyTable />

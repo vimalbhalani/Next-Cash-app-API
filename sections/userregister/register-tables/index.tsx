@@ -1,10 +1,10 @@
 'use client';
-import { AdminRegisterUsers } from '@/constants/data';
+import { AdminRegisterUsers, UserRegister } from '@/constants/data';
 import { columns } from './columns';
 import { useState, useEffect } from 'react';
 import UserRegisterTableView from './user-register-table';
 import UserRegistrationForm from './user-register-fron';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { GameLink } from './game-link';
 
@@ -13,15 +13,22 @@ const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
 export default function UserRegisterTable() {
   const router = useRouter();
-  const [data, setData] = useState<AdminRegisterUsers[]>([]);
-  const [totalData, setTotalData] = useState<number>(0); // Store total items for pagination
+  const [data, setData] = useState<(AdminRegisterUsers & UserRegister)[]>([]);
+  const [totalData, setTotalData] = useState<number>(0); 
   const [loading, setLoading] = useState<boolean>(true);
+
+  const searchParams = useSearchParams();
+  const pageParam = searchParams.get('page');
+  const limitParam = searchParams.get('limit');
+  
+  const page = Number(pageParam? pageParam : 1);
+  const limit = Number(limitParam? limitParam : 10);
 
   useEffect(() => {
     async function fetchData() {
       try {
         if (!userInfo.token) {
-          throw new Error("User not authenticated.");
+          throw new Error('User not authenticated.');
         }
 
         setLoading(true);
@@ -30,7 +37,7 @@ export default function UserRegisterTable() {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${userInfo.token}` // Assuming the token is sent this way
+            Authorization: `Bearer ${userInfo.token}`
           }
         });
 
@@ -39,9 +46,8 @@ export default function UserRegisterTable() {
         }
 
         const result = await response.json();
-        setData(result.data[0].register); // Adjust based on your API response
-        setTotalData(result.totalCount); // Adjust based on your API response
-        
+        setData(result.data[0].register); 
+        setTotalData(result.totalCount); 
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -52,25 +58,32 @@ export default function UserRegisterTable() {
     fetchData();
   }, [userInfo]);
 
+  const offset = (page - 1) * limit;
+  const paginatedData = data.slice(offset, offset + limit);
+
   if (loading) {
-    return <div>Loading...</div>; // Replace with a spinner or loading message if needed
+    return <div>Loading...</div>;
   }
 
   const requestSuccess = () => {
-    router.push("/mypage/promotion");
-  }
+    router.push('/mypage/promotion');
+  };
 
   return (
     <div className="space-y-4 ">
       <UserRegistrationForm />
       <Button
-        className='border p-6 ml-[20%] w-[60%] text-white'
+        className="ml-[20%] w-[60%] border p-6 text-white"
         handleClick={requestSuccess}
       >
         Check Your Register Info
       </Button>
-      <p className='py-5 text-medium font-bold text-center'>Register History</p>
-      <UserRegisterTableView columns={columns} data={data} totalItems={data.length} />
+      <p className="text-medium py-5 text-center font-bold">Register History</p>
+      <UserRegisterTableView
+        columns={columns}
+        data={paginatedData}
+        totalItems={data.length}
+      />
       <GameLink />
     </div>
   );

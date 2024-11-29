@@ -10,15 +10,15 @@ export const metadata: Metadata = {
 
 export default function SignInViewPage() {
   return (
-    <div className="flex relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-1 lg:px-0">
+    <div className="relative flex h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-1 lg:px-0">
       <div className="flex h-full items-center p-4 lg:p-8">
         <div className="mx-auto flex w-[300px] flex-col space-y-6 sm:w-[350px]">
-          <div className='flex w-full justify-center'>
-            <Image src="/logo.png" width={170} height={170} alt='logo image'/>
+          <div className="flex w-full justify-center">
+            <Image src="/logo.png" width={170} height={170} alt="logo image" />
           </div>
-            <h1 className="text-2xl font-semibold tracking-tight text-center">
-              Log In
-            </h1>
+          <h1 className="text-center text-2xl font-semibold tracking-tight">
+            Log In
+          </h1>
           <UserAuthForm />
           <p className="px-8 text-center text-sm text-muted-foreground">
             <Link

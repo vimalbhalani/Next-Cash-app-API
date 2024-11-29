@@ -5,7 +5,7 @@ import { CellAction } from './cell-action';
 import { Checkbox } from '@/components/ui/checkbox';
 import useSocket from '@/lib/socket';
 
-  const {socket} = useSocket();
+const { socket } = useSocket();
 
 export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
   {
@@ -17,14 +17,16 @@ export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
           table.toggleAllPageRowsSelected(!!value);
           setTimeout(() => {
             if (value) {
-              const selectedRows = table.getRowModel().rows.filter(row => row.getIsSelected());
-              const idsAndDates = selectedRows.map(row => ({
+              const selectedRows = table
+                .getRowModel()
+                .rows.filter((row) => row.getIsSelected());
+              const idsAndDates = selectedRows.map((row) => ({
                 id: row.original.user?._id,
                 date: row.original.date
               }));
-              socket.emit("selectWithdrawalHistoryAllIds", idsAndDates);
-            }else{
-              socket.emit("selectWithdrawalHistoryAllIds", "");
+              socket.emit('selectWithdrawalHistoryAllIds', idsAndDates);
+            } else {
+              socket.emit('selectWithdrawalHistoryAllIds', '');
             }
           }, 0);
         }}
@@ -41,28 +43,28 @@ export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
               id: row.original.user?._id,
               date: row.original.date
             };
-            socket.emit("selectWithdrawalHistoryIds", idsAndDate);
-          }else{
+            socket.emit('selectWithdrawalHistoryIds', idsAndDate);
+          } else {
             const deleteId = {
-              date: row.original.date,
-            }
-            socket.emit("selectWithdrawalHistoryIds", deleteId);
+              date: row.original.date
+            };
+            socket.emit('selectWithdrawalHistoryIds', deleteId);
           }
         }}
         aria-label="Select row"
       />
     ),
     enableSorting: false,
-    enableHiding: false,
+    enableHiding: false
   },
   {
     accessorKey: 'id',
     header: 'TAG NUMBER',
-    cell: ({row}) => (<span>{row.original.user.tag}</span>)
+    cell: ({ row }) => <span>{row.original.user.tag}</span>
   },
   {
     accessorKey: 'paymentoption',
-    header: 'GAME',
+    header: 'GAME'
   },
   {
     accessorKey: 'username',
@@ -71,12 +73,12 @@ export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
       <span>
         {row.original.user.firstname} {row.original.user.lastname}
       </span>
-    ),
+    )
   },
   {
     accessorKey: 'user.loginid',
     header: 'GAME ID',
-    cell:({row})=>(<span>{row.original.user.register[0].loginid}</span>)
+    cell: ({ row }) => <span>{row.original.user.register[0].loginid}</span>
   },
   {
     accessorKey: 'paymenttype',
@@ -87,8 +89,8 @@ export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
     header: 'AMOUNT'
   },
   {
-    accessorKey:'paymentgateway',
-    header: 'CASHTAG OR BTC ADDRESS',
+    accessorKey: 'paymentgateway',
+    header: 'CASHTAG OR BTC ADDRESS'
   },
   {
     accessorKey: 'date',
@@ -100,10 +102,10 @@ export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
       const year = date.getFullYear(); // Get full year
       const hours = String(date.getHours()).padStart(2, '0'); // Get hours (0-23) and pad with leading zero
       const minutes = String(date.getMinutes()).padStart(2, '0'); // Get minutes (0-59) and pad with leading zero
-  
+
       // Format like "10/16 24 15:16"
       return `${month}/${day} ${year.toString().slice(-2)} ${hours}:${minutes}`;
-    },
+    }
   },
   {
     accessorKey: 'comdate',
@@ -115,14 +117,19 @@ export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
       const year = date.getFullYear(); // Get full year
       const hours = String(date.getHours()).padStart(2, '0'); // Get hours (0-23) and pad with leading zero
       const minutes = String(date.getMinutes()).padStart(2, '0'); // Get minutes (0-59) and pad with leading zero
-  
+
       // Format like "10/16 24 15:16"
       return `${month}/${day} ${year.toString().slice(-2)} ${hours}:${minutes}`;
-    },
+    }
   },
   {
     id: 'actions',
-    header:'ACTION',
-    cell: ({ row }) => <CellAction withdrawalDate={row.original.date} userId={row.original.user._id} />
+    header: 'ACTION',
+    cell: ({ row }) => (
+      <CellAction
+        withdrawalDate={row.original.date}
+        userId={row.original.user._id}
+      />
+    )
   }
 ];

@@ -9,65 +9,69 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { MoreHorizontal, Trash2 } from 'lucide-react';
-import { useState, useTransition} from 'react';
+import { useState, useTransition } from 'react';
 import { toast } from '@/components/ui/use-toast';
-import { AdminRegisterUsers } from '@/constants/data';
 
 interface CellActionProps {
-  data: AdminRegisterUsers;
-  codeRegister ?: (event: React.MouseEvent<HTMLButtonElement>) => void
+  phoneNumber: string;
+  userId: any;
+  codeRegister?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: any) => {
-
+export const CellAction: React.FC<CellActionProps> = ({
+  phoneNumber,
+  userId
+}: any) => {
   const [loading, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
 
-  const onConfirm= async () => {
+  const onConfirm = async () => {
     startTransition(async () => {
       try {
         const response = await deleteRegister({
           id: userId,
-          phonenumber: phoneNumber,
+          phonenumber: phoneNumber
         });
-        
+
         if (response.error) {
           return;
         }
-        
+
         setOpen(false);
 
         toast({
           title: 'Delete successful!',
-          description: 'You have verified customer redeem',
+          description: 'You have verified customer redeem'
         });
 
         location.reload();
-        
       } catch (error) {
         toast({
           title: 'Delete Failed!',
-          description: 'Your action has been failed. Please try again!',
+          description: 'Your action has been failed. Please try again!'
         });
       }
     });
   };
-  
-  const deleteRegister = async (userData: { id: string; phonenumber: string }) => {
+
+  const deleteRegister = async (userData: {
+    id: string;
+    phonenumber: string;
+  }) => {
     try {
-      const response = await fetch("/api/admin/registerdelete", {
+      const response = await fetch('/api/admin/registerdelete', {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
-            
+
       if (!response.ok) {
         const errorData = await response.json();
         return { error: errorData.message || 'Delete failed' };
       }
-      
+
       return await response.json();
     } catch (error) {
       throw error;
@@ -79,7 +83,7 @@ export const CellAction: React.FC<CellActionProps> = ({ phoneNumber, userId }: a
   }
 
   const ok = () => {};
-  
+
   return (
     <>
       <AlertModal

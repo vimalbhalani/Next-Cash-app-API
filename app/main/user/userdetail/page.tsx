@@ -17,7 +17,7 @@ export default async function Page({ searchParams }: pageProps) {
   searchParamsCache.parse(searchParams);
 
   return (
-    <RoleMiddleware accessRight='admin'>
+    <RoleMiddleware accessRight="admin">
       <UserdetailListingPage />
     </RoleMiddleware>
   );

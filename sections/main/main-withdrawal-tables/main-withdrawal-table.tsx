@@ -147,7 +147,7 @@ export default function UserWithdrawalTableView<TData, TValue>({
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
 
-      <div className="md:flex items-center justify-center gap-2 space-x-2 py-4 sm:flex-row">
+      <div className="items-center justify-center gap-2 space-x-2 py-4 sm:flex-row md:flex">
         <div className="flex items-center justify-center gap-2 sm:justify-end">
           <Select
             value={`${paginationState.pageSize}`}

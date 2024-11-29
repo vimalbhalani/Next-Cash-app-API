@@ -1,6 +1,6 @@
-import User from "@/models/User";
-import dbConnect from "@/lib/dbConnect";
-import { NextRequest, NextResponse } from "next/server";
+import User from '@/models/User';
+import dbConnect from '@/lib/dbConnect';
+import { NextRequest, NextResponse } from 'next/server';
 
 export const POST = async (request: NextRequest) => {
   const { email, code } = await request.json();
@@ -18,13 +18,18 @@ export const POST = async (request: NextRequest) => {
 
     // Check if the user exists
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     // Send a success response
-    return NextResponse.json({ message: "Code updated successfully", user }, { status: 200 });
+    return NextResponse.json(
+      { message: 'Code updated successfully', user },
+      { status: 200 }
+    );
   } catch (err: any) {
-    console.error("Error updating user:", err);
-    return NextResponse.json({ error: "An error occurred while updating the code" }, { status: 500 });
+    return NextResponse.json(
+      { error: 'An error occurred while updating the code' },
+      { status: 500 }
+    );
   }
 };

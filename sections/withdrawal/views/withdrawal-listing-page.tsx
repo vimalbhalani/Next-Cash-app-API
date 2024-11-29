@@ -20,10 +20,7 @@ export default async function WithdrawalListingPage({}: TEmployeeListingPage) {
         <Breadcrumbs items={breadcrumbItems} />
 
         <div className="flex items-start justify-between">
-          <Heading
-            title={`Withdrawal`}
-            description=""
-          />
+          <Heading title={`Withdrawal`} description="" />
         </div>
         <Separator />
         <AdminWithdrawalTable />

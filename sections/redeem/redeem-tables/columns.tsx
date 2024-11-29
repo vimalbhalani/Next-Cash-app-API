@@ -9,7 +9,7 @@ import { AmountAction } from './amount';
 import { Checkbox } from '@/components/ui/checkbox';
 import useSocket from '@/lib/socket';
 
-const {socket} = useSocket();
+const { socket } = useSocket();
 
 export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
   {
@@ -21,14 +21,16 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
           table.toggleAllPageRowsSelected(!!value);
           setTimeout(() => {
             if (value) {
-              const selectedRows = table.getRowModel().rows.filter(row => row.getIsSelected());
-              const idsAndDates = selectedRows.map(row => ({
+              const selectedRows = table
+                .getRowModel()
+                .rows.filter((row) => row.getIsSelected());
+              const idsAndDates = selectedRows.map((row) => ({
                 id: row.original.user?._id,
                 date: row.original.date
               }));
-              socket.emit("selectAllIds", idsAndDates);
-            }else{
-              socket.emit("selectAllIds", "");
+              socket.emit('selectAllIds', idsAndDates);
+            } else {
+              socket.emit('selectAllIds', '');
             }
           }, 0);
         }}
@@ -45,64 +47,86 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
               id: row.original.user?._id,
               date: row.original.date
             };
-            socket.emit("selectIds", idsAndDate);
-          }else{
+            socket.emit('selectIds', idsAndDate);
+          } else {
             const deleteId = {
-              date: row.original.date,
-            }
-            socket.emit("selectIds", deleteId);
+              date: row.original.date
+            };
+            socket.emit('selectIds', deleteId);
           }
         }}
         aria-label="Select row"
       />
     ),
     enableSorting: false,
-    enableHiding: false,
+    enableHiding: false
   },
   {
-    accessorKey: 'id', header: 'TAG NUMBER', cell: ({ row }) => (<span>{row.original.user.tag}</span>)
+    accessorKey: 'id',
+    header: 'TAG NUMBER',
+    cell: ({ row }) => <span>{row.original.user.tag}</span>
   },
   {
-    accessorKey: 'paymentoption', header: 'GAME'
+    accessorKey: 'paymentoption',
+    header: 'GAME'
   },
   {
-    accessorKey: 'username', header: 'USERNAME', cell: ({ row }) => (
-      <span> {row.original.user.firstname} {row.original.user.lastname} </span>
+    accessorKey: 'username',
+    header: 'USERNAME',
+    cell: ({ row }) => (
+      <span>
+        {' '}
+        {row.original.user.firstname} {row.original.user.lastname}{' '}
+      </span>
     )
   },
   {
-    accessorKey: 'user.loginid', header: 'GAME ID', cell: ({ row }) => (<span>{row.original.user.register[0].loginid}</span>)
+    accessorKey: 'user.loginid',
+    header: 'GAME ID',
+    cell: ({ row }) => <span>{row.original.user.register[0].loginid}</span>
   },
   {
-    accessorKey: 'paymenttype', header: 'TYPE'
+    accessorKey: 'paymenttype',
+    header: 'TYPE'
   },
   {
-    id: 'amount', header: 'AMOUNT', cell: ({ row }) =>
+    id: 'amount',
+    header: 'AMOUNT',
+    cell: ({ row }) => (
       <AmountAction
         redeemDate={row.original.date}
         userId={row.original.user._id}
         redeemAmount={row.original.amount}
-        bitcoin = {row.original.btc}
+        bitcoin={row.original.btc}
       />
+    )
   },
   {
-    id: 'daily', header: 'Daily', cell: ({ row }) =>
+    id: 'daily',
+    header: 'Daily',
+    cell: ({ row }) => (
       <CheckboxDaily
         redeemDate={row.original.date}
         userId={row.original.user._id}
         checkboxStatus={row.original.dailyChecked}
       />
+    )
   },
   {
-    id: 'bonus', header: 'BONUS', cell: ({ row }) =>
+    id: 'bonus',
+    header: 'BONUS',
+    cell: ({ row }) => (
       <CheckboxBonus
         redeemDate={row.original.date}
         userId={row.original.user._id}
         checkboxStatus={row.original.bonusChecked}
       />
+    )
   },
   {
-    accessorKey: 'date', header: 'TIME', cell: ({ row }) => {
+    accessorKey: 'date',
+    header: 'TIME',
+    cell: ({ row }) => {
       const date = new Date(row.original.date);
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const day = String(date.getDate()).padStart(2, '0');
@@ -114,10 +138,13 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
     }
   },
   {
-    id: 'actions', header: 'ACTION', cell: ({ row }) =>
+    id: 'actions',
+    header: 'ACTION',
+    cell: ({ row }) => (
       <CellAction
-        redeemDate={row.original.date}
+        Date={row.original.date}
         userId={row.original.user._id}
       />
+    )
   }
 ];

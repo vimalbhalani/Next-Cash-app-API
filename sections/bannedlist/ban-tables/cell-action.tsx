@@ -9,66 +9,63 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { ArchiveRestore, InfoIcon, MoreHorizontal, Trash2 } from 'lucide-react';
-import { useState, useTransition} from 'react';
+import { useState, useTransition } from 'react';
 import { toast } from '@/components/ui/use-toast';
-import { AdminRegisterUsers } from '@/constants/data';
 import { useRouter } from 'next/navigation';
 
 interface CellActionProps {
-  data: AdminRegisterUsers;
-  codeRegister ?: (event: React.MouseEvent<HTMLButtonElement>) => void
+  codeRegister?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  userId: string;
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ userId }: any) => {
-
+export const CellAction: React.FC<CellActionProps> = ({ userId }) => {
   const router = useRouter();
   const [loading, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
 
-  const onConfirm= async () => {
+  const onConfirm = async () => {
     startTransition(async () => {
       try {
         const response = await deleteRegister({
-          id: userId,
+          id: userId
         });
-        
+
         if (response.error) {
           return;
         }
-        
+
         setOpen(false);
 
         toast({
           title: 'Delete successful!',
-          description: 'You have verified customer redeem',
+          description: 'You have verified customer redeem'
         });
 
         location.reload();
-        
       } catch (error) {
         toast({
           title: 'Delete Failed!',
-          description: 'Your action has been failed. Please try again!',
+          description: 'Your action has been failed. Please try again!'
         });
       }
     });
   };
-  
-  const deleteRegister = async (userData: { id: string; }) => {
+
+  const deleteRegister = async (userData: { id: string }) => {
     try {
-      const response = await fetch("/api/admin/userdelete", {
+      const response = await fetch('/api/admin/userdelete', {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
-            
+
       if (!response.ok) {
         const errorData = await response.json();
         return { error: errorData.message || 'Delete failed' };
       }
-      
+
       return await response.json();
     } catch (error) {
       throw error;
@@ -88,7 +85,7 @@ export const CellAction: React.FC<CellActionProps> = ({ userId }: any) => {
       try {
         const response = await userList({
           id: userId,
-          action: "yes",
+          action: 'yes'
         });
 
         if (response.error) {
@@ -97,28 +94,27 @@ export const CellAction: React.FC<CellActionProps> = ({ userId }: any) => {
 
         toast({
           title: 'User Restored Successful!',
-          description: 'User have restored successful!',
+          description: 'User have restored successful!'
         });
 
         location.reload();
-
       } catch (error) {
         toast({
           title: 'User Restored Failed!',
-          description: 'Your action has been failed. Please try again!',
+          description: 'Your action has been failed. Please try again!'
         });
       }
     });
   };
 
-  const userList = async (userData: { action: string, id: string; }) => {
+  const userList = async (userData: { action: string; id: string }) => {
     try {
       const response = await fetch('/api/admin/userrestore', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
 
       if (!response.ok) {
@@ -131,7 +127,7 @@ export const CellAction: React.FC<CellActionProps> = ({ userId }: any) => {
       throw error;
     }
   };
-  
+
   const ok = () => {};
 
   return (
@@ -151,15 +147,12 @@ export const CellAction: React.FC<CellActionProps> = ({ userId }: any) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Action</DropdownMenuLabel>
-          <DropdownMenuItem
-            onClick={userdetail}
-          >
+          <DropdownMenuItem onClick={userdetail}>
             <InfoIcon className="mr-2 h-4 w-4" /> User Detail
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={restore}
-          >
-            <ArchiveRestore className="mr-2 h-4 w-4" />Restore
+          <DropdownMenuItem onClick={restore}>
+            <ArchiveRestore className="mr-2 h-4 w-4" />
+            Restore
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash2 className="mr-2 h-4 w-4" /> Delete

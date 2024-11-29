@@ -9,15 +9,17 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { CheckCircle, MoreHorizontal, X } from 'lucide-react';
 import { useTransition } from 'react';
-import { useToast, toast } from '@/components/ui/use-toast';
-import { AdminRegisterUsers } from '@/constants/data';
+import { toast } from '@/components/ui/use-toast';
 
 interface CellActionProps {
-  data: AdminRegisterUsers;
+  Date: Date;
+  userId: any;
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ redeemDate, userId }: any) => {
-
+export const CellAction: React.FC<CellActionProps> = ({
+  Date,
+  userId
+}:{Date:Date; userId:any;}) => {
   const [loading, startTransition] = useTransition();
 
   const accept = async () => {
@@ -25,8 +27,8 @@ export const CellAction: React.FC<CellActionProps> = ({ redeemDate, userId }: an
       try {
         const response = await userredeemCheck({
           id: userId,
-          paymentstatus: "complete",
-          date: redeemDate,
+          paymentstatus: 'complete',
+          date: Date
         });
 
         if (response.error) {
@@ -35,28 +37,31 @@ export const CellAction: React.FC<CellActionProps> = ({ redeemDate, userId }: an
 
         toast({
           title: 'Accept Successful!',
-          description: 'You have accepted successful!',
+          description: 'You have accepted successful!'
         });
 
         location.reload();
-
       } catch (error) {
         toast({
           title: 'Accept Failed!',
-          description: 'Your action has been failed. Please try again!',
+          description: 'Your action has been failed. Please try again!'
         });
       }
     });
   };
 
-  const userredeemCheck = async (userData: { paymentstatus: string, id: string; date: any }) => {
+  const userredeemCheck = async (userData: {
+    paymentstatus: string;
+    id: string;
+    date: any;
+  }) => {
     try {
       const response = await fetch('/api/admin/redeem', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
 
       if (!response.ok) {
@@ -75,8 +80,8 @@ export const CellAction: React.FC<CellActionProps> = ({ redeemDate, userId }: an
       try {
         const response = await userUnredeemCheck({
           id: userId,
-          paymentstatus: "decline",
-          date: redeemDate,
+          paymentstatus: 'decline',
+          date: Date
         });
 
         if (response.error) {
@@ -85,28 +90,31 @@ export const CellAction: React.FC<CellActionProps> = ({ redeemDate, userId }: an
 
         toast({
           title: 'Decline Successful!',
-          description: 'You have declined successful!',
+          description: 'You have declined successful!'
         });
 
         location.reload();
-
       } catch (error) {
         toast({
           title: 'redeem Failed!',
-          description: 'Your action has been failed. Please try again!',
+          description: 'Your action has been failed. Please try again!'
         });
       }
     });
   };
 
-  const userUnredeemCheck = async (userData: { paymentstatus: string, id: string; date: any }) => {
+  const userUnredeemCheck = async (userData: {
+    paymentstatus: string;
+    id: string;
+    date: any;
+  }) => {
     try {
       const response = await fetch('/api/admin/redeem', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
 
       if (!response.ok) {
@@ -119,10 +127,9 @@ export const CellAction: React.FC<CellActionProps> = ({ redeemDate, userId }: an
       throw error;
     }
   };
-  
+
   if (loading) {
     return <div>Loading...</div>; // Replace with a spinner or loading message if needed
-  
   }
 
   const ok = () => {};
@@ -138,14 +145,10 @@ export const CellAction: React.FC<CellActionProps> = ({ redeemDate, userId }: an
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Action</DropdownMenuLabel>
-          <DropdownMenuItem
-            onClick={accept}
-          >
+          <DropdownMenuItem onClick={accept}>
             <CheckCircle className="mr-2 h-4 w-4" /> Accept
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={unredeem}
-          >
+          <DropdownMenuItem onClick={unredeem}>
             <X className="mr-2 h-4 w-4" /> Decline
           </DropdownMenuItem>
         </DropdownMenuContent>

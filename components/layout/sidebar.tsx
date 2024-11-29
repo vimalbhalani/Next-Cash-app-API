@@ -14,10 +14,10 @@ type SidebarProps = {
 
 export default function Sidebar({ className }: SidebarProps) {
   const { isMinimized, toggle } = useSidebar();
-  
-  const userInfoStr = localStorage.getItem('userinfo')
+
+  const userInfoStr = localStorage.getItem('userinfo');
   const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
-  
+
   const handleToggle = () => {
     toggle();
   };
@@ -31,7 +31,7 @@ export default function Sidebar({ className }: SidebarProps) {
       )}
     >
       <div className="hidden p-5 pt-10 lg:block">
-        <Image src="/logo.png" width={150} height={150} alt='logo-web'/>
+        <Image src="/logo.png" width={150} height={150} alt="logo-web" />
       </div>
       <ChevronLeft
         className={cn(
@@ -43,7 +43,9 @@ export default function Sidebar({ className }: SidebarProps) {
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
           <div className="mt-3 space-y-1">
-            <DashboardNav items={userInfo.role === "admin"? navItems:userNavItems} />
+            <DashboardNav
+              items={userInfo.role === 'admin' ? navItems : userNavItems}
+            />
           </div>
         </div>
       </div>

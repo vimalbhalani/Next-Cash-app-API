@@ -1,5 +1,5 @@
 'use client';
-import { UserRegister} from '@/constants/data';
+import { UserRegister } from '@/constants/data';
 import { ColumnDef } from '@tanstack/react-table';
 
 export const columns: ColumnDef<UserRegister>[] = [
@@ -14,5 +14,5 @@ export const columns: ColumnDef<UserRegister>[] = [
   {
     accessorKey: 'passwordcode',
     header: 'Password'
-  },
+  }
 ];

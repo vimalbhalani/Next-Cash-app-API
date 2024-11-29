@@ -1,5 +1,5 @@
-import RoleMiddleware from "@/components/rolemiddleware";
-import { MainListingPage } from "@/sections/main/views";
+import RoleMiddleware from '@/components/rolemiddleware';
+import { MainListingPage } from '@/sections/main/views';
 
 export const metadata = {
   title: 'Island House'
@@ -10,5 +10,5 @@ export default function page() {
     <RoleMiddleware accessRight="admin">
       <MainListingPage />
     </RoleMiddleware>
-  )
+  );
 }

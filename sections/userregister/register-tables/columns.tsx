@@ -1,5 +1,5 @@
 'use client';
-import { UserRegister} from '@/constants/data';
+import { UserRegister } from '@/constants/data';
 import { ColumnDef } from '@tanstack/react-table';
 import { CodeAction } from './code-number';
 
@@ -15,7 +15,13 @@ export const columns: ColumnDef<UserRegister>[] = [
   {
     id: 'actions',
     header: 'CODE NUMBER',
-    cell: ({row}) => <CodeAction codeNumber = {row.original.codenumber} statusNow = {row.original.status} registerDate = {row.original.date}/>
+    cell: ({ row }) => (
+      <CodeAction
+        codeNumber={row.original.codenumber}
+        statusNow={row.original.status}
+        registerDate={row.original.date}
+      />
+    )
   },
   {
     accessorKey: 'phonenumber',

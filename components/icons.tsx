@@ -16,7 +16,6 @@ import {
   Loader2,
   LogIn,
   LucideIcon,
-  LucideProps,
   LucideShoppingBag,
   Moon,
   MoreVertical,
@@ -36,7 +35,7 @@ import {
   CreditCardIcon,
   LockKeyhole,
   BellRingIcon,
-  NotebookPenIcon,
+  NotebookPenIcon
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
@@ -70,11 +69,11 @@ export const Icons = {
   sun: SunMedium,
   moon: Moon,
   laptop: Laptop,
-  wallet:Wallet,
-  wallet2:Wallet2,
-  card:CreditCardIcon,
-  verify:LockKeyhole,
-  ring:BellRingIcon,
+  wallet: Wallet,
+  wallet2: Wallet2,
+  card: CreditCardIcon,
+  verify: LockKeyhole,
+  ring: BellRingIcon,
   notebookpen: NotebookPenIcon,
   twitter: Twitter,
   check: Check

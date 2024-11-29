@@ -14,59 +14,61 @@ import { toast } from '@/components/ui/use-toast';
 import { AdminRegisterUsers } from '@/constants/data';
 
 interface CellActionProps {
-  data: AdminRegisterUsers;
+  userId: any,
+  redeemDate: Date
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ userId, redeemDate }: any) => {
-  
+export const CellAction: React.FC<CellActionProps> = ({
+  userId,
+  redeemDate
+}) => {
   const [loading, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
 
-  const onConfirm= async () => {
+  const onConfirm = async () => {
     startTransition(async () => {
       try {
         const response = await deleteredeemCheck({
           id: userId,
-          date: redeemDate,
+          date: redeemDate
         });
-        
+
         if (response.error) {
           return;
         }
-        
+
         setOpen(false);
 
         toast({
           title: 'Delete successful!',
-          description: 'You have verified customer redeem',
+          description: 'You have verified customer redeem'
         });
 
         location.reload();
-        
       } catch (error) {
         toast({
           title: 'Delete Failed!',
-          description: 'Your action has been failed. Please try again!',
+          description: 'Your action has been failed. Please try again!'
         });
       }
     });
   };
-  
+
   const deleteredeemCheck = async (userData: { id: string; date: any }) => {
     try {
-      const response = await fetch("/api/admin/redeemdelete", {
+      const response = await fetch('/api/admin/redeemdelete', {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
-            
+
       if (!response.ok) {
         const errorData = await response.json();
         return { error: errorData.message || 'Delete failed' };
       }
-      
+
       return await response.json();
     } catch (error) {
       throw error;
@@ -82,8 +84,8 @@ export const CellAction: React.FC<CellActionProps> = ({ userId, redeemDate }: an
       try {
         const response = await userList({
           id: userId,
-          paymentstatus: "Processing",
-          date: redeemDate,
+          paymentstatus: 'Processing',
+          date: redeemDate
         });
 
         if (response.error) {
@@ -92,28 +94,31 @@ export const CellAction: React.FC<CellActionProps> = ({ userId, redeemDate }: an
 
         toast({
           title: 'User Restored Successful!',
-          description: 'User have restored successful!',
+          description: 'User have restored successful!'
         });
 
         location.reload();
-
       } catch (error) {
         toast({
           title: 'User Restored Failed!',
-          description: 'Your action has been failed. Please try again!',
+          description: 'Your action has been failed. Please try again!'
         });
       }
     });
   };
 
-  const userList = async (userData: { paymentstatus: string, id: string; date: any}) => {
+  const userList = async (userData: {
+    paymentstatus: string;
+    id: string;
+    date: any;
+  }) => {
     try {
       const response = await fetch('/api/admin/redeem', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
 
       if (!response.ok) {
@@ -146,14 +151,10 @@ export const CellAction: React.FC<CellActionProps> = ({ userId, redeemDate }: an
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Action</DropdownMenuLabel>
-          <DropdownMenuItem
-            onClick={restore}
-          >
+          <DropdownMenuItem onClick={restore}>
             <ArchiveRestore className="mr-2 h-4 w-4" /> Restore
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={()=>setOpen(true)}
-          >
+          <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash2 className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>

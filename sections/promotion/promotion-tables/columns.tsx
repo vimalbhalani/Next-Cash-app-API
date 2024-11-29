@@ -10,11 +10,11 @@ export const columns: ColumnDef<PaymentWithdrawals & AdminRegisterUsers>[] = [
   {
     accessorKey: 'tag',
     header: 'Tag Number',
-    cell:({row})=>(<span>{row.original.user.tag}</span>)
+    cell: ({ row }) => <span>{row.original.user.tag}</span>
   },
   {
     accessorKey: 'amount',
     header: 'Amount',
-    cell: ({row}) => `$${row.original.amount}`
-  },
+    cell: ({ row }) => `$${row.original.amount}`
+  }
 ];

@@ -1,16 +1,19 @@
-import User from "@/models/User"; 
-import dbConnect from "@/lib/dbConnect";
-import { NextRequest, NextResponse } from "next/server";
+import User from '@/models/User';
+import dbConnect from '@/lib/dbConnect';
+import { NextRequest, NextResponse } from 'next/server';
 
 export const POST = async (request: NextRequest) => {
   const { id, tag } = await request.json();
-  
+
   if (!id || !tag) {
-    return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'Missing required fields' },
+      { status: 400 }
+    );
   }
-  
+
   await dbConnect();
-  
+
   try {
     const user = await User.findById(id);
 
@@ -19,8 +22,8 @@ export const POST = async (request: NextRequest) => {
     }
 
     user.tag = tag;
-    
-    await user.save(); 
+
+    await user.save();
 
     return NextResponse.json({ ok: 'User updated', user }, { status: 200 });
   } catch (err: any) {

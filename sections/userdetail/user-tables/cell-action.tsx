@@ -11,16 +11,18 @@ import {
 import { MoreHorizontal, Trash2, UserPen } from 'lucide-react';
 import { useState, useTransition } from 'react';
 import { toast } from '@/components/ui/use-toast';
-import { AdminRegisterUsers } from '@/constants/data';
 import { ModifyModal } from '@/components/modal/modify-modal';
 
 interface CellActionProps {
-  data: AdminRegisterUsers;
-  codeRegister?: (event: React.MouseEvent<HTMLButtonElement>) => void
+  registerDate: Date;
+  userId: any;
+  codeRegister?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ registerDate, userId }: any) => {
-
+export const CellAction: React.FC<CellActionProps> = ({
+  registerDate,
+  userId
+}: any) => {
   const [loading, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
   const [openM, setOpenM] = useState(false);
@@ -30,7 +32,7 @@ export const CellAction: React.FC<CellActionProps> = ({ registerDate, userId }: 
       try {
         const response = await deleteRegister({
           id: userId,
-          date: registerDate,
+          date: registerDate
         });
 
         if (response.error) {
@@ -41,15 +43,14 @@ export const CellAction: React.FC<CellActionProps> = ({ registerDate, userId }: 
 
         toast({
           title: 'Delete successful!',
-          description: 'You have verified customer redeem',
+          description: 'You have verified customer redeem'
         });
 
         location.reload();
-
       } catch (error) {
         toast({
           title: 'Delete Failed!',
-          description: 'Your action has been failed. Please try again!',
+          description: 'Your action has been failed. Please try again!'
         });
       }
     });
@@ -57,12 +58,12 @@ export const CellAction: React.FC<CellActionProps> = ({ registerDate, userId }: 
 
   const deleteRegister = async (userData: { id: string; date: any }) => {
     try {
-      const response = await fetch("/api/admin/registerdelete", {
+      const response = await fetch('/api/admin/registerdelete', {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
 
       if (!response.ok) {
@@ -80,7 +81,7 @@ export const CellAction: React.FC<CellActionProps> = ({ registerDate, userId }: 
     return <div>Loading...</div>;
   }
 
-  const ok = () => { };
+  const ok = () => {};
 
   return (
     <>
@@ -93,8 +94,8 @@ export const CellAction: React.FC<CellActionProps> = ({ registerDate, userId }: 
       <ModifyModal
         isOpen={openM}
         onClose={() => setOpenM(false)}
-        date = {registerDate}
-        id = {userId}
+        date={registerDate}
+        id={userId}
         loading={loading}
       />
       <DropdownMenu modal={false}>
@@ -106,9 +107,7 @@ export const CellAction: React.FC<CellActionProps> = ({ registerDate, userId }: 
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Action</DropdownMenuLabel>
-          <DropdownMenuItem
-            onClick={()=> setOpenM(true)}
-          >
+          <DropdownMenuItem onClick={() => setOpenM(true)}>
             <UserPen className="mr-2 h-4 w-4" /> Modify
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>

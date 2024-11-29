@@ -12,20 +12,16 @@ const breadcrumbItems = [
 type TEmployeeListingPage = {};
 
 export default async function UserRegisterListingPage({}: TEmployeeListingPage) {
-
   return (
     <PageContainer scrollable>
       <div className="space-y-4">
         <Breadcrumbs items={breadcrumbItems} />
 
         <div className="flex items-start justify-between">
-          <Heading
-            title={`Register`}
-            description=""
-          />
+          <Heading title={`Register`} description="" />
         </div>
         <Separator />
-        <UserRegisterTable/>
+        <UserRegisterTable />
       </div>
     </PageContainer>
   );

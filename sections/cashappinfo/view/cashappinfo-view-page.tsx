@@ -7,7 +7,6 @@ const breadcrumbItems = [
   { title: 'Payment Setting', link: '/main/cashappinfo' }
 ];
 export default function CashAppInfoPage() {
-
   return (
     <PageContainer>
       <div className="space-y-4">

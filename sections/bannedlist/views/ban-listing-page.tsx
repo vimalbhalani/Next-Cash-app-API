@@ -12,20 +12,16 @@ const breadcrumbItems = [
 type TEmployeeListingPage = {};
 
 export default async function BanListingPage({}: TEmployeeListingPage) {
-
   return (
     <PageContainer scrollable>
       <div className="space-y-4">
         <Breadcrumbs items={breadcrumbItems} />
 
         <div className="flex items-start justify-between">
-          <Heading
-            title={`Banned List`}
-            description=""
-          />
+          <Heading title={`Banned List`} description="" />
         </div>
         <Separator />
-        <BanTable/>
+        <BanTable />
       </div>
     </PageContainer>
   );

@@ -5,8 +5,7 @@ import { toast } from '@/components/ui/use-toast';
 
 import useSocket from '@/lib/socket';
 
-const {socket} = useSocket();
-
+const { socket } = useSocket();
 
 interface UserData {
   id: string;
@@ -14,26 +13,33 @@ interface UserData {
   date: any;
 }
 
-export const CodeAction = ({ registerDate, codeNumber, userName, regiStatus }: { registerDate: any; codeNumber?: string; userName: string; regiStatus: string }) => {
-  
-  const [codenum, setCodenum] = useState(codeNumber || ""); // Initialize with codeNumber if available
+export const CodeAction = ({
+  registerDate,
+  codeNumber,
+  userName,
+  regiStatus
+}: {
+  registerDate: any;
+  codeNumber?: string;
+  userName: string;
+  regiStatus: string;
+}) => {
+  const [codenum, setCodenum] = useState(codeNumber || ''); // Initialize with codeNumber if available
 
   console.log(registerDate);
-  
 
   const userData: UserData = {
     id: userName,
     codenumber: codenum,
-    date: registerDate,
-  }
+    date: registerDate
+  };
 
   // Example signUp function
   const onSubmit = async (userData: UserData) => {
-
-    if(codenum === "" || codenum === "none"){
+    if (codenum === '' || codenum === 'none') {
       toast({
         title: 'Code Number  empty!',
-        description: 'Please input code number!',
+        description: 'Please input code number!'
       });
       return;
     }
@@ -42,9 +48,9 @@ export const CodeAction = ({ registerDate, codeNumber, userName, regiStatus }: {
       const response = await fetch('/api/admin/coderegister', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
 
       if (!response.ok) {
@@ -54,10 +60,13 @@ export const CodeAction = ({ registerDate, codeNumber, userName, regiStatus }: {
 
       toast({
         title: 'Code Sending Successful!',
-        description: 'Welcome! Your code sending has been successful.',
+        description: 'Welcome! Your code sending has been successful.'
       });
-      
-      socket.emit("adminRegister", {receiveuserId: userName, message:"Client sent codenumber to you!"} );
+
+      socket.emit('adminRegister', {
+        receiveuserId: userName,
+        message: 'Client sent codenumber to you!'
+      });
 
       location.reload();
 
@@ -65,9 +74,9 @@ export const CodeAction = ({ registerDate, codeNumber, userName, regiStatus }: {
     } catch (error) {
       toast({
         title: 'Code Sending Failed!',
-        description: 'Your code sending has failed. Please try again.',
+        description: 'Your code sending has failed. Please try again.'
       });
-      throw error; 
+      throw error;
     }
   };
 
@@ -79,31 +88,35 @@ export const CodeAction = ({ registerDate, codeNumber, userName, regiStatus }: {
     if (response && response.error) {
       console.error(response.error);
     } else {
-      console.log("Success:", response);
+      console.log('Success:', response);
     }
   };
 
-  // Set codenum whenever codeNumber prop changes
   useEffect(() => {
     if (codeNumber) {
       setCodenum(codeNumber);
     } else {
-      setCodenum(""); // Reset if codeNumber is none or invalid
+      setCodenum('');
     }
   }, [codeNumber]);
 
   return (
-    <div className='relation flex justify-center'>
+    <div className="relation flex justify-center">
       <input
-        className=' w-32 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
-        value={codenum} // Set input value to codenum
+        className=" w-32 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+        value={codenum}
         onChange={(e) => setCodenum(e.target.value)}
-        disabled={regiStatus !== "preparing" || codeNumber !== "none"}
+        disabled={regiStatus !== 'preparing' || codeNumber !== 'none'}
         onInput={(e) => {
-          e.target.value = e.target.value.replace(/[^0-9]/g, '');
+          const target = e.target as HTMLInputElement;
+          target.value = target.value.replace(/[^0-9]/g, ''); 
         }}
       />
-      <Button className='h-8 w-10 text-xs bg-blue-500 text-white ml-1' handleClick={handleButtonClick} disabled={regiStatus !== "preparing" || codeNumber !== "none"} >
+      <Button
+        className="ml-1 h-8 w-10 bg-blue-500 text-xs text-white"
+        handleClick={handleButtonClick}
+        disabled={regiStatus !== 'preparing' || codeNumber !== 'none'}
+      >
         SEND
       </Button>
     </div>

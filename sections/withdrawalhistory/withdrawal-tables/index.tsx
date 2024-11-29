@@ -6,17 +6,31 @@ import AdminWithdrawalHistoryTableView from './withdrawal-table';
 import useSocket from '@/lib/socket';
 import { toast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
+import { useSearchParams } from 'next/navigation';
+
+interface SelectMultiIdData {
+  id?: string;
+  date?: string;
+}
 
 export default function AdminWithdrawalHistoryTable() {
-
   const { socket } = useSocket();
-  const [data, setData] = useState<(PaymentWithdrawals & AdminRegisterUsers)[]>([]);
+  const [data, setData] = useState<(PaymentWithdrawals & AdminRegisterUsers)[]>(
+    []
+  );
   const [totalData, setTotalData] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
-  const [searchParam, setSearchParam] = useState("");
-  const [selectCategory, setSelectCategory] = useState("tag");
-  const [multiIds, setMultiIds] = useState<string[]>([]);
+  const [searchParam, setSearchParam] = useState('');
+  const [selectCategory, setSelectCategory] = useState('tag');
+  const [multiIds, setMultiIds] = useState<SelectMultiIdData[]>([]);
   const [load, startTransition] = useTransition();
+
+  const searchParams = useSearchParams();
+  const pageParam = searchParams.get('page');
+  const limitParam = searchParams.get('limit');
+  
+  const page = Number(pageParam? pageParam : 1);
+  const limit = Number(limitParam? limitParam : 10);
 
   useEffect(() => {
     async function fetchData() {
@@ -29,18 +43,31 @@ export default function AdminWithdrawalHistoryTable() {
         const usersResponse = await fetch('/api/admin/getuser');
         const usersResult = await usersResponse.json();
 
-        const combinedData = withdrawalsResult.data.flatMap((withdrawalEntry: any) =>
-          withdrawalEntry.withdrawal
-            .filter((withdrawal: PaymentWithdrawals) =>
-              ['complete', 'decline'].includes(withdrawal.paymentstatus)
-            )
-            .map((withdrawal: PaymentWithdrawals) => {
-              const user = usersResult.data.find((user: AdminRegisterUsers) => user._id === withdrawal.id);
-              return { ...withdrawal, user };
-            })
+        const combinedData = withdrawalsResult.data.flatMap(
+          (withdrawalEntry: any) =>
+            withdrawalEntry.withdrawal
+              .filter((withdrawal: PaymentWithdrawals) =>
+                ['complete', 'decline'].includes(withdrawal.paymentstatus)
+              )
+              .map((withdrawal: PaymentWithdrawals) => {
+                const user = usersResult.data.find(
+                  (user: AdminRegisterUsers) => user._id === withdrawal.id
+                );
+                return { ...withdrawal, user };
+              })
         );
 
-        const sortedData = combinedData.sort((a: any, b: any) => new Date(b.date) - new Date(a.date));
+        const sortedData = combinedData.sort((a: any, b: any) => {
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
+          
+          if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
+            console.error('Invalid date:', a.date, b.date);
+            return 0; 
+          }
+          
+          return dateB.getTime() - dateA.getTime();
+        });
 
         setData(sortedData);
         setTotalData(withdrawalsResult.totalCount);
@@ -54,7 +81,7 @@ export default function AdminWithdrawalHistoryTable() {
     fetchData();
   }, []);
 
-  const filteredData = data.filter(item => {
+  const filteredData = data.filter((item) => {
     const param = searchParam.toLowerCase();
     switch (selectCategory) {
       case 'tag':
@@ -73,28 +100,34 @@ export default function AdminWithdrawalHistoryTable() {
   });
 
   useEffect(() => {
-    socket.on("selectWithdrawalHistoryMultiIds", (data: any) => {
+    socket.on('selectWithdrawalHistoryMultiIds', (data: any) => {
       setMultiIds(data);
-    })
-  }, [])
-
-  useEffect(() => {
-    socket.on("selectWithdrawalHistoryMultiId", (data: any) => {
-      if (!data.id && data.date) {
-        setMultiIds((prevMultiIds) => prevMultiIds.filter(item => item.date !== data.date));
-      } else {
-        setMultiIds((prevMultiIds) => [...prevMultiIds, data]);
-      }
     });
   }, []);
 
+  useEffect(() => {
+    const handleSelectMultiId = (data: SelectMultiIdData) => {
+      if (!data.id && data.date) {
+        setMultiIds((prevMultiIds) =>
+          prevMultiIds.filter((item) => item.date !== data.date)
+        );
+      } else {
+        setMultiIds((prevMultiIds) => [...prevMultiIds, data]);
+      }
+    };
+
+    socket.on('selectWithdrawalHistoryMultiId', handleSelectMultiId);
+
+    return () => {
+      socket.off('selectWithdrawalHistoryMultiId', handleSelectMultiId);
+    };
+  }, []);
 
   const multiRestore = async () => {
-
     if (multiIds.length == 0) {
       toast({
         title: 'Restore Failed!',
-        description: 'Please check item!',
+        description: 'Please check item!'
       });
       return;
     }
@@ -102,8 +135,8 @@ export default function AdminWithdrawalHistoryTable() {
     startTransition(async () => {
       try {
         const response = await userMultiCheck({
-          paymentstatus: "Processing",
-          data: multiIds,
+          paymentstatus: 'Processing',
+          data: multiIds
         });
 
         if (response.error) {
@@ -112,28 +145,30 @@ export default function AdminWithdrawalHistoryTable() {
 
         toast({
           title: 'Restore Successful!',
-          description: 'You have restored successful!',
+          description: 'You have restored successful!'
         });
 
         location.reload();
-
       } catch (error) {
         toast({
           title: 'Restore Failed!',
-          description: 'Your action has been failed. Please try again!',
+          description: 'Your action has been failed. Please try again!'
         });
       }
     });
   };
 
-  const userMultiCheck = async (userData: { paymentstatus: string, data: any }) => {
+  const userMultiCheck = async (userData: {
+    paymentstatus: string;
+    data: any;
+  }) => {
     try {
       const response = await fetch('/api/admin/multiWithdrawalCheck', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
 
       if (!response.ok) {
@@ -148,11 +183,10 @@ export default function AdminWithdrawalHistoryTable() {
   };
 
   const multiDelete = async () => {
-
     if (multiIds.length == 0) {
       toast({
         title: 'Delete Failed!',
-        description: 'Please check item!',
+        description: 'Please check item!'
       });
       return;
     }
@@ -160,7 +194,7 @@ export default function AdminWithdrawalHistoryTable() {
     startTransition(async () => {
       try {
         const response = await userDeleteMultiCheck({
-          data: multiIds,
+          data: multiIds
         });
 
         if (response.error) {
@@ -169,15 +203,14 @@ export default function AdminWithdrawalHistoryTable() {
 
         toast({
           title: 'Delete Successful!',
-          description: 'You have deleted successful!',
+          description: 'You have deleted successful!'
         });
 
         location.reload();
-
       } catch (error) {
         toast({
           title: 'Delete Failed!',
-          description: 'Your action has been failed. Please try again!',
+          description: 'Your action has been failed. Please try again!'
         });
       }
     });
@@ -188,9 +221,9 @@ export default function AdminWithdrawalHistoryTable() {
       const response = await fetch('/api/admin/multiWithdrawalDelete', {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
 
       if (!response.ok) {
@@ -204,18 +237,33 @@ export default function AdminWithdrawalHistoryTable() {
     }
   };
 
+  const offset = (page - 1) * limit;
+  const paginatedData = filteredData.slice(offset, offset + limit);
+
   if (loading) {
     return <div>Loading...</div>; // Replace with a spinner or loading message if needed
   }
 
   return (
     <div className="space-y-4">
-      <div className='flex justify-end'>
-        <Button variant="outline" handleClick={multiRestore} className='mr-3 mt-3'>Multi Restore</Button>
-        <Button variant="outline" handleClick={multiDelete} className='mr-3 mt-3'>Multi Delete</Button>
+      <div className="flex justify-end">
+        <Button
+          variant="outline"
+          handleClick={multiRestore}
+          className="mr-3 mt-3"
+        >
+          Multi Restore
+        </Button>
+        <Button
+          variant="outline"
+          handleClick={multiDelete}
+          className="mr-3 mt-3"
+        >
+          Multi Delete
+        </Button>
         <select
           onChange={(e) => setSelectCategory(e.target.value)}
-          className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-3 mr-3 bg-background'
+          className="mr-3 mt-3 h-9 rounded-md border bg-background p-2 text-sm outline-none focus:border-[#DAAC95]"
         >
           <option value="tag">Tag Number</option>
           <option value="firstname">Name</option>
@@ -224,12 +272,16 @@ export default function AdminWithdrawalHistoryTable() {
           <option value="paymenttype">Type</option>
         </select>
         <input
-          className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-3 bg-background'
-          placeholder='Search...'
+          className="mt-3 h-9 rounded-md border bg-background p-2 text-sm outline-none focus:border-[#DAAC95]"
+          placeholder="Search..."
           onChange={(e) => setSearchParam(e.target.value)}
         />
       </div>
-      <AdminWithdrawalHistoryTableView columns={columns} data={filteredData} totalItems={filteredData.length} />
+      <AdminWithdrawalHistoryTableView
+        columns={columns}
+        data={paginatedData}
+        totalItems={filteredData.length}
+      />
     </div>
   );
 }

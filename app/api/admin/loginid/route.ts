@@ -1,16 +1,19 @@
-import User from "@/models/User"; 
-import dbConnect from "@/lib/dbConnect";
-import { NextRequest, NextResponse } from "next/server";
+import User from '@/models/User';
+import dbConnect from '@/lib/dbConnect';
+import { NextRequest, NextResponse } from 'next/server';
 
 export const POST = async (request: NextRequest) => {
   const { date, loginid, id, passwordcode, status } = await request.json();
-  
+
   if (!date || !loginid || !passwordcode || !status || !id) {
-    return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'Missing required fields' },
+      { status: 400 }
+    );
   }
-  
+
   await dbConnect();
-  
+
   try {
     const existingUser = await User.findById(id);
 
@@ -19,8 +22,8 @@ export const POST = async (request: NextRequest) => {
     }
 
     const updatedUser = await User.findOneAndUpdate(
-      { _id: id, "register.date": date }, 
-      { 
+      { _id: id, 'register.date': date },
+      {
         $set: {
           'register.$.loginid': loginid,
           'register.$.passwordcode': passwordcode,
@@ -31,11 +34,16 @@ export const POST = async (request: NextRequest) => {
     );
 
     if (!updatedUser) {
-      return NextResponse.json({ error: 'User not found with the specified date in register' }, { status: 404 });
+      return NextResponse.json(
+        { error: 'User not found with the specified date in register' },
+        { status: 404 }
+      );
     }
 
-    return NextResponse.json({ ok: 'User updated', user: updatedUser }, { status: 200 });
-    
+    return NextResponse.json(
+      { ok: 'User updated', user: updatedUser },
+      { status: 200 }
+    );
   } catch (err: any) {
     // Handle errors during DB operations
     return NextResponse.json({ error: err.message }, { status: 500 });

@@ -18,11 +18,13 @@ import useSocket from '@/lib/socket';
 import { useRouter } from 'next/navigation';
 import GoogleSignInButton from './google-auth-button';
 
-const { socket } = useSocket()
+const { socket } = useSocket();
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Enter a valid email address' }),
-  password: z.string().min(6, { message: 'Password must be at least 6 characters' })
+  password: z
+    .string()
+    .min(6, { message: 'Password must be at least 6 characters' })
 });
 
 type UserFormValue = z.infer<typeof formSchema>;
@@ -33,7 +35,7 @@ export default function UserAuthForm() {
   const [pop, setPop] = useState<boolean>(false);
 
   const form = useForm<UserFormValue>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema)
   });
 
   const onSubmit = async (data: UserFormValue) => {
@@ -41,36 +43,38 @@ export default function UserAuthForm() {
       try {
         const response = await signIn({
           email: data.email,
-          password: data.password,
+          password: data.password
         });
 
-        if (response.user.role === "admin") {
-          router.push("/main")
+        if (response.user.role === 'admin') {
+          router.push('/main');
         } else {
-          router.push("/mypage");
+          router.push('/mypage');
         }
         localStorage.setItem('userinfo', JSON.stringify(response.user));
-        socket.emit("register", { userId: response.user.userId, role: response.user.role })
+        socket.emit('register', {
+          userId: response.user.userId,
+          role: response.user.role
+        });
 
         toast({
           title: 'SignIn Successful!',
-          description: 'Welcome! Your signin has been success.',
+          description: 'Welcome! Your signin has been success.'
         });
-
       } catch (error) {
         console.error('Signup error:', error);
       }
     });
   };
 
-  const signIn = async (userData: { email: string; password: string; }) => {
+  const signIn = async (userData: { email: string; password: string }) => {
     try {
       const response = await fetch('/api/signin', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
 
       if (response.status === 402) {
@@ -78,12 +82,11 @@ export default function UserAuthForm() {
         return;
       }
 
-
       if (!response.ok) {
         const errorData = await response.json();
         toast({
           title: 'SignIn Failed!',
-          description: 'Your email or password is incorrect! Please try again.',
+          description: 'Your email or password is incorrect! Please try again.'
         });
         return { error: errorData.message || 'Signin failed' };
       }
@@ -94,6 +97,8 @@ export default function UserAuthForm() {
       throw error;
     }
   };
+
+  const ok = () => {};
 
   return (
     <>
@@ -109,11 +114,7 @@ export default function UserAuthForm() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input
-                    type="email"
-                    disabled={loading}
-                    {...field}
-                  />
+                  <Input type="email" disabled={loading} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -126,23 +127,22 @@ export default function UserAuthForm() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input
-                    type='password'
-                    disabled={loading}
-                    {...field}
-                  />
+                  <Input type="password" disabled={loading} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button disabled={loading} className="ml-auto w-full" type="submit">
+          <Button disabled={loading} className="ml-auto w-full" type="submit" handleClick={ok}>
             LOG IN
           </Button>
-          {pop ? <div className='border border-red-500 p-1 text-red-500 rounded-lg text-center'>
-
-            Sorry, your action has been benned!
-          </div> : ""}
+          {pop ? (
+            <div className="rounded-lg border border-red-500 p-1 text-center text-red-500">
+              Sorry, your action has been benned!
+            </div>
+          ) : (
+            ''
+          )}
         </form>
       </Form>
       <div className="relative">

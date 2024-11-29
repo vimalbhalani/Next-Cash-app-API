@@ -1,56 +1,57 @@
 import { NavItem } from '@/types';
 
 export type UserRegister = {
-  id: string,
-  phonenumber:string;
+  id: string;
+  phonenumber: string;
   category: string;
   codenumber: string;
   loginid: string;
   passwordcode: string;
-  date: Date,
+  date: Date;
   status: string;
-}
+};
 
 export type Paymentredeems = {
-  id: string,
-  amount: number,
-  btc: string,
-  paymentoption: string,
-  paymenttype: string,
-  paymentstatus: string,
-  dailyChecked: boolean,
-  bonusChecked: boolean,
-  date: Date,
-  comdate: Date,
-}
+  id: string;
+  amount: number;
+  btc: string;
+  paymentoption: string;
+  paymenttype: string;
+  paymentstatus: string;
+  dailyChecked: boolean;
+  bonusChecked: boolean;
+  date: Date;
+  comdate: Date;
+};
 
-export type PaymentWithdrawals ={
-  id: string,
-  amount: number,
-  paymentoption: string,
-  paymenttype: string,
-  paymentstatus: string,
-  date: Date,
-  comdate: Date,
-}
+export type PaymentWithdrawals = {
+  id: string;
+  amount: number;
+  paymentoption: string;
+  paymenttype: string;
+  paymentstatus: string;
+  date: Date;
+  comdate: Date;
+};
 
 export type AdminRegisterUsers = {
   _id: string;
-  firstname:string;
-  lastname:string;
-  tag:number;
-  email:string;
-  ip: string; 
+  firstname: string;
+  lastname: string;
+  tag: number;
+  email: string;
+  ip: string;
   action: string;
   cashtag: string;
-  venmo:string;
-  paypal:string;
-  zelle:string;
-  bitcoin:string;
+  venmo: string;
+  paypal: string;
+  zelle: string;
+  bitcoin: string;
   user: any;
   register: UserRegister[];
   redeem: Paymentredeems[];
   withdrawal: PaymentWithdrawals[];
+  totalAmount: any;
 };
 
 export const navItems: NavItem[] = [
@@ -58,19 +59,19 @@ export const navItems: NavItem[] = [
     title: 'Main',
     href: '/main',
     icon: 'dashboard',
-    label: 'main',
+    label: 'main'
   },
   {
     title: 'Register',
     href: '/main/register',
     icon: 'user',
-    label: 'register',
+    label: 'register'
   },
   {
     title: 'Code Verify',
     href: '/main/verify',
     icon: 'verify',
-    label: 'verify',
+    label: 'verify'
   },
   {
     title: 'Deposit',
@@ -78,16 +79,16 @@ export const navItems: NavItem[] = [
     label: 'redeem',
     children: [
       {
-        title: "Request",
+        title: 'Request',
         href: '/main/redeem',
         icon: 'wallet',
-        label: 'redeemRequest',
+        label: 'redeemRequest'
       },
       {
-        title: "History",
+        title: 'History',
         href: '/main/redeemhistory',
         icon: 'notebookpen',
-        label: 'redeemHistory',
+        label: 'redeemHistory'
       }
     ]
   },
@@ -97,16 +98,16 @@ export const navItems: NavItem[] = [
     label: 'withdrawal',
     children: [
       {
-        title: "Request",
+        title: 'Request',
         href: '/main/withdrawal',
         icon: 'wallet2',
-        label: 'withdrawalRequest',
+        label: 'withdrawalRequest'
       },
       {
-        title: "History",
+        title: 'History',
         href: '/main/withdrawalhistory',
         icon: 'notebookpen',
-        label: 'withdrawalHistory',
+        label: 'withdrawalHistory'
       }
     ]
   },
@@ -114,51 +115,51 @@ export const navItems: NavItem[] = [
     title: 'Payment Setting',
     href: '/main/cashappinfo',
     icon: 'settings',
-    label: 'setting',
+    label: 'setting'
   },
   {
     title: 'User',
     href: '/main/user',
     icon: 'user2',
-    label: 'user',
+    label: 'user'
   },
   {
     title: 'Banned List',
     href: '/main/bannedlist',
     icon: 'warning',
-    label: 'banned list',
-  },
-]; 
+    label: 'banned list'
+  }
+];
 
 export const userNavItems: NavItem[] = [
   {
     title: 'Promotion',
     href: '/mypage',
     icon: 'product',
-    label: 'mypage',
+    label: 'mypage'
   },
   {
     title: 'Mypage',
     href: '/mypage/promotion',
     icon: 'userPen',
-    label: 'promotion',
+    label: 'promotion'
   },
   {
     title: 'Register',
     href: '/mypage/register',
     icon: 'user',
-    label: 'register',
+    label: 'register'
   },
   {
     title: 'Deposit',
     href: '/mypage/deposit',
     icon: 'wallet',
-    label: 'redeem',
+    label: 'redeem'
   },
   {
     title: 'Withdrawal',
     href: '/mypage/withdrawal',
     icon: 'wallet2',
-    label: 'withdrawal',
-  },
+    label: 'withdrawal'
+  }
 ];

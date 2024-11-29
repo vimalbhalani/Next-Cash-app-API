@@ -3,11 +3,11 @@ import { AdminRegisterUsers, UserRegister } from '@/constants/data';
 import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from './cell-action';
 
-export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
+export const columns: ColumnDef<AdminRegisterUsers, UserRegister>[] = [
   {
     accessorKey: 'tag',
     header: 'TAG NUMBER',
-    cell: ({ row }) => (<span>{row.original.tag}</span>),
+    cell: ({ row }) => <span>{row.original.tag}</span>
   },
   {
     accessorKey: 'name',
@@ -16,26 +16,30 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
       <span>
         {row.original.firstname} {row.original.lastname}
       </span>
-    ),
+    )
   },
   {
     accessorKey: 'username',
     header: 'USERNAME',
-    cell: ({ row }) => (<span>{row.original.email}</span>),
+    cell: ({ row }) => <span>{row.original.email}</span>
   },
   {
     accessorKey: 'ip',
     header: 'IP ADDRESS',
-    cell: ({ row }) => (<span>{row.original.ip}</span>),
+    cell: ({ row }) => <span>{row.original.ip}</span>
   },
   {
     accessorKey: 'phonenumber',
     header: 'PHONE NUMBER',
-    cell: ({ row }) => (<span>
-      {row.original.register && row.original.register.length > 0 && row.original.register[0].phonenumber
-        ? row.original.register[0].phonenumber
-        : 'none'}
-    </span>)
+    cell: ({ row }) => (
+      <span>
+        {row.original.register &&
+        row.original.register.length > 0 &&
+        row.original.register[0].phonenumber
+          ? row.original.register[0].phonenumber
+          : 'none'}
+      </span>
+    )
   },
   {
     id: 'actions',

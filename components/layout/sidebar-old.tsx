@@ -3,7 +3,7 @@ import { navItems } from '@/constants/data';
 import { userNavItems } from '@/constants/data';
 import { cn } from '@/lib/utils';
 
-const userInfoStr = localStorage.getItem('userinfo')
+const userInfoStr = localStorage.getItem('userinfo');
 const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
 export default function Sidebar() {
@@ -17,7 +17,9 @@ export default function Sidebar() {
             <h2 className="mb-2 px-4 text-xl font-semibold tracking-tight">
               Overview
             </h2>
-            <DashboardNav items={userInfo.role==="admin"?navItems:userNavItems}/>
+            <DashboardNav
+              items={userInfo.role === 'admin' ? navItems : userNavItems}
+            />
           </div>
         </div>
       </div>

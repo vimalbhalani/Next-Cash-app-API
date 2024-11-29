@@ -7,26 +7,22 @@ import UserredeemMiddle from '../withdrawal-fron';
 const breadcrumbItems = [
   { title: 'MyPage', link: '/mypage' },
   { title: 'Withdrawal', link: '/mypage/withdrawal' },
-  { title : 'Middle', link: '/mypage/withdrawal/withdrawalmiddle'}
+  { title: 'Middle', link: '/mypage/withdrawal/withdrawalmiddle' }
 ];
 
 type TEmployeeListingPage = {};
 
 export default async function UserWithdrawalMiddlePage({}: TEmployeeListingPage) {
-
   return (
     <PageContainer scrollable>
       <div className="space-y-4">
         <Breadcrumbs items={breadcrumbItems} />
 
         <div className="flex items-start justify-between">
-          <Heading
-            title={`Withdrawal`}
-            description=""
-          />
+          <Heading title={`Withdrawal`} description="" />
         </div>
         <Separator />
-        <UserredeemMiddle/>
+        <UserredeemMiddle />
       </div>
     </PageContainer>
   );

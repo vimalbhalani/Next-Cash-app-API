@@ -10,7 +10,7 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   // playlists: Playlist[];
 }
 
-const userInfoStr = localStorage.getItem('userinfo')
+const userInfoStr = localStorage.getItem('userinfo');
 const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
 export function MobileSidebar({ className }: SidebarProps) {
@@ -19,15 +19,17 @@ export function MobileSidebar({ className }: SidebarProps) {
     <>
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild className="focus:outline-none">
-          <button className='border border-gray-500 p-1 rounded-lg font-bold'>MENU</button>
+          <button className="rounded-lg border border-gray-500 p-1 font-bold">
+            MENU
+          </button>
         </SheetTrigger>
         <SheetContent side="left" className="!px-0">
           <div className="space-y-4 py-4">
             <div className="px-3 py-2">
-              <Image src='/logo.png' width={150} height={150} alt='logo'/>
-              <div className="space-y-1 mt-5">
+              <Image src="/logo.png" width={150} height={150} alt="logo" />
+              <div className="mt-5 space-y-1">
                 <DashboardNav
-                  items={userInfo.role==="admin"?navItems:userNavItems}
+                  items={userInfo.role === 'admin' ? navItems : userNavItems}
                   isMobileNav={true}
                   setOpen={setOpen}
                 />

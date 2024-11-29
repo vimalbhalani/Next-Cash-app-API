@@ -22,16 +22,15 @@ export default async function UserredeemListingPage({}: TEmployeeListingPage) {
         <Breadcrumbs items={breadcrumbItems} />
 
         <div className="flex items-start justify-between">
-          <Heading
-            title={`Deposit`}
-            description=""
-          />
+          <Heading title={`Deposit`} description="" />
         </div>
         <Separator />
         <UserredeemForm />
-        <p className='py-5 text-medium font-bold text-center'>Deposit History</p>
+        <p className="text-medium py-5 text-center font-bold">
+          Deposit History
+        </p>
         <UserredeemTable />
-        <GameLink/>
+        <GameLink />
       </div>
     </PageContainer>
   );

@@ -20,10 +20,7 @@ export default async function RedeemListingPage({}: TEmployeeListingPage) {
         <Breadcrumbs items={breadcrumbItems} />
 
         <div className="flex items-start justify-between">
-          <Heading
-            title={`Deposit`}
-            description=""
-          />
+          <Heading title={`Deposit`} description="" />
         </div>
         <Separator />
         <AdminRedeemTable />

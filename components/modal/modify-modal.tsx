@@ -1,4 +1,6 @@
 'use client';
+
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
@@ -12,12 +14,12 @@ interface AlertModalProps {
   loading: boolean;
 }
 
-interface UserData{
+interface UserData {
   id: string;
   date: any;
   category: string;
   loginid: string;
-  passwordcode: string
+  passwordcode: string;
 }
 
 export const ModifyModal: React.FC<AlertModalProps> = ({
@@ -28,9 +30,9 @@ export const ModifyModal: React.FC<AlertModalProps> = ({
   loading
 }) => {
   const [isMounted, setIsMounted] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("");
-  const [loginId, setLoginId] = useState("");
-  const [passwordCode, setPasswordCode] = useState("");
+  const [selectedOption, setSelectedOption] = useState('');
+  const [loginId, setLoginId] = useState('');
+  const [passwordCode, setPasswordCode] = useState('');
 
   useEffect(() => {
     setIsMounted(true);
@@ -46,14 +48,13 @@ export const ModifyModal: React.FC<AlertModalProps> = ({
     category: selectedOption,
     loginid: loginId,
     passwordcode: passwordCode
-  }
+  };
 
   const onSubmit = async (userData: UserData) => {
-
-    if(loginId === "" || passwordCode === ""){
+    if (loginId === '' || passwordCode === '') {
       toast({
         title: 'All field do not full!',
-        description: 'Please try, again!',
+        description: 'Please try, again!'
       });
       return;
     }
@@ -62,9 +63,9 @@ export const ModifyModal: React.FC<AlertModalProps> = ({
       const response = await fetch('/api/admin/usermodify', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
 
       if (!response.ok) {
@@ -74,16 +75,16 @@ export const ModifyModal: React.FC<AlertModalProps> = ({
 
       toast({
         title: 'Modify Successful!',
-        description: 'Welcome! User info has been modified.',
+        description: 'Welcome! User info has been modified.'
       });
-      
+
       location.reload();
 
       return await response.json();
     } catch (error) {
       toast({
         title: 'Modify Failed!',
-        description: 'User info modify has failed. Please try again.',
+        description: 'User info modify has failed. Please try again.'
       });
       throw error;
     }
@@ -93,10 +94,7 @@ export const ModifyModal: React.FC<AlertModalProps> = ({
     const response = await onSubmit(userData);
 
     if (response && response.error) {
-      console.error(response.error);
-    } else {
-      console.log("Success:", response);
-    }
+    } else {}
   };
 
   return (
@@ -106,13 +104,13 @@ export const ModifyModal: React.FC<AlertModalProps> = ({
       isOpen={isOpen}
       onClose={onClose}
     >
-      <div className='flex flex-col'>
-        <label className='text-sm font-medium'>Game</label>
+      <div className="flex flex-col">
+        <label className="text-sm font-medium">Game</label>
         <select
           id="FireKirin"
           value={selectedOption}
           onChange={(e) => setSelectedOption(e.target.value)}
-          className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-1 bg-background'
+          className="mt-1 h-9 rounded-md border bg-background p-2 text-sm outline-none focus:border-[#DAAC95]"
         >
           <option value="FireKirin">FireKirin</option>
           <option value="MilkyWay">MilkyWay</option>
@@ -124,20 +122,26 @@ export const ModifyModal: React.FC<AlertModalProps> = ({
           <option value="UltraPanda">UltraPanda</option>
           <option value="VBlink">VBlink</option>
         </select>
-        <label className='text-sm font-medium mt-3'>User ID</label>
-        <input className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-1 bg-background'
-          onChange={(e)=> setLoginId(e.target.value)}
+        <label className="mt-3 text-sm font-medium">User ID</label>
+        <input
+          className="mt-1 h-9 rounded-md border bg-background p-2 text-sm outline-none focus:border-[#DAAC95]"
+          onChange={(e) => setLoginId(e.target.value)}
         />
-        <label className='text-sm font-medium mt-3'>Password</label>
-        <input className='border focus:border-[#DAAC95] h-9 p-2 text-sm rounded-md outline-none mt-1 bg-background'
-        onChange={(e)=> setPasswordCode(e.target.value)}
+        <label className="mt-3 text-sm font-medium">Password</label>
+        <input
+          className="mt-1 h-9 rounded-md border bg-background p-2 text-sm outline-none focus:border-[#DAAC95]"
+          onChange={(e) => setPasswordCode(e.target.value)}
         />
       </div>
       <div className="flex w-full items-center justify-end space-x-2 pt-6">
         <Button disabled={loading} variant="outline" handleClick={onClose}>
           Cancel
         </Button>
-        <Button disabled={loading} variant="destructive" handleClick={onConfirm}>
+        <Button
+          disabled={loading}
+          variant="destructive"
+          handleClick={onConfirm}
+        >
           Continue
         </Button>
       </div>

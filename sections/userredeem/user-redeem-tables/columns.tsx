@@ -14,7 +14,7 @@ export const columns: ColumnDef<Paymentredeems>[] = [
   {
     accessorKey: 'amount',
     header: 'Amount',
-    cell: ({ row }) => `$${row.original.amount}` 
+    cell: ({ row }) => `$${row.original.amount}`
   },
   {
     accessorKey: 'date',
@@ -26,9 +26,9 @@ export const columns: ColumnDef<Paymentredeems>[] = [
       const year = date.getFullYear();
       const hours = String(date.getHours()).padStart(2, '0');
       const minutes = String(date.getMinutes()).padStart(2, '0');
-  
+
       return `${month}/${day} ${year.toString().slice(-2)} ${hours}:${minutes}`;
-    },
+    }
   },
 
   {
