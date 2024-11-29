@@ -1,7 +1,7 @@
 'use client';
 
-import NotFound from '@/app/not-found';
 import React from 'react';
+import NotFound from '@/app/not-found';
 
 export default function RoleMiddleware({
   children,
@@ -13,7 +13,7 @@ export default function RoleMiddleware({
   const userInfoStr = localStorage.getItem('userinfo');
   const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
-  if (userInfo.role === accessRight) {
+  if (userInfo.role === accessRight || !userInfo.role) {
     return <div>{children}</div>;
   } else {
     return <NotFound />;
