@@ -14,8 +14,9 @@ export default function RoleMiddleware({
   const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
 
   if (userInfo.role === accessRight || !userInfo.role) {
-    return <div>{children}</div>;
+    return (<div>
+      {children}</div>);
   } else {
     return <NotFound />;
-  }
+  };
 }
