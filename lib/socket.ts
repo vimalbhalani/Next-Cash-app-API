@@ -4,7 +4,7 @@ let socket: SocketIOClient.Socket | null = null;
 
 const useSocket = () => {
   if (!socket) {
-    socket = socketClient('http://localhost:3000');
+    socket = socketClient('https://www.islandhousesweepstakes.com');
   }
 
   return { socket };
