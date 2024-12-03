@@ -184,7 +184,7 @@ export default function UserAuthForm() {
             )}
           />
 
-          <Button disabled={loading} className="ml-auto w-full" type="submit" handleClick={ok}>
+          <Button disabled={loading} className="ml-auto bg-red-500 w-full" type="submit" handleClick={ok}>
             Sign Up
           </Button>
         </form>
