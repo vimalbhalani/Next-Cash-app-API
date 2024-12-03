@@ -151,7 +151,6 @@ export function UserNav() {
             return { ...withdrawal, user };
           }
         );
-
         socket.emit('withdrawalRequest', combinedData.length);
       } catch (error) {
       }
