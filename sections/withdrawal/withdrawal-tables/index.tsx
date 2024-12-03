@@ -83,7 +83,7 @@ export default function AdminWithdrawalTable() {
   }, []);
 
   useEffect(() => {
-    socket.on('selectWithdrawalMultiIds', (data: any) => {
+    socket?.on('selectWithdrawalMultiIds', (data: any) => {
       setMultiIds(data);
     });
   }, []);
@@ -99,10 +99,10 @@ export default function AdminWithdrawalTable() {
       }
     };
 
-    socket.on('selectWithdrawalMultiId', handleSelectMultiId);
+    socket?.on('selectWithdrawalMultiId', handleSelectMultiId);
 
     return () => {
-      socket.off('selectWithdrawalMultiId', handleSelectMultiId);
+      socket?.off('selectWithdrawalMultiId', handleSelectMultiId);
     };
   }, []);
 

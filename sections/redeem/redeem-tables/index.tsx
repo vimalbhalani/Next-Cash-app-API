@@ -77,7 +77,7 @@ export default function AdminRedeemTable() {
   }, []);
 
   useEffect(() => {
-    socket.on('selectMultiIds', (data: any) => {
+    socket?.on('selectMultiIds', (data: any) => {
       setMultiIds(data);
     });
   }, []);
@@ -93,10 +93,10 @@ export default function AdminRedeemTable() {
       }
     };
 
-    socket.on('selectMultiId', handleSelectMultiId);
+    socket?.on('selectMultiId', handleSelectMultiId);
 
     return () => {
-      socket.off('selectMultiId', handleSelectMultiId);
+      socket?.off('selectMultiId', handleSelectMultiId);
     };
   }, []);
 

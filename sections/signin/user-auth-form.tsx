@@ -52,7 +52,7 @@ export default function UserAuthForm() {
           router.push('/mypage');
         }
         localStorage.setItem('userinfo', JSON.stringify(response.user));
-        socket.emit('register', {
+        socket?.emit('register', {
           userId: response.user.userId,
           role: response.user.role
         });

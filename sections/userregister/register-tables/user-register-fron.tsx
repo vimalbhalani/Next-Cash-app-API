@@ -101,7 +101,7 @@ export default function UserRegistrationForm() {
           description: 'Welcome! Your register has been requested.'
         });
 
-        socket.emit('userRegister', {
+        socket?.emit('userRegister', {
           userId: userInfo.userId,
           message: `${userInfo.name} requested codenumber!`
         });

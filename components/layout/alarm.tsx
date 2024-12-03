@@ -26,11 +26,11 @@ export function UserAlarm() {
         setHasNewMessage(true);
       }
     };
-    socket.emit('register', { userId: userInfo.userId, role: userInfo.role });
-    socket.on('receiveMessage', handleMessage);
+    socket?.emit('register', { userId: userInfo.userId, role: userInfo.role });
+    socket?.on('receiveMessage', handleMessage);
 
     return () => {
-      socket.off('receiveMessage', handleMessage);
+      socket?.off('receiveMessage', handleMessage);
     };
   }, [dropdownOpen]);
 

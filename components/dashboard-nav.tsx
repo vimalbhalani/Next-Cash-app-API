@@ -52,19 +52,19 @@ const NavItemContent = React.memo(
 
     const { socket } = useSocket();
 
-    socket.on('registerRecieve', (data: any) => {
+    socket?.on('registerRecieve', (data: any) => {
       setRegisterR(data);
     });
 
-    socket.on('verifyRecieve', (data: any) => {
+    socket?.on('verifyRecieve', (data: any) => {
       setVerifyR(data);
     });
 
-    socket.on('depositRecieve', (data: any) => {
+    socket?.on('depositRecieve', (data: any) => {
       setDepositR(data);
     });
 
-    socket.on('withdrawalRecieve', (data: any) => {
+    socket?.on('withdrawalRecieve', (data: any) => {
       setWithdrawalR(data);
     });
 

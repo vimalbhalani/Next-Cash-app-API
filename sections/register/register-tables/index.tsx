@@ -75,7 +75,7 @@ export default function RegisterTable() {
   }, []);
 
   useEffect(() => {
-    socket.on('selectRegisterMultiIds', (data: any) => {
+    socket?.on('selectRegisterMultiIds', (data: any) => {
       setMultiIds(data);
     });
   }, []);
@@ -91,10 +91,10 @@ export default function RegisterTable() {
       }
     };
 
-    socket.on('selectRegisterMultiId', handleSelectMultiId);
+    socket?.on('selectRegisterMultiId', handleSelectMultiId);
 
     return () => {
-      socket.off('selectRegisterMultiId', handleSelectMultiId);
+      socket?.off('selectRegisterMultiId', handleSelectMultiId);
     };
   }, []);
 

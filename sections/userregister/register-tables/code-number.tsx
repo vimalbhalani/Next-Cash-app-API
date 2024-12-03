@@ -49,7 +49,7 @@ export const CodeAction = ({
         return { error: errorData.message || 'UserRegister failed' };
       }
 
-      socket.emit('userVerify', {
+      socket?.emit('userVerify', {
         userId: userInfo.userId,
         message: `${userInfo.name} received login id and password code!`
       });

@@ -59,7 +59,7 @@ export function UserNav() {
         const preparingItemsCount = combinedData.filter(
           (item: any) => item.status === 'preparing'
         ).length;
-        socket.emit('registerRequest', preparingItemsCount);
+        socket?.emit('registerRequest', preparingItemsCount);
       } catch (error) {
       }
     }
@@ -90,7 +90,7 @@ export function UserNav() {
         const processingItemsCount = combinedData.filter(
           (item: any) => item.status === 'Processing'
         ).length;
-        socket.emit('verifyRequest', processingItemsCount);
+        socket?.emit('verifyRequest', processingItemsCount);
       } catch (error) {
       }
     }
@@ -119,7 +119,7 @@ export function UserNav() {
             })
         );
 
-        socket.emit('depositRequest', combinedData.length);
+        socket?.emit('depositRequest', combinedData.length);
       } catch (error) {
       }
     }
@@ -151,7 +151,7 @@ export function UserNav() {
             return { ...withdrawal, user };
           }
         );
-        socket.emit('withdrawalRequest', combinedData.length);
+        socket?.emit('withdrawalRequest', combinedData.length);
       } catch (error) {
       }
     }

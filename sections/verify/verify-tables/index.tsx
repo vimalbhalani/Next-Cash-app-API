@@ -79,7 +79,7 @@ export default function VerifyTable() {
   console.log(data);
 
   useEffect(() => {
-    socket.on('selectCodeVerifyMultiIds', (data: any) => {
+    socket?.on('selectCodeVerifyMultiIds', (data: any) => {
       setMultiIds(data);
     });
   }, []);
@@ -95,10 +95,10 @@ export default function VerifyTable() {
       }
     };
 
-    socket.on('selectCodeVerifyMultiId', handleSelectMultiId);
+    socket?.on('selectCodeVerifyMultiId', handleSelectMultiId);
 
     return () => {
-      socket.off('selectCodeVerifyMultiId', handleSelectMultiId);
+      socket?.off('selectCodeVerifyMultiId', handleSelectMultiId);
     };
   }, []);
 

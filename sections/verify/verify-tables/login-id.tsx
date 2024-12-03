@@ -72,7 +72,7 @@ export const LoginIdAction = ({
           'Welcome! Your loginId and Password Code sending has been success.'
       });
 
-      socket.emit('adminLoginId', {
+      socket?.emit('adminLoginId', {
         receiveuserId: userName,
         message: 'Client sent login id and password code to you!'
       });

@@ -25,9 +25,9 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
                 id: row.original.user?._id,
                 date: row.original.date
               }));
-              socket.emit('selectCodeVerifyAllIds', idsAndDates);
+              socket?.emit('selectCodeVerifyAllIds', idsAndDates);
             } else {
-              socket.emit('selectCodeVerifyAllIds', '');
+              socket?.emit('selectCodeVerifyAllIds', '');
             }
           }, 0);
         }}
@@ -44,12 +44,12 @@ export const columns: ColumnDef<AdminRegisterUsers & UserRegister>[] = [
               id: row.original.user?._id,
               date: row.original.date
             };
-            socket.emit('selectCodeVerifyIds', idsAndDate);
+            socket?.emit('selectCodeVerifyIds', idsAndDate);
           } else {
             const deleteId = {
               date: row.original.date
             };
-            socket.emit('selectCodeVerifyIds', deleteId);
+            socket?.emit('selectCodeVerifyIds', deleteId);
           }
         }}
         aria-label="Select row"

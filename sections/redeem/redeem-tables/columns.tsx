@@ -28,9 +28,9 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
                 id: row.original.user?._id,
                 date: row.original.date
               }));
-              socket.emit('selectAllIds', idsAndDates);
+              socket?.emit('selectAllIds', idsAndDates);
             } else {
-              socket.emit('selectAllIds', '');
+              socket?.emit('selectAllIds', '');
             }
           }, 0);
         }}
@@ -47,12 +47,12 @@ export const columns: ColumnDef<AdminRegisterUsers & Paymentredeems>[] = [
               id: row.original.user?._id,
               date: row.original.date
             };
-            socket.emit('selectIds', idsAndDate);
+            socket?.emit('selectIds', idsAndDate);
           } else {
             const deleteId = {
               date: row.original.date
             };
-            socket.emit('selectIds', deleteId);
+            socket?.emit('selectIds', deleteId);
           }
         }}
         aria-label="Select row"

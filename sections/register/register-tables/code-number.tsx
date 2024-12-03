@@ -63,7 +63,7 @@ export const CodeAction = ({
         description: 'Welcome! Your code sending has been successful.'
       });
 
-      socket.emit('adminRegister', {
+      socket?.emit('adminRegister', {
         receiveuserId: userName,
         message: 'Client sent codenumber to you!'
       });

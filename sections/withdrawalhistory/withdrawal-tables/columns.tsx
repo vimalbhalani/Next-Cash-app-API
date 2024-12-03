@@ -24,9 +24,9 @@ export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
                 id: row.original.user?._id,
                 date: row.original.date
               }));
-              socket.emit('selectWithdrawalHistoryAllIds', idsAndDates);
+              socket?.emit('selectWithdrawalHistoryAllIds', idsAndDates);
             } else {
-              socket.emit('selectWithdrawalHistoryAllIds', '');
+              socket?.emit('selectWithdrawalHistoryAllIds', '');
             }
           }, 0);
         }}
@@ -43,12 +43,12 @@ export const columns: ColumnDef<AdminRegisterUsers & PaymentWithdrawals>[] = [
               id: row.original.user?._id,
               date: row.original.date
             };
-            socket.emit('selectWithdrawalHistoryIds', idsAndDate);
+            socket?.emit('selectWithdrawalHistoryIds', idsAndDate);
           } else {
             const deleteId = {
               date: row.original.date
             };
-            socket.emit('selectWithdrawalHistoryIds', deleteId);
+            socket?.emit('selectWithdrawalHistoryIds', deleteId);
           }
         }}
         aria-label="Select row"

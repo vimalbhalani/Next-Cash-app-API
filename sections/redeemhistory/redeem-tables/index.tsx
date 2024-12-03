@@ -98,7 +98,7 @@ export default function AdminredeemHistoryTable() {
   });
 
   useEffect(() => {
-    socket.on('selectHistoryMultiIds', (data: any) => {
+    socket?.on('selectHistoryMultiIds', (data: any) => {
       setMultiIds(data);
     });
   }, []);
@@ -114,10 +114,10 @@ export default function AdminredeemHistoryTable() {
       }
     };
 
-    socket.on('selectHistoryMultiId', handleSelectMultiId);
+    socket?.on('selectHistoryMultiId', handleSelectMultiId);
 
     return () => {
-      socket.off('selectHistoryMultiId', handleSelectMultiId);
+      socket?.off('selectHistoryMultiId', handleSelectMultiId);
     };
   }, []);
 
